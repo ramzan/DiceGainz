@@ -8,16 +8,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.database.LiftDatabase
-import com.ramzan.dicegainz.databinding.FragmentLiftsBinding
+import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
 
 /**
  * A fragment representing a list of Lifts.
  */
 class LiftsFragment : Fragment() {
 
-    private lateinit var binding: FragmentLiftsBinding
+    private lateinit var binding: LiftsFragmentBinding
 
     private lateinit var viewModel: LiftsViewModel
 
@@ -29,7 +28,7 @@ class LiftsFragment : Fragment() {
         // Inflate view and get instance of binding class
         binding = DataBindingUtil.inflate(
             inflater,
-            R.layout.fragment_lifts, container, false
+            R.layout.lifts_fragment, container, false
         )
 
         // Get ViewModel Factory

@@ -17,7 +17,7 @@ class RollFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_roll, container, false)
+        return inflater.inflate(R.layout.roll_fragment, container, false)
     }
 
     companion object {
