@@ -17,9 +17,7 @@ class LiftsViewModel(
 
     init {
         for (i in 1..20) {
-            var lift = Lift()
-            lift.name = i.toString()
-            lift.tier = i % 2
+            val lift = Lift(i.toString(), i % 2)
             addLift(lift)
         }
     }
@@ -27,9 +25,41 @@ class LiftsViewModel(
     fun addLift(lift: Lift) {
         Log.d("addLift", "Adding lift")
         viewModelScope.launch {
-            suspend { database.insert(lift) }()
+            if (hasItem(lift.name)) {
+                Log.d("addLift", "Lift already exists!")
+            } else {
+                insert(lift)
+                Log.d("addLift", "Lift added")
+            }
         }
-        Log.d("addLift", lifts.value.toString())
-        Log.d("addLift", "Lift added")
+    }
+
+    fun deleteLift(name: String) {
+        Log.d("deleteLift", "Deleting lift $name")
+        viewModelScope.launch {
+            val lift = get(name)
+            if (lift === null) {
+                Log.d("deleteLift", "Lift $name does not exist!")
+            } else {
+                delete(lift)
+                Log.d("deleteLift", "Lift $name deleted!")
+            }
+        }
+    }
+
+    private suspend fun insert(lift: Lift) {
+        database.insert(lift)
+    }
+
+    private suspend fun get(name: String): Lift? {
+        return database.get(name)
+    }
+
+    private suspend fun hasItem(name: String): Boolean {
+        return database.hasItem(name)
+    }
+
+    private suspend fun delete(lift: Lift) {
+        return database.delete(lift)
     }
 }

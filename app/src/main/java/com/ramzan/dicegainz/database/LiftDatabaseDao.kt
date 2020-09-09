@@ -17,8 +17,11 @@ interface LiftDatabaseDao {
     @Query("SELECT * from lift_table WHERE name = :key")
     suspend fun get(key: String): Lift?
 
-//    @Delete
-//    suspend fun delete(key: String)
+    @Query("SELECT EXISTS(SELECT * FROM lift_table WHERE name = :name)")
+    suspend fun hasItem(name: String) : Boolean
+
+    @Delete
+    suspend fun delete(lift: Lift)
 
     @Query("DELETE FROM lift_table")
     suspend fun clear()

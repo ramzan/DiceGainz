@@ -51,12 +51,6 @@ class LiftsFragment : Fragment() {
             }
         })
 
-        binding.fab.setOnClickListener {
-            var lift = Lift()
-            lift.name = "butt"
-            viewModel.addLift((lift))
-        }
-
         binding.lifecycleOwner = this
 
         return binding.root
