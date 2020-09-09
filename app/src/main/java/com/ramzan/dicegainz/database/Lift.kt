@@ -12,12 +12,12 @@ import androidx.room.PrimaryKey
  */
 @Entity(tableName = "lift_table")
 data class Lift(
-//    @PrimaryKey(autoGenerate = true)
-//    var liftId: Long = 0L,
+    @PrimaryKey(autoGenerate = true)
+    var liftId: Int = 0,
 
-//    @ColumnInfo(name = "name")
-    @PrimaryKey
-    val name: String = "",
+    @ColumnInfo(name = "name")
+//    @PrimaryKey
+    var name: String = "name",
 
     @ColumnInfo(name = "tier")
     var tier: Int = 0,
