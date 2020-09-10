@@ -9,11 +9,24 @@ import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.ListItemLiftBinding
 
 
-class LiftAdapter : ListAdapter<Lift, LiftAdapter.ViewHolder>(LiftDiffCallback()) {
+class LiftAdapter( private val onClickListener: OnClickListener) :
+    ListAdapter<Lift, LiftAdapter.ViewHolder>(LiftDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(item)
+        }
         holder.bind(item)
+    }
+
+    /**
+     * Custom listener that handles clicks on [RecyclerView] items.  Passes the [Lift]
+     * associated with the current item to the [onClick] function.
+     * @param clickListener lambda that will be called with the current [Lift]
+     */
+    class OnClickListener(val clickListener: (lift: Lift) -> Unit) {
+        fun onClick(lift: Lift) = clickListener(lift)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

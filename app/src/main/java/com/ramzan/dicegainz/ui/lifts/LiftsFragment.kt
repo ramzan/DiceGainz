@@ -1,6 +1,7 @@
 package com.ramzan.dicegainz.ui.lifts
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +43,7 @@ class LiftsFragment : Fragment() {
         binding.liftsViewModel = viewModel
 
         // Set the recyclerview adapter
-        val adapter = LiftAdapter()
+        val adapter = LiftAdapter(LiftAdapter.OnClickListener { Log.d("clicker", "${it.name} clicked!")})
         binding.liftList.adapter = adapter
 
         viewModel.lifts.observe(viewLifecycleOwner, {
