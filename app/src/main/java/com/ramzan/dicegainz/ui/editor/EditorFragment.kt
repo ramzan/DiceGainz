@@ -30,7 +30,7 @@ class EditorFragment : Fragment() {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
 
         binding.button.setOnClickListener {
-            navController.navigate(R.id.action_editorFragment_to_mainFragment)
+            navController.navigate(EditorFragmentDirections.actionEditorFragmentToMainFragment())
         }
 
         return binding.root

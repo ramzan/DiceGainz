@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.ramzan.dicegainz.MainFragmentDirections
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
@@ -57,7 +58,7 @@ class LiftsFragment : Fragment() {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
 
         binding.fab.setOnClickListener {
-            navController.navigate(R.id.action_mainFragment_to_editorFragment)
+            navController.navigate(MainFragmentDirections.actionMainFragmentToEditorFragment())
         }
 
         return binding.root
