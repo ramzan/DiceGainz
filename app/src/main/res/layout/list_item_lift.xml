@@ -2,6 +2,7 @@
 <layout>
 
     <data>
+
         <variable
             name="lift"
             type="com.ramzan.dicegainz.database.Lift" />
