@@ -11,7 +11,8 @@
         android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_editorFragment"
-            app:destination="@id/editorFragment" />
+            app:destination="@id/editorFragment"
+            app:popUpTo="@id/mainFragment" />
     </fragment>
     <fragment
         android:id="@+id/editorFragment"
@@ -20,6 +21,8 @@
         tools:layout="@layout/editor_fragment">
         <action
             android:id="@+id/action_editorFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
