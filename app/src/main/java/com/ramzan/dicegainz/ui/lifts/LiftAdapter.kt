@@ -9,7 +9,7 @@ import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.ListItemLiftBinding
 
 
-class LiftAdapter( private val onClickListener: OnClickListener) :
+class LiftAdapter(private val onClickListener: OnClickListener) :
     ListAdapter<Lift, LiftAdapter.ViewHolder>(LiftDiffCallback()) {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

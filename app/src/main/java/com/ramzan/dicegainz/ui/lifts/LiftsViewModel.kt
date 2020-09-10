@@ -6,6 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.database.LiftDatabaseDao
+import com.ramzan.dicegainz.database.T1
+import com.ramzan.dicegainz.database.T2
 import kotlinx.coroutines.launch
 
 class LiftsViewModel(
@@ -17,7 +19,7 @@ class LiftsViewModel(
 
     init {
         for (i in 1..20) {
-            val lift = Lift(i.toString(), i % 2)
+            val lift = Lift(i.toString(), if (i % 2 == 0) T2 else T1)
             addLift(lift)
         }
     }

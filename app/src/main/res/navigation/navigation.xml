@@ -24,5 +24,15 @@
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="createNewLift"
+            app:argType="boolean" />
+        <argument
+            android:name="liftName"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="tier"
+            app:argType="integer" />
     </fragment>
 </navigation>

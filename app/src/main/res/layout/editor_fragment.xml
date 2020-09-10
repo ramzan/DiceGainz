@@ -19,13 +19,13 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/title"
+                android:id="@+id/editorTitle"
+                tools:text="New lift"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:padding="@dimen/appbar_padding"
-                android:text="@string/app_name"
                 android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
         </com.google.android.material.appbar.AppBarLayout>
@@ -46,22 +46,60 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:ems="10"
+            android:importantForAutofill="no"
             android:inputType="textPersonName"
-            android:text="Name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            android:importantForAutofill="no" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <TextView
             android:id="@+id/liftNameInputTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginBottom="14dp"
             android:text="Name"
             app:layout_constraintBottom_toBottomOf="@+id/liftNameInput"
             app:layout_constraintEnd_toStartOf="@+id/liftNameInput"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tierInputTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="28dp"
+            android:layout_marginBottom="170dp"
+            android:text="Tier"
+            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/liftNameInput" />
+
+        <CheckBox
+            android:id="@+id/t1checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="161dp"
+            android:text="T1"
+            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintEnd_toStartOf="@+id/t2checkBox"
+            app:layout_constraintStart_toEndOf="@+id/tierInputTitle"
+            app:layout_constraintTop_toBottomOf="@+id/liftNameInput" />
+
+        <CheckBox
+            android:id="@+id/t2checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginBottom="161dp"
+            android:text="T2"
+            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/liftNameInput" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

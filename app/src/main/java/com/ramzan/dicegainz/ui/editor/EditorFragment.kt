@@ -8,6 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.ramzan.dicegainz.R
+import com.ramzan.dicegainz.database.BOTH
+import com.ramzan.dicegainz.database.T1
+import com.ramzan.dicegainz.database.T2
 import com.ramzan.dicegainz.databinding.EditorFragmentBinding
 
 class EditorFragment : Fragment() {
@@ -31,6 +34,21 @@ class EditorFragment : Fragment() {
 
         binding.button.setOnClickListener {
             navController.navigate(EditorFragmentDirections.actionEditorFragmentToMainFragment())
+        }
+
+        val args = EditorFragmentArgs.fromBundle(requireArguments())
+
+        binding.liftNameInput.setText(args.liftName ?: "")
+
+        binding.editorTitle.text = if (args.createNewLift) "New lift" else "Edit lift"
+
+        when (args.tier) {
+            BOTH -> {
+                binding.t1checkBox.isChecked = true
+                binding.t2checkBox.isChecked = true
+            }
+            T1 -> binding.t1checkBox.isChecked = true
+            T2 -> binding.t2checkBox.isChecked = true
         }
 
         return binding.root

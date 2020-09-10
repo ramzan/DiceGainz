@@ -1,7 +1,6 @@
 package com.ramzan.dicegainz.ui.lifts
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.ramzan.dicegainz.MainFragmentDirections
 import com.ramzan.dicegainz.R
+import com.ramzan.dicegainz.database.BOTH
 import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
 
@@ -43,8 +43,19 @@ class LiftsFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(LiftsViewModel::class.java)
         binding.liftsViewModel = viewModel
 
+        // Get navController
+        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
+
         // Set the recyclerview adapter
-        val adapter = LiftAdapter(LiftAdapter.OnClickListener { Log.d("clicker", "${it.name} clicked!")})
+        val adapter = LiftAdapter(LiftAdapter.OnClickListener {
+            navController.navigate(
+                MainFragmentDirections.actionMainFragmentToEditorFragment(
+                    false,
+                    it.name,
+                    it.tier
+                )
+            )
+        })
         binding.liftList.adapter = adapter
 
         viewModel.lifts.observe(viewLifecycleOwner, {
@@ -55,10 +66,14 @@ class LiftsFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
-        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-
         binding.fab.setOnClickListener {
-            navController.navigate(MainFragmentDirections.actionMainFragmentToEditorFragment())
+            navController.navigate(
+                MainFragmentDirections.actionMainFragmentToEditorFragment(
+                    true,
+                    null,
+                    BOTH
+                )
+            )
         }
 
         return binding.root
