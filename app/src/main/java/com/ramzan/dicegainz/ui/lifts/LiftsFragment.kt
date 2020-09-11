@@ -50,9 +50,7 @@ class LiftsFragment : Fragment() {
         val adapter = LiftAdapter(LiftAdapter.OnClickListener {
             navController.navigate(
                 MainFragmentDirections.actionMainFragmentToEditorFragment(
-                    false,
-                    it.name,
-                    it.tier
+                    it
                 )
             )
         })
@@ -68,11 +66,7 @@ class LiftsFragment : Fragment() {
 
         binding.fab.setOnClickListener {
             navController.navigate(
-                MainFragmentDirections.actionMainFragmentToEditorFragment(
-                    true,
-                    null,
-                    BOTH
-                )
+                MainFragmentDirections.actionMainFragmentToEditorFragment(null)
             )
         }
 

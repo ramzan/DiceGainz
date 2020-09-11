@@ -38,11 +38,11 @@ class EditorFragment : Fragment() {
 
         val args = EditorFragmentArgs.fromBundle(requireArguments())
 
-        binding.liftNameInput.setText(args.liftName ?: "")
+        binding.liftNameInput.setText(args.selectedLift?.name ?: "")
 
-        binding.editorTitle.text = if (args.createNewLift) "New lift" else "Edit lift"
+        binding.editorTitle.text = if (args.selectedLift == null) "New lift" else "Edit lift"
 
-        when (args.tier) {
+        when (args.selectedLift?.tier) {
             BOTH -> {
                 binding.t1checkBox.isChecked = true
                 binding.t2checkBox.isChecked = true

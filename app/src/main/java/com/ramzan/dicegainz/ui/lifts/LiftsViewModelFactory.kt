@@ -5,11 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ramzan.dicegainz.database.LiftDatabaseDao
 
-/**
- * This is pretty much boiler plate code for a ViewModel Factory.
- *
- * Provides the SleepDatabaseDao and context to the ViewModel.
- */
 class LiftsViewModelFactory(
     private val dataSource: LiftDatabaseDao,
     private val application: Application

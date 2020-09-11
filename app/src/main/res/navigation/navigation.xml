@@ -25,14 +25,8 @@
             app:popUpTo="@id/mainFragment"
             app:popUpToInclusive="true" />
         <argument
-            android:name="createNewLift"
-            app:argType="boolean" />
-        <argument
-            android:name="liftName"
-            app:argType="string"
+            android:name="selectedLift"
+            app:argType="com.ramzan.dicegainz.database.Lift"
             app:nullable="true" />
-        <argument
-            android:name="tier"
-            app:argType="integer" />
     </fragment>
 </navigation>
