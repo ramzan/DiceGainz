@@ -13,6 +13,10 @@
             android:id="@+id/action_mainFragment_to_editorFragment"
             app:destination="@id/editorFragment"
             app:popUpTo="@id/mainFragment" />
+        <argument
+            android:name="tabIndex"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
     <fragment
         android:id="@+id/editorFragment"
@@ -23,7 +27,11 @@
             android:id="@+id/action_editorFragment_to_mainFragment"
             app:destination="@id/mainFragment"
             app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true" >
+            <argument
+                android:name="tabIndex"
+                android:defaultValue="1" />
+        </action>
         <argument
             android:name="selectedLift"
             app:argType="com.ramzan.dicegainz.database.Lift"

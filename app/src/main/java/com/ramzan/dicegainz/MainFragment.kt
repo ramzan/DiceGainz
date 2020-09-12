@@ -32,12 +32,18 @@ class MainFragment : Fragment() {
             R.layout.main_fragment, container, false
         )
 
+        // Get lift from args
+        val args = MainFragmentArgs.fromBundle(requireArguments())
+
         val fm: FragmentManager = childFragmentManager
         val sectionsPagerAdapter = SectionsPagerAdapter(requireContext(), fm)
         val viewPager: ViewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs
         tabs.setupWithViewPager(viewPager)
+
+        viewPager.currentItem = args.tabIndex
+
         return binding.root
     }
 
