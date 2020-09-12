@@ -10,9 +10,14 @@ import kotlinx.android.parcel.Parcelize
 @Entity(tableName = "lift_table")
 data class Lift(
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
+
+    @ColumnInfo(name = "name")
     var name: String,
 
     @ColumnInfo(name = "tier")
     var tier: Int = BOTH,
-) : Parcelable
+) : Parcelable {
+    constructor(name: String, tier: Int) : this(0, name, tier)
+}
