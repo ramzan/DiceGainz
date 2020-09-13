@@ -12,4 +12,10 @@
     <string name="both">T1 and T2</string>
     <string name="tier">Tier</string>
     <string name="delete">Delete</string>
+    <string name="roll_all">Roll All</string>
+    <string name="roll">Roll</string>
+    <string name="lift_1">Lift 1</string>
+    <string name="lift_2">Lift 2</string>
+    <string name="lift_3">Lift 3</string>
+    <string name="categories">Categories</string>
 </resources>
