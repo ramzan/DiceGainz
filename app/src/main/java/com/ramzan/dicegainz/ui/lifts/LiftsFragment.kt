@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.ramzan.dicegainz.MainFragmentDirections
 import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.BOTH
 import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
 
@@ -54,6 +53,7 @@ class LiftsFragment : Fragment() {
                 )
             )
         })
+
         binding.liftList.adapter = adapter
 
         viewModel.lifts.observe(viewLifecycleOwner, {

@@ -8,21 +8,27 @@ import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.database.LiftDatabaseDao
 import kotlinx.coroutines.launch
 
-class EditorViewModel(val database: LiftDatabaseDao, application: Application, lift: Lift?) : AndroidViewModel(application){
+class EditorViewModel(val database: LiftDatabaseDao, application: Application) :
+    AndroidViewModel(application) {
 
     fun addLift(lift: Lift) {
-        Log.d("addLift", "Adding lift")
+        Log.d("addLift", "Adding lift ${lift.name}")
         viewModelScope.launch {
-            if (hasItem(lift.name)) {
-                Log.d("addLift", "Lift already exists!")
-            } else {
-                insert(lift)
-                Log.d("addLift", "Lift added")
-            }
+            insert(lift)
+            Log.d("addLift", "Lift ${lift.name} added")
+        }
+    }
+
+    fun updateLift(lift: Lift) {
+        Log.d("updateLift", "Updating lift ${lift.name}")
+        viewModelScope.launch {
+            update(lift)
+            Log.d("updateLift", "Lift ${lift.name} updated")
         }
     }
 
     fun deleteLift(lift: Lift) {
+        Log.d("deleteLift", "Deleting lift ${lift.name}")
         viewModelScope.launch {
             delete(lift)
             Log.d("deleteLift", "Lift ${lift.name} deleted!")
@@ -33,10 +39,10 @@ class EditorViewModel(val database: LiftDatabaseDao, application: Application, l
         database.insert(lift)
     }
 
-
-    private suspend fun hasItem(name: String): Boolean {
-        return name == "1"
+    private suspend fun update(lift: Lift) {
+        database.update(lift)
     }
+
 
     private suspend fun delete(lift: Lift) {
         return database.delete(lift)

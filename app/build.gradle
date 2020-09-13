@@ -59,6 +59,4 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$room_version"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
-
-
 }

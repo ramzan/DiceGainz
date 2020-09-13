@@ -2,4 +2,14 @@
     <string name="app_name">Dice Gainz</string>
     <string name="tab_text_1">Roll</string>
     <string name="tab_text_2">Lifts</string>
+    <string name="nameInputHint">Name</string>
+    <string name="editorTitleEdit">Edit lift</string>
+    <string name="editorTitleNew">New lift</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="t1">T1</string>
+    <string name="t2">T2</string>
+    <string name="both">T1 and T2</string>
+    <string name="tier">Tier</string>
+    <string name="delete">Delete</string>
 </resources>

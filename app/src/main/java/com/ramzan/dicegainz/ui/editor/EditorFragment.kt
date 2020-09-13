@@ -5,25 +5,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.BOTH
-import com.ramzan.dicegainz.database.LiftDatabase
-import com.ramzan.dicegainz.database.T1
-import com.ramzan.dicegainz.database.T2
+import com.ramzan.dicegainz.database.*
 import com.ramzan.dicegainz.databinding.EditorFragmentBinding
-import com.ramzan.dicegainz.ui.lifts.LiftsViewModel
-import com.ramzan.dicegainz.ui.lifts.LiftsViewModelFactory
 
 class EditorFragment : Fragment() {
 
     private lateinit var binding: EditorFragmentBinding
 
-    private lateinit var viewModel: EditorViewModel
+    private lateinit var editorViewModel: EditorViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,38 +36,73 @@ class EditorFragment : Fragment() {
         // Get ViewModel Factory
         val application = requireNotNull(this.activity).application
         val dataSource = LiftDatabase.getInstance(application).liftDatabaseDao
-        val viewModelFactory = EditorViewModelFactory(dataSource, application, args.selectedLift)
+        val viewModelFactory = EditorViewModelFactory(dataSource, application)
 
         // Get ViewModel
-        viewModel = ViewModelProvider(this, viewModelFactory).get(EditorViewModel::class.java)
-        binding.viewModel = viewModel
+        editorViewModel = ViewModelProvider(this, viewModelFactory).get(EditorViewModel::class.java)
 
+        binding.apply {
+            viewModel = editorViewModel
 
-        binding.liftNameInput.setText(args.selectedLift?.name ?: "")
+            // Edit lift mode
+            if (args.selectedLift !== null) {
+                val lift: Lift = args.selectedLift!!
 
-        binding.editorTitle.text = if (args.selectedLift == null) "New lift" else "Edit lift"
+                nameInput.setText(lift.name)
 
-        when (args.selectedLift?.tier) {
-            BOTH -> {
-                binding.t1checkBox.isChecked = true
-                binding.t2checkBox.isChecked = true
+                editorTitle.text = getString(R.string.editorTitleEdit)
+
+                when (lift.tier) {
+                    T1 -> radioButtonT1.isChecked = true
+                    T2 -> radioButtonT2.isChecked = true
+                }
+
+                deleteButton.setOnClickListener {
+                    deleteLift(lift)
+                    goBack()
+                }
+
+                deleteButton.visibility = VISIBLE
+
+                // New lift mode
+            } else {
+                editorTitle.text = getString(R.string.editorTitleNew)
             }
-            T1 -> binding.t1checkBox.isChecked = true
-            T2 -> binding.t2checkBox.isChecked = true
-        }
 
-        binding.button.setOnClickListener {
-            goBack()
-        }
+            cancelButton.setOnClickListener {
+                goBack()
+            }
 
-        args.selectedLift?.let { binding.deleteButton.visibility = VISIBLE }
+            saveButton.setOnClickListener {
+                saveLift(args.selectedLift)
+                goBack()
+            }
 
-        binding.deleteButton.setOnClickListener {
-            args.selectedLift?.let { it1 -> viewModel.deleteLift(it1) }
-            goBack()
         }
 
         return binding.root
+    }
+
+    private fun saveLift(lift: Lift?) {
+        val name = binding.nameInput.text.toString()
+        val tier =
+            when (binding.tierSelector.checkedRadioButtonId) {
+                R.id.radio_button_t1 -> T1
+                R.id.radio_button_t2 -> T2
+                else -> BOTH
+            }
+        if (lift !== null) {
+            lift.name = name
+            lift.tier = tier
+            editorViewModel.updateLift(lift)
+        } else {
+            editorViewModel.addLift(Lift(name, tier))
+        }
+    }
+
+    private fun deleteLift(lift: Lift) {
+        editorViewModel.deleteLift(lift)
+
     }
 
     private fun goBack() {

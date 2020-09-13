@@ -1,119 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.ramzan.dicegainz.ui.editor.EditorViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:theme="@style/AppTheme.AppBarOverlay"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:paddingHorizontal="0dp">
 
             <TextView
                 android:id="@+id/editorTitle"
-                tools:text="New lift"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:minHeight="?actionBarSize"
                 android:padding="@dimen/appbar_padding"
-                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
-
-            <Button
-                android:id="@+id/deleteButton"
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="delete" />
+                android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title"
+                tools:text="@string/editorTitleEdit" />
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+            android:layout_margin="4dp"
+            android:hint="@string/nameInputHint"
+            android:paddingHorizontal="@dimen/defaultPadding">
 
-        <EditText
-            android:id="@+id/liftNameInput"
-            android:layout_width="wrap_content"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <RadioGroup
+            android:id="@+id/tierSelector"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:ems="10"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+            android:checkedButton="@id/radio_button_both"
+            android:paddingHorizontal="@dimen/defaultPadding">
 
-        <TextView
-            android:id="@+id/liftNameInputTitle"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/tier"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            <RadioButton
+                android:id="@+id/radio_button_t1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/t1" />
+
+            <RadioButton
+                android:id="@+id/radio_button_t2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/t2" />
+
+            <RadioButton
+                android:id="@+id/radio_button_both"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/both" />
+        </RadioGroup>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginBottom="14dp"
-            android:text="Name"
-            app:layout_constraintBottom_toBottomOf="@+id/liftNameInput"
-            app:layout_constraintEnd_toStartOf="@+id/liftNameInput"
-            app:layout_constraintStart_toStartOf="parent" />
+            android:paddingHorizontal="@dimen/defaultPadding">
 
-        <TextView
-            android:id="@+id/tierInputTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="28dp"
-            android:layout_marginBottom="170dp"
-            android:text="Tier"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/liftNameInput" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:text="@string/save" />
 
-        <CheckBox
-            android:id="@+id/t1checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="161dp"
-            android:text="T1"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toStartOf="@+id/t2checkBox"
-            app:layout_constraintStart_toEndOf="@+id/tierInputTitle"
-            app:layout_constraintTop_toBottomOf="@+id/liftNameInput" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_toStartOf="@id/save_button"
+                android:layout_toLeftOf="@id/save_button"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:text="@string/delete" />
 
-        <CheckBox
-            android:id="@+id/t2checkBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="161dp"
-            android:text="T2"
-            app:layout_constraintBottom_toTopOf="@+id/button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/liftNameInput" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/cancel_button"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:layout_marginRight="12dp"
+                android:layout_toStartOf="@id/delete_button"
+                android:layout_toLeftOf="@id/delete_button"
+                android:text="@string/cancel" />
 
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </RelativeLayout>
+    </LinearLayout>
 </layout>
