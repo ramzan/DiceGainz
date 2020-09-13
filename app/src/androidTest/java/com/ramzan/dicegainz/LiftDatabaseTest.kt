@@ -46,26 +46,30 @@ class LiftDatabaseTest {
 
     @Test
     @Throws(Exception::class)
-    fun insertAndGetLift() {
+    fun insert() {
         val name = "Front Squat"
-        val lift = Lift(name = name)
+        val tier = 1
+        val lift = Lift(name, tier)
         runBlocking {
             liftDao.insert(lift)
-            val addedLift = liftDao.get(name)
-            assertEquals(name, addedLift?.name)
+            val addedLift = liftDao.get(lift.id)
+            assertEquals(lift, addedLift)
         }
     }
 
     @Test
     @Throws(Exception::class)
-    fun insertAndGetTiers() {
-        val name = "Front Squat"
-        val tier = 0
-        val lift = Lift(name = name, tier = tier)
+    fun getAllLifts() {
         runBlocking {
-            liftDao.insert(lift)
-            val addedLift = liftDao.get(name)
-            assertEquals(tier, addedLift?.tier)
+
+            val arr: Array<Lift?> = arrayOfNulls(21)
+            for (i in 0..20) {
+                arr[i] = Lift(i.toString(), i % 2)
+                arr[i]?.let { liftDao.insert(it) }
+            }
+            val lifts = listOf(arr)
+            val allLifts = liftDao.getAllLifts()
+            assertEquals(lifts, allLifts.value)
         }
     }
 }
