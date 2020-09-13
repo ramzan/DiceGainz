@@ -1,6 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-</LinearLayout>
+    <data>
+
+        <variable
+            name="rollViewModel"
+            type="com.ramzan.dicegainz.ui.roll.RollViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/defaultPadding"
+        android:stretchColumns="1">
+
+        <Button
+            android:id="@+id/rollAllButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/roll_all"
+            app:layout_constraintBottom_toTopOf="@+id/roll_button_1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="spread_inside" />
+
+
+        <TextView
+            android:id="@+id/lift_1_title"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/lift_1"
+            app:layout_constraintEnd_toStartOf="@+id/roll_button_1"
+            app:layout_constraintStart_toStartOf="@+id/rollAllButton"
+            app:layout_constraintTop_toTopOf="@+id/roll_button_1" />
+
+        <Button
+            android:id="@+id/roll_button_1"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/roll"
+            app:layout_constraintBottom_toTopOf="@+id/roll_button_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lift_1_title"
+            app:layout_constraintTop_toBottomOf="@+id/rollAllButton" />
+
+
+        <TextView
+            android:id="@+id/lift_2_title"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/lift_2"
+            app:layout_constraintEnd_toStartOf="@+id/roll_button_2"
+            app:layout_constraintStart_toStartOf="@+id/rollAllButton"
+            app:layout_constraintTop_toTopOf="@+id/roll_button_2" />
+
+        <Button
+            android:id="@+id/roll_button_2"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="@string/roll"
+            app:layout_constraintBottom_toTopOf="@+id/roll_button_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lift_2_title"
+            app:layout_constraintTop_toBottomOf="@+id/roll_button_1" />
+
+
+        <TextView
+            android:id="@+id/lift_3_title"
+            style="@style/TextAppearance.MaterialComponents.Headline5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/lift_3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/roll_button_3"
+            app:layout_constraintStart_toStartOf="@+id/rollAllButton" />
+
+        <Button
+            android:id="@+id/roll_button_3"
+            style="?attr/materialButtonOutlinedStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/roll"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/lift_3_title"
+            app:layout_constraintTop_toBottomOf="@+id/roll_button_2" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
