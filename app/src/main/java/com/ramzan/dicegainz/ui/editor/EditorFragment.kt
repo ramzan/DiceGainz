@@ -109,9 +109,4 @@ class EditorFragment : Fragment() {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
         navController.navigate(EditorFragmentDirections.actionEditorFragmentToMainFragment())
     }
-
-    companion object {
-        fun newInstance() = EditorFragment()
-    }
-
 }
