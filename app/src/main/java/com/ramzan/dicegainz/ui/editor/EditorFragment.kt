@@ -5,7 +5,10 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -21,6 +24,8 @@ import com.ramzan.dicegainz.databinding.EditorFragmentBinding
 class EditorFragment : Fragment() {
 
     private val tierStrings = listOf("T1 and T2", "T1", "T2")
+
+    private var categories = mutableListOf("Full body", "Upper", "Lower", "Push", "Pull")
 
     private lateinit var binding: EditorFragmentBinding
 
@@ -55,6 +60,10 @@ class EditorFragment : Fragment() {
             val adapter = ArrayAdapter(requireContext(), R.layout.tier_list_item, tierStrings)
             tierSelector.setAdapter(adapter)
             tierSelector.setText("T1 and T2", false)
+
+            // Tag selector
+            val tagAdapter = ArrayAdapter(requireContext(), R.layout.tier_list_item, categories)
+            chipCreator.setAdapter(tagAdapter)
 
             // Edit lift mode
             if (args.selectedLift !== null) {
@@ -94,14 +103,40 @@ class EditorFragment : Fragment() {
                 goBack()
             }
 
+            chipCreator.onSubmit {
+                addChip(getChip(chipCreator.text.toString()))
+                chipCreator.setText("")
+            }
+
+            chipCreator.onItemClickListener = OnItemClickListener { _, _, _, _ ->
+                addChip(getChip(chipCreator.text.toString()))
+                chipCreator.setText("")
+            }
+
 
             // Tag chips
-            val genres = mutableListOf("Full body", "Upper", "Lower", "Push", "Pull")
-            genres.forEach { chipGroup.addView(getChip(it)) }
+            // add to list on submit, make this list livedata
+//            categories.forEach { addChip(getChip(it)) }
 
         }
 
         return binding.root
+    }
+
+    private fun AutoCompleteTextView.onSubmit(func: () -> Unit) {
+        setOnEditorActionListener { _, actionId, _ ->
+
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                func()
+            }
+
+            true
+
+        }
+    }
+
+    private fun addChip(chip: Chip) {
+        binding.chipGroup.addView(chip)
     }
 
 

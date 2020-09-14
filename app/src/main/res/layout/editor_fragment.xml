@@ -21,12 +21,12 @@
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/editorToolbar"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:paddingHorizontal="0dp"
                 app:menu="@menu/editor_menu"
-                app:navigationIcon="@drawable/ic_baseline_close_24"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary">
+                app:navigationIcon="@drawable/ic_baseline_close_24">
 
             </com.google.android.material.appbar.MaterialToolbar>
 
@@ -65,17 +65,40 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/defaultPadding"
+            android:text="@string/categories"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/chipCreatorContainer"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:hint="@string/tier"
+            android:paddingHorizontal="@dimen/defaultPadding">
+
+            <AutoCompleteTextView
+                android:id="@+id/chip_creator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionDone"
+                android:inputType="text"
+                android:singleLine="true" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/defaultPadding">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/categories"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         </com.google.android.material.chip.ChipGroup>
 
