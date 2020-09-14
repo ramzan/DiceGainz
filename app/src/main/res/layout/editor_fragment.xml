@@ -81,42 +81,53 @@
                 android:text="@string/both" />
         </RadioGroup>
 
+        <com.google.android.material.chip.ChipGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/chip_group"
+            android:paddingHorizontal="@dimen/defaultPadding">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/categories"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        </com.google.android.material.chip.ChipGroup>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="@dimen/defaultPadding">
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/save_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
                 android:text="@string/save" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/delete_button"
+                android:backgroundTint="@android:color/holo_red_dark"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
                 android:layout_toStartOf="@id/save_button"
-                android:layout_toLeftOf="@id/save_button"
                 android:visibility="gone"
                 tools:visibility="visible"
                 android:text="@string/delete" />
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/cancel_button"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="12dp"
-                android:layout_marginRight="12dp"
                 android:layout_toStartOf="@id/delete_button"
-                android:layout_toLeftOf="@id/delete_button"
                 android:text="@string/cancel" />
 
         </RelativeLayout>
+
     </LinearLayout>
 </layout>

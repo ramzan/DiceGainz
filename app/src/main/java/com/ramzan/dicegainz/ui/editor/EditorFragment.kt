@@ -1,6 +1,7 @@
 package com.ramzan.dicegainz.ui.editor
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
@@ -9,9 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.*
 import com.ramzan.dicegainz.databinding.EditorFragmentBinding
+
 
 class EditorFragment : Fragment() {
 
@@ -78,9 +82,27 @@ class EditorFragment : Fragment() {
                 goBack()
             }
 
+
+            val genres = mutableListOf("Thriller", "Comedy", "Adventure")
+            genres.forEach { chipGroup.addView(getChip(it)) }
+
         }
 
         return binding.root
+    }
+
+
+    private fun getChip(text: String): Chip {
+        val chip = Chip(requireContext())
+        chip.setChipDrawable(ChipDrawable.createFromResource(requireContext(), R.xml.my_chip))
+        val paddingDp = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP, 10f,
+            resources.displayMetrics
+        ).toInt()
+        chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp)
+        chip.text = text
+        chip.setOnCloseIconClickListener { binding.chipGroup.removeView(chip) }
+        return chip
     }
 
     private fun saveLift(lift: Lift?) {
