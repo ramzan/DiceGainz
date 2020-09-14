@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/delete"
+        android:icon="@drawable/ic_baseline_delete_forever_24"
+        android:title="@string/delete"
+        android:contentDescription="@string/delete"
+        android:visible="false"
+        tools:visible="true"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/save"
+        android:icon="@drawable/ic_baseline_check_24"
+        android:title="@string/save"
+        android:contentDescription="@string/save"
+        app:showAsAction="ifRoom" />
+
+</menu>
