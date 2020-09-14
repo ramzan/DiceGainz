@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
@@ -21,7 +20,7 @@ import com.ramzan.dicegainz.databinding.EditorFragmentBinding
 
 class EditorFragment : Fragment() {
 
-    val tierStrings = listOf("T1 and T2", "T1", "T2")
+    private val tierStrings = listOf("T1 and T2", "T1", "T2")
 
     private lateinit var binding: EditorFragmentBinding
 
@@ -63,34 +62,41 @@ class EditorFragment : Fragment() {
 
                 nameInput.setText(lift.name)
 
-                editorTitle.text = getString(R.string.editorTitleEdit)
+                editorToolbar.title = getString(R.string.editorTitleEdit)
 
                 tierSelector.setText(tierStrings[lift.tier], false)
 
-                deleteButton.setOnClickListener {
+                val deleteButton = editorToolbar.menu.getItem(0)
+
+                deleteButton.setOnMenuItemClickListener {
                     deleteLift(lift)
                     goBack()
+                    true
                 }
 
-                deleteButton.visibility = VISIBLE
+                deleteButton.isVisible = true
 
                 // New lift mode
             } else {
-                editorTitle.text = getString(R.string.editorTitleNew)
+                editorToolbar.title = getString(R.string.editorTitleNew)
             }
 
-            cancelButton.setOnClickListener {
-                goBack()
-            }
+            val saveButton = editorToolbar.menu.getItem(1)
 
-            saveButton.setOnClickListener {
+            saveButton.setOnMenuItemClickListener {
                 saveLift(args.selectedLift)
+                goBack()
+                true
+            }
+
+
+            editorToolbar.setNavigationOnClickListener {
                 goBack()
             }
 
 
             // Tag chips
-            val genres = mutableListOf("Thriller", "Comedy", "Adventure")
+            val genres = mutableListOf("Full body", "Upper", "Lower", "Push", "Pull")
             genres.forEach { chipGroup.addView(getChip(it)) }
 
         }
