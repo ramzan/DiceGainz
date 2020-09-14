@@ -48,38 +48,24 @@
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tierSelectorContainer"
+            android:paddingHorizontal="@dimen/defaultPadding"
+            android:layout_margin="4dp"
 
-        <RadioGroup
-            android:id="@+id/tierSelector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checkedButton="@id/radio_button_both"
-            android:paddingHorizontal="@dimen/defaultPadding">
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:hint="@string/tier">
 
-            <TextView
+            <AutoCompleteTextView
+                android:id="@+id/tierSelector"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/tier"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                android:inputType="none"
+                />
 
-            <RadioButton
-                android:id="@+id/radio_button_t1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/t1" />
-
-            <RadioButton
-                android:id="@+id/radio_button_t2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/t2" />
-
-            <RadioButton
-                android:id="@+id/radio_button_both"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/both" />
-        </RadioGroup>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.chip.ChipGroup
             android:layout_width="match_parent"

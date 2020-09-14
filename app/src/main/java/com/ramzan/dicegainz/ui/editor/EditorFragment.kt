@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -13,11 +14,14 @@ import androidx.navigation.Navigation
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.*
+import com.ramzan.dicegainz.database.Lift
+import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.databinding.EditorFragmentBinding
 
 
 class EditorFragment : Fragment() {
+
+    val tierStrings = listOf("T1 and T2", "T1", "T2")
 
     private lateinit var binding: EditorFragmentBinding
 
@@ -48,6 +52,11 @@ class EditorFragment : Fragment() {
         binding.apply {
             viewModel = editorViewModel
 
+            // Tier selector
+            val adapter = ArrayAdapter(requireContext(), R.layout.tier_list_item, tierStrings)
+            tierSelector.setAdapter(adapter)
+            tierSelector.setText("T1 and T2", false)
+
             // Edit lift mode
             if (args.selectedLift !== null) {
                 val lift: Lift = args.selectedLift!!
@@ -56,10 +65,7 @@ class EditorFragment : Fragment() {
 
                 editorTitle.text = getString(R.string.editorTitleEdit)
 
-                when (lift.tier) {
-                    T1 -> radioButtonT1.isChecked = true
-                    T2 -> radioButtonT2.isChecked = true
-                }
+                tierSelector.setText(tierStrings[lift.tier], false)
 
                 deleteButton.setOnClickListener {
                     deleteLift(lift)
@@ -83,6 +89,7 @@ class EditorFragment : Fragment() {
             }
 
 
+            // Tag chips
             val genres = mutableListOf("Thriller", "Comedy", "Adventure")
             genres.forEach { chipGroup.addView(getChip(it)) }
 
@@ -107,12 +114,7 @@ class EditorFragment : Fragment() {
 
     private fun saveLift(lift: Lift?) {
         val name = binding.nameInput.text.toString()
-        val tier =
-            when (binding.tierSelector.checkedRadioButtonId) {
-                R.id.radio_button_t1 -> T1
-                R.id.radio_button_t2 -> T2
-                else -> BOTH
-            }
+        val tier = tierStrings.indexOf(binding.tierSelector.text.toString())
         if (lift !== null) {
             lift.name = name
             lift.tier = tier
