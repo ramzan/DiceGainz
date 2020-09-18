@@ -9,7 +9,7 @@ import androidx.room.RoomDatabase
  * A database that stores Lift information.
  * And a global method to get access to the database.
  */
-@Database(entities = [Lift::class], version = 1, exportSchema = false)
+@Database(entities = [Lift::class, Tag::class, TagLift::class], version = 1, exportSchema = false)
 abstract class LiftDatabase : RoomDatabase() {
 
     /**
