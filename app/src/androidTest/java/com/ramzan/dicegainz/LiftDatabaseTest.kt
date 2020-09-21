@@ -12,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
+
 /**
  * This is not meant to be a full set of tests. For simplicity, most of your samples do not
  * include tests. However, when building the Room, it is helpful to make sure it works before
@@ -131,7 +132,7 @@ class LiftDatabaseTest {
                 tags.add(tag)
                 liftDao.insert(tag)
             }
-            assertEquals(tags, liftDao.getAllTags())
+            assertEquals(tags, liftDao.getAllTagsTest())
         }
     }
 
@@ -229,7 +230,7 @@ class LiftDatabaseTest {
                 liftDao.insert((tag))
                 liftDao.insert(TagLift(name, liftId))
             }
-            assertEquals(names, liftDao.getTagNamesForLift(liftId))
+            assertEquals(names, liftDao.getTagNamesForLiftTest(liftId))
         }
     }
 
@@ -253,7 +254,7 @@ class LiftDatabaseTest {
                 liftDao.insert(TagLift(name, 1))
             }
             liftDao.insert(TagLift("Push", 2))
-            assertEquals(lifts, liftDao.getLiftsForTag("Push"))
+            assertEquals(lifts, liftDao.getLiftsForTagTest("Push"))
         }
     }
 }

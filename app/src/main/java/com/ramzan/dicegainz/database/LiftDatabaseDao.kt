@@ -43,7 +43,10 @@ interface LiftDatabaseDao {
     suspend fun delete(tag: Tag)
 
     @Query("SELECT * FROM tag_table ORDER BY name ASC")
-    fun getAllTags(): List<Tag>
+    fun getAllTagsTest(): List<Tag>
+
+    @Query("SELECT * FROM tag_table ORDER BY name ASC")
+    fun getAllTags(): LiveData<List<Tag>>
 
     /*
      * TagLift methods
@@ -64,11 +67,22 @@ interface LiftDatabaseDao {
     @Query("""SELECT DISTINCT(tagName) as tag_names
             FROM tag_lift_table 
             WHERE liftId = :liftId""")
-    fun getTagNamesForLift(liftId: Int): List<String>
+    fun getTagNamesForLiftTest(liftId: Int): List<String>
+
+    @Query("""SELECT DISTINCT(tagName) as tag_names
+            FROM tag_lift_table 
+            WHERE liftId = :liftId""")
+    fun getTagNamesForLift(liftId: Int): LiveData<List<String>>
 
     @Query("""SELECT *
             FROM tag_lift_table JOIN lift_table
             ON tag_lift_table.liftId = lift_table.id
             WHERE tag_lift_table.tagName = :tagName""")
-    fun getLiftsForTag(tagName: String): List<Lift>
+    fun getLiftsForTagTest(tagName: String): List<Lift>
+
+    @Query("""SELECT *
+            FROM tag_lift_table JOIN lift_table
+            ON tag_lift_table.liftId = lift_table.id
+            WHERE tag_lift_table.tagName = :tagName""")
+    fun getLiftsForTag(tagName: String): LiveData<List<Lift>>
 }
