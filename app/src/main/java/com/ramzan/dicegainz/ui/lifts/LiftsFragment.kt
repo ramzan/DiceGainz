@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.ramzan.dicegainz.MainFragmentDirections
 import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
 
 /**
@@ -35,8 +34,7 @@ class LiftsFragment : Fragment() {
 
         // Get ViewModel Factory
         val application = requireNotNull(this.activity).application
-        val dataSource = LiftDatabase.getInstance(application).liftDatabaseDao
-        val viewModelFactory = LiftsViewModelFactory(dataSource, application)
+        val viewModelFactory = LiftsViewModelFactory(application)
 
         // Get ViewModel
         viewModel = ViewModelProvider(this, viewModelFactory).get(LiftsViewModel::class.java)

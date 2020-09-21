@@ -1,6 +1,7 @@
 package com.ramzan.dicegainz.ui.editor
 
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +18,15 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.Lift
-import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.databinding.EditorFragmentBinding
 
 
 class EditorFragment : Fragment() {
 
-    private val tierStrings = listOf("T1 and T2", "T1", "T2")
 
-    private var categories = mutableListOf("Full body", "Upper", "Lower", "Push", "Pull")
+//    private var categories = mutableListOf("Full body", "Upper", "Lower", "Push", "Pull")
+
+    private lateinit var tierStrings: Array<String>
 
     private lateinit var binding: EditorFragmentBinding
 
@@ -42,13 +43,15 @@ class EditorFragment : Fragment() {
             R.layout.editor_fragment, container, false
         )
 
+        // Get tier string array
+        tierStrings = resources.getStringArray(R.array.tier_string_array)
+
         // Get lift from args
         val args = EditorFragmentArgs.fromBundle(requireArguments())
 
         // Get ViewModel Factory
         val application = requireNotNull(this.activity).application
-        val dataSource = LiftDatabase.getInstance(application).liftDatabaseDao
-        val viewModelFactory = EditorViewModelFactory(dataSource, application)
+        val viewModelFactory = EditorViewModelFactory(args.selectedLift, application)
 
         // Get ViewModel
         editorViewModel = ViewModelProvider(this, viewModelFactory).get(EditorViewModel::class.java)
@@ -59,36 +62,30 @@ class EditorFragment : Fragment() {
             // Tier selector
             val adapter = ArrayAdapter(requireContext(), R.layout.tier_list_item, tierStrings)
             tierSelector.setAdapter(adapter)
-            tierSelector.setText("T1 and T2", false)
+            tierSelector.setText(getText(R.string.both), false)
 
             // Tag selector
-            val tagAdapter = ArrayAdapter(requireContext(), R.layout.tier_list_item, categories)
-            chipCreator.setAdapter(tagAdapter)
+            editorViewModel.tags.observe(viewLifecycleOwner, {
+                chipCreator.setAdapter(ArrayAdapter(requireContext(), R.layout.tier_list_item, it.map {t -> t.name}))
+            })
 
-            // Edit lift mode
-            if (args.selectedLift !== null) {
-                val lift: Lift = args.selectedLift!!
+            // Name input text
+            nameInput.setText(editorViewModel.nameInputText)
 
-                nameInput.setText(lift.name)
+            // Tier selection
+            tierSelector.setText(getText(editorViewModel.tier!!), false)
 
-                editorToolbar.title = getString(R.string.editorTitleEdit)
+            val deleteButton = editorToolbar.menu.getItem(0)
 
-                tierSelector.setText(tierStrings[lift.tier], false)
+            deleteButton.isVisible = editorViewModel.deleteButtonVisible
 
-                val deleteButton = editorToolbar.menu.getItem(0)
-
-                deleteButton.setOnMenuItemClickListener {
-                    deleteLift(lift)
-                    goBack()
-                    true
-                }
-
-                deleteButton.isVisible = true
-
-                // New lift mode
-            } else {
-                editorToolbar.title = getString(R.string.editorTitleNew)
+            deleteButton.setOnMenuItemClickListener {
+                deleteLift(args.selectedLift!!)
+                goBack()
+                true
             }
+
+            editorToolbar.title = getText(editorViewModel.editorTitleId)
 
             val saveButton = editorToolbar.menu.getItem(1)
 
@@ -104,23 +101,28 @@ class EditorFragment : Fragment() {
             }
 
             chipCreator.onSubmit {
-                addChip(getChip(chipCreator.text.toString()))
-                chipCreator.setText("")
+                addTag()
             }
 
             chipCreator.onItemClickListener = OnItemClickListener { _, _, _, _ ->
-                addChip(getChip(chipCreator.text.toString()))
-                chipCreator.setText("")
+                addTag()
             }
 
-
             // Tag chips
-            // add to list on submit, make this list livedata
-//            categories.forEach { addChip(getChip(it)) }
+            editorViewModel.usedTags.observe(viewLifecycleOwner, {
+                tags -> tags.forEach { addChip(getChip(it)) }
+            })
 
         }
 
         return binding.root
+    }
+
+    private fun addTag() {
+        addChip(getChip(binding.chipCreator.text.toString()))
+        editorViewModel.addTag((binding.chipCreator.text.toString()))
+        binding.chipCreator.setText("")
+        Log.d("tags", editorViewModel.usedTags.value.toString())
     }
 
     private fun AutoCompleteTextView.onSubmit(func: () -> Unit) {
@@ -167,7 +169,6 @@ class EditorFragment : Fragment() {
 
     private fun deleteLift(lift: Lift) {
         editorViewModel.deleteLift(lift)
-
     }
 
     private fun goBack() {

@@ -18,4 +18,9 @@
     <string name="lift_2">Lift 2</string>
     <string name="lift_3">Lift 3</string>
     <string name="categories">Categories</string>
+    <string-array name="tier_string_array">
+        <item>@string/both</item>
+        <item>@string/t1</item>
+        <item>@string/t2</item>
+    </string-array>
 </resources>
