@@ -6,7 +6,7 @@
 
     <item
         android:id="@+id/delete"
-        android:icon="@drawable/ic_baseline_delete_forever_24"
+        android:icon="@drawable/ic_baseline_delete_24"
         android:title="@string/delete"
         android:contentDescription="@string/delete"
         android:visible="false"
