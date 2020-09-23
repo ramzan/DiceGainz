@@ -17,7 +17,7 @@ import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
 /**
  * A fragment representing a list of Lifts.
  */
-class LiftsFragment(private val deletedLift: Lift?) : Fragment() {
+class LiftsFragment : Fragment() {
 
     private lateinit var binding: LiftsFragmentBinding
 
@@ -66,10 +66,11 @@ class LiftsFragment(private val deletedLift: Lift?) : Fragment() {
         binding.lifecycleOwner = this
 
         // Show undo snackbar for deleted lift
+        val deletedLift = arguments?.get("deletedLift")
         deletedLift?.let {
             Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_LONG)
                 .setAction(getString(R.string.undo)) {
-                    viewModel.addLift(deletedLift)
+                    viewModel.addLift(deletedLift as Lift)
                 }
                 .setAnchorView(binding.fab)
                 .show()
@@ -86,7 +87,12 @@ class LiftsFragment(private val deletedLift: Lift?) : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(deletedLift: Lift?) =
-            LiftsFragment(deletedLift)
+        fun newInstance(deletedLift: Lift?): LiftsFragment {
+            val args = Bundle()
+            args.putParcelable("deletedLift", deletedLift)
+            val liftsFragment = LiftsFragment()
+            liftsFragment.arguments = args
+            return liftsFragment
+        }
     }
 }
