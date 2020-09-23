@@ -68,12 +68,13 @@ class LiftsFragment : Fragment() {
         // Show undo snackbar for deleted lift
         val deletedLift = arguments?.get("deletedLift")
         deletedLift?.let {
-            Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_LONG)
+            Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_SHORT)
                 .setAction(getString(R.string.undo)) {
                     viewModel.addLift(deletedLift as Lift)
                 }
                 .setAnchorView(binding.fab)
                 .show()
+            arguments?.putParcelable("deletedLift", null)
         }
 
         binding.fab.setOnClickListener {
