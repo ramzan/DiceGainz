@@ -36,7 +36,7 @@ class MainFragment : Fragment() {
         val args = MainFragmentArgs.fromBundle(requireArguments())
 
         val fm: FragmentManager = childFragmentManager
-        val sectionsPagerAdapter = SectionsPagerAdapter(requireContext(), fm)
+        val sectionsPagerAdapter = SectionsPagerAdapter(requireContext(), fm, args.deletedLift)
         val viewPager: ViewPager = binding.viewPager
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = binding.tabs

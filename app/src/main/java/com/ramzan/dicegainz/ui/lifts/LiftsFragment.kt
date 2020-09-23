@@ -8,18 +8,21 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.ramzan.dicegainz.MainFragmentDirections
 import com.ramzan.dicegainz.R
+import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
 
 /**
  * A fragment representing a list of Lifts.
  */
-class LiftsFragment : Fragment() {
+class LiftsFragment(private val deletedLift: Lift?) : Fragment() {
 
     private lateinit var binding: LiftsFragmentBinding
 
     private lateinit var viewModel: LiftsViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +65,16 @@ class LiftsFragment : Fragment() {
 
         binding.lifecycleOwner = this
 
+        // Show undo snackbar for deleted lift
+        deletedLift?.let {
+            Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_LONG)
+                .setAction(getString(R.string.undo)) {
+                    viewModel.addLift(deletedLift)
+                }
+                .setAnchorView(binding.fab)
+                .show()
+        }
+
         binding.fab.setOnClickListener {
             navController.navigate(
                 MainFragmentDirections.actionMainFragmentToEditorFragment(null)
@@ -73,7 +86,7 @@ class LiftsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            LiftsFragment()
+        fun newInstance(deletedLift: Lift?) =
+            LiftsFragment(deletedLift)
     }
 }

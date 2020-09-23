@@ -66,7 +66,12 @@ class EditorFragment : Fragment() {
 
             // Tag selector
             editorViewModel.tags.observe(viewLifecycleOwner, {
-                chipCreator.setAdapter(ArrayAdapter(requireContext(), R.layout.tier_list_item, it.map {t -> t.name}))
+                chipCreator.setAdapter(
+                    ArrayAdapter(
+                        requireContext(),
+                        R.layout.tier_list_item,
+                        it.map { t -> t.name })
+                )
             })
 
             // Name input text
@@ -81,7 +86,7 @@ class EditorFragment : Fragment() {
 
             deleteButton.setOnMenuItemClickListener {
                 deleteLift(args.selectedLift!!)
-                goBack()
+                goBack(args.selectedLift!!)
                 true
             }
 
@@ -109,8 +114,8 @@ class EditorFragment : Fragment() {
             }
 
             // Tag chips
-            editorViewModel.usedTags.observe(viewLifecycleOwner, {
-                tags -> tags.forEach { addChip(getChip(it)) }
+            editorViewModel.usedTags.observe(viewLifecycleOwner, { tags ->
+                tags.forEach { addChip(getChip(it)) }
             })
 
         }
@@ -172,7 +177,13 @@ class EditorFragment : Fragment() {
     }
 
     private fun goBack() {
+        goBack(null)
+    }
+
+    private fun goBack(deletedLift: Lift?) {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-        navController.navigate(EditorFragmentDirections.actionEditorFragmentToMainFragment())
+        val action = EditorFragmentDirections.actionEditorFragmentToMainFragment()
+        action.deletedLift = deletedLift
+        navController.navigate(action)
     }
 }

@@ -17,6 +17,11 @@
             android:name="tabIndex"
             app:argType="integer"
             android:defaultValue="0" />
+        <argument
+            android:name="deletedLift"
+            app:argType="com.ramzan.dicegainz.database.Lift"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/editorFragment"
