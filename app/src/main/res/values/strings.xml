@@ -20,6 +20,7 @@
     <string name="categories">Categories</string>
     <string name="lift_deleted">Lift deleted</string>
     <string name="undo">Undo</string>
+    <string name="empty_name_error_msg">Name cannot be empty</string>
     <string-array name="tier_string_array">
         <item>@string/both</item>
         <item>@string/t1</item>

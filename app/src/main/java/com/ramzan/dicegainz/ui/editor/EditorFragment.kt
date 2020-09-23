@@ -1,12 +1,15 @@
 package com.ramzan.dicegainz.ui.editor
 
+import android.content.Context
 import android.os.Bundle
+import android.text.TextUtils
 import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
@@ -31,6 +34,9 @@ class EditorFragment : Fragment() {
     private lateinit var binding: EditorFragmentBinding
 
     private lateinit var editorViewModel: EditorViewModel
+
+    private lateinit var imm: InputMethodManager
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,8 +101,13 @@ class EditorFragment : Fragment() {
             val saveButton = editorToolbar.menu.getItem(1)
 
             saveButton.setOnMenuItemClickListener {
-                saveLift(args.selectedLift)
-                goBack()
+                if (TextUtils.isEmpty(binding.nameInput.text)) {
+                    nameInputLayout.isErrorEnabled = true
+                    nameInputLayout.error = getString(R.string.empty_name_error_msg)
+                } else {
+                    saveLift(args.selectedLift)
+                    goBack()
+                }
                 true
             }
 
@@ -117,6 +128,16 @@ class EditorFragment : Fragment() {
             editorViewModel.usedTags.observe(viewLifecycleOwner, { tags ->
                 tags.forEach { addChip(getChip(it)) }
             })
+
+            // Show the keyboard.
+            imm =
+                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.toggleSoftInput(
+                InputMethodManager.SHOW_FORCED,
+                InputMethodManager.HIDE_IMPLICIT_ONLY
+            );
+            // Set the focus to the edit text.
+            nameInput.requestFocus()
 
         }
 
@@ -181,6 +202,7 @@ class EditorFragment : Fragment() {
     }
 
     private fun goBack(deletedLift: Lift?) {
+        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
         val action = EditorFragmentDirections.actionEditorFragmentToMainFragment()
         action.deletedLift = deletedLift

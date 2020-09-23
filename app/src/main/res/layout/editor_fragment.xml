@@ -33,6 +33,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/name_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
@@ -41,6 +42,7 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name_input"
+                android:maxLength="40"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text" />
@@ -83,6 +85,7 @@
 
             <AutoCompleteTextView
                 android:id="@+id/chip_creator"
+                android:maxLength="20"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:imeOptions="actionDone"
