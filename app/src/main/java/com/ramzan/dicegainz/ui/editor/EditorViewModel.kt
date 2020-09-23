@@ -50,7 +50,7 @@ class EditorViewModel(val lift: Lift?, application: Application) : AndroidViewMo
         repo.addLift(lift)
     }
 
-     fun deleteLift(lift: Lift) {
+    fun deleteLift(lift: Lift) {
         repo.deleteLift(lift)
 
     }

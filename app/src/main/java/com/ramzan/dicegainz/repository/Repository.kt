@@ -27,7 +27,7 @@ class Repository(private val database: LiftDatabase) {
 
     fun addLift(lift: Lift) {
         Log.d("addLift", "Adding lift ${lift.name}")
-        CoroutineScope(Dispatchers.IO).launch{
+        CoroutineScope(Dispatchers.IO).launch {
             insert(lift)
             Log.d("addLift", "Lift ${lift.name} added")
         }
@@ -44,7 +44,7 @@ class Repository(private val database: LiftDatabase) {
 
     fun updateLift(lift: Lift) {
         Log.d("updateLift", "Updating lift ${lift.name}")
-        CoroutineScope(Dispatchers.IO).launch{
+        CoroutineScope(Dispatchers.IO).launch {
             update(lift)
             Log.d("updateLift", "Lift ${lift.name} updated")
         }
@@ -52,7 +52,7 @@ class Repository(private val database: LiftDatabase) {
 
     fun deleteLift(lift: Lift) {
         Log.d("deleteLift", "Deleting lift ${lift.name}")
-        CoroutineScope(Dispatchers.IO).launch{
+        CoroutineScope(Dispatchers.IO).launch {
             delete(lift)
             Log.d("deleteLift", "Lift ${lift.name} deleted!")
         }
