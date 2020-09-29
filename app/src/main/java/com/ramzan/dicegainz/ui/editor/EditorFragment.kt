@@ -117,7 +117,9 @@ class EditorFragment : Fragment() {
             }
 
             chipCreator.onSubmit {
-                addTag()
+                if (binding.chipCreator.text.isNotEmpty()) {
+                    addTag()
+                }
             }
 
             chipCreator.onItemClickListener = OnItemClickListener { _, _, _, _ ->
@@ -135,7 +137,7 @@ class EditorFragment : Fragment() {
             imm.toggleSoftInput(
                 InputMethodManager.SHOW_FORCED,
                 InputMethodManager.HIDE_IMPLICIT_ONLY
-            );
+            )
             // Set the focus to the edit text.
             nameInput.requestFocus()
 
