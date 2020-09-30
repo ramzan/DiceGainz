@@ -126,6 +126,37 @@ class LiftDatabaseTest {
 
     @Test
     @Throws(Exception::class)
+    fun deleteAll() {
+        val tags = mutableListOf<Tag>()
+        runBlocking {
+            for (name in 'z' downTo 'a') {
+                val id = liftDao.insert(Lift(name.toString(), 1))
+                val tag = Tag(name.toString(), id)
+                tags.add(tag)
+            }
+            liftDao.insertAll(tags)
+            liftDao.deleteAll(tags)
+            assertEquals(emptyList<String>(), liftDao.getAllTagNamesTest())
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun insertAll() {
+        val tags = mutableListOf<Tag>()
+        runBlocking {
+            for (name in 'z' downTo 'a') {
+                val id = liftDao.insert(Lift(name.toString(), 1))
+                val tag = Tag(name.toString(), id)
+                tags.add(tag)
+            }
+            liftDao.insertAll(tags)
+            assertEquals(tags.map {it.name}.asReversed(), liftDao.getAllTagNamesTest())
+        }
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun getAllTags() {
         val tags = mutableListOf<String>()
         runBlocking {
@@ -138,7 +169,7 @@ class LiftDatabaseTest {
                 tag = Tag(name.toString(), id)
                 liftDao.insert((tag))
             }
-            assertEquals(tags.asReversed(), liftDao.getAllTagsTest())
+            assertEquals(tags.asReversed(), liftDao.getAllTagNamesTest())
         }
     }
 

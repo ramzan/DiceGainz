@@ -3,6 +3,7 @@ package com.ramzan.dicegainz.database
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
+
 /**
  * Defines methods for using the Lift class with Room.
  */
@@ -36,17 +37,23 @@ interface LiftDatabaseDao {
     @Insert
     suspend fun insert(tag: Tag)
 
+    @Insert
+    fun insertAll(tags: List<Tag>)
+
     @Delete
     suspend fun delete(tag: Tag)
+
+    @Delete
+    fun deleteAll(tags: List<Tag>)
 
     @Query("SELECT * from tag_table WHERE tagName = :tagName AND liftId = :liftId")
     suspend fun getTag(tagName: String, liftId: Long): Tag?
 
     @Query("SELECT DISTINCT tagName FROM tag_table ORDER BY tagName ASC")
-    fun getAllTagsTest(): List<String>
+    fun getAllTagNamesTest(): List<String>
 
     @Query("SELECT DISTINCT tagName FROM tag_table ORDER BY tagName ASC")
-    fun getAllTags(): LiveData<List<String>>
+    fun getAllTagNames(): LiveData<List<String>>
 
     /*
      * Complex methods
