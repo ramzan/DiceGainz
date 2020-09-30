@@ -68,7 +68,8 @@ class EditorFragment : Fragment() {
                 }
 
                 saveButton.setOnMenuItemClickListener {
-                    if (TextUtils.isEmpty(binding.nameInput.text)) {
+                    if (TextUtils.isEmpty(binding.nameInput.text?.trim())) {
+                        binding.nameInput.setText("")
                         nameInputLayout.isErrorEnabled = true
                         nameInputLayout.error = getString(R.string.empty_name_error_msg)
                     } else {
@@ -156,7 +157,7 @@ class EditorFragment : Fragment() {
     }
 
     private fun addNewTag() {
-        val tagName = binding.chipCreator.text.toString()
+        val tagName = binding.chipCreator.text.toString().trim()
         if (tagName.isNotEmpty() and editorViewModel.addCurrentTag((tagName))) {
             addChip(getChip(tagName))
         }
@@ -164,7 +165,7 @@ class EditorFragment : Fragment() {
     }
 
     private fun saveLift(lift: Lift?) {
-        val name = binding.nameInput.text.toString()
+        val name = binding.nameInput.text.toString().trim()
         val tier = tierStrings.indexOf(binding.tierSelector.text.toString())
         if (lift !== null) {
             lift.name = name
