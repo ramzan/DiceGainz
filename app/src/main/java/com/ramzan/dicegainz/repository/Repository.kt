@@ -9,37 +9,32 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class Repository(private val database: LiftDatabase) {
+class Repository(database: LiftDatabase) {
 
     private val db = database.liftDatabaseDao
+
+    val allTagsList = getAllTags()
 
     fun getAllLifts(): LiveData<List<Lift>> {
         return db.getAllLifts()
     }
 
-    fun getAllTags(): LiveData<List<Tag>> {
+    private fun getAllTags(): LiveData<List<String>> {
         return db.getAllTags()
     }
 
-    fun getTagNamesForLift(id: Int): LiveData<List<String>> {
+    fun getTagNamesForLift(id: Long): LiveData<List<String>> {
         return db.getTagNamesForLift(id)
     }
 
     fun addLift(lift: Lift) {
         Log.d("addLift", "Adding lift ${lift.name}")
         CoroutineScope(Dispatchers.IO).launch {
+//            val id = insert(lift)
             insert(lift)
             Log.d("addLift", "Lift ${lift.name} added")
         }
     }
-
-    //    suspend fun addTag(tag: Tag) {
-//        Log.d("addLift", "Adding lift ${tag.name}")
-//        CoroutineScope(Dispatchers.IO).launch{
-//            insert(tag)
-//            Log.d("addLift", "Lift ${tag.name} added")
-//        }
-//    }
 
 
     fun updateLift(lift: Lift) {
@@ -59,8 +54,8 @@ class Repository(private val database: LiftDatabase) {
     }
 
 
-    private suspend fun insert(lift: Lift) {
-        db.insert(lift)
+    private suspend fun insert(lift: Lift): Long {
+        return db.insert(lift)
     }
 
     private suspend fun insert(tag: Tag) {

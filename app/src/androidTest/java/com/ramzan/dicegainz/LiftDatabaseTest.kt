@@ -3,7 +3,10 @@ package com.ramzan.dicegainz
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.ramzan.dicegainz.database.*
+import com.ramzan.dicegainz.database.Lift
+import com.ramzan.dicegainz.database.LiftDatabase
+import com.ramzan.dicegainz.database.LiftDatabaseDao
+import com.ramzan.dicegainz.database.Tag
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -49,36 +52,33 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertLift() {
-        val id = 1
-        val lift = Lift(id, "Front Squat", 1)
+        val lift = Lift(1L, "Front Squat", 1)
         runBlocking {
             liftDao.insert(lift)
-            assertEquals(lift, liftDao.getLift(id))
+            assertEquals(lift, liftDao.getLift(lift.id))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun updateLift() {
-        val id = 1
-        val lift = Lift(id, "Front Squat", 1)
+        val lift = Lift(1L, "Front Squat", 1)
         runBlocking {
             liftDao.insert(lift)
             lift.name = "Bench Press"
             liftDao.update(lift)
-            assertEquals(lift, liftDao.getLift(id))
+            assertEquals(lift, liftDao.getLift(lift.id))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun deleteLift() {
-        val id = 1
-        val lift = Lift(id, "Front Squat", 1)
+        val lift = Lift(1L, "Front Squat", 1)
         runBlocking {
             liftDao.insert(lift)
             liftDao.delete(lift)
-            assertEquals(null, liftDao.getLift(id))
+            assertEquals(null, liftDao.getLift(lift.id))
         }
     }
 
@@ -88,7 +88,7 @@ class LiftDatabaseTest {
         val lifts = mutableListOf<Lift>()
         runBlocking {
             for (i in 0..20) {
-                val lift = Lift(i + 1, i.toString(), i % 2)
+                val lift = Lift(i + 1L, i.toString(), i % 2)
                 lifts.add(lift)
                 liftDao.insert(lift)
             }
@@ -97,118 +97,80 @@ class LiftDatabaseTest {
     }
 
     /*
-     * Tag tests
-     */
+    * Tag tests
+    */
     @Test
     @Throws(Exception::class)
     fun insertTag() {
-        val name = "Push"
-        val tag = Tag(name)
+        val lift = Lift(1L, "Front Squat", 1)
+        val tag = Tag("Push", lift.id)
         runBlocking {
+            liftDao.insert(lift)
             liftDao.insert(tag)
-            assertEquals(tag, liftDao.getTag(name))
+            assertEquals(tag, liftDao.getTag(tag.name, tag.liftId))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun deleteTag() {
-        val name = "Push"
-        val tag = Tag(name)
+        val lift = Lift(1L, "Front Squat", 1)
+        val tag = Tag("Push", lift.id)
         runBlocking {
+            liftDao.insert(lift)
             liftDao.insert(tag)
             liftDao.delete(tag)
-            assertEquals(null, liftDao.getTag(name))
+            assertEquals(null, liftDao.getTag(tag.name, tag.liftId))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun getAllTags() {
-        val tags = mutableListOf<Tag>()
+        val tags = mutableListOf<String>()
         runBlocking {
-            for (i in 'a'..'z') {
-                val tag = Tag(i.toString())
-                tags.add(tag)
-                liftDao.insert(tag)
+            for (name in 'z' downTo 'a') {
+                var id = liftDao.insert(Lift(name.toString(), 1))
+                var tag = Tag(name.toString(), id)
+                tags.add(name.toString())
+                liftDao.insert((tag))
+                id = liftDao.insert(Lift(name.toString(), 2))
+                tag = Tag(name.toString(), id)
+                liftDao.insert((tag))
             }
-            assertEquals(tags, liftDao.getAllTagsTest())
+            assertEquals(tags.asReversed(), liftDao.getAllTagsTest())
         }
     }
 
     /*
- * Tag tests
- */
-    @Test
-    @Throws(Exception::class)
-    fun insertTagLift() {
-        val liftId = 1
-        val lift = Lift(liftId, "Front Squat", 1)
-        val name = "Push"
-        val tag = Tag(name)
-        val tagLift = TagLift(tag.name, lift.id)
-        runBlocking {
-            liftDao.insert(lift)
-            liftDao.insert(tag)
-            liftDao.insert(tagLift)
-            assertEquals(tagLift, liftDao.getTagLift(name, liftId))
-        }
-    }
-
-    @Test
-    @Throws(Exception::class)
-    fun deleteTagLift() {
-        val liftId = 1
-        val lift = Lift(liftId, "Front Squat", 1)
-        val name = "Push"
-        val tag = Tag(name)
-        val tagLift = TagLift(tag.name, lift.id)
-        runBlocking {
-            liftDao.insert(lift)
-            liftDao.insert(tag)
-            liftDao.insert(tagLift)
-            liftDao.delete(tagLift)
-            assertEquals(null, liftDao.getTagLift(name, liftId))
-        }
-    }
-
+    * Cascade tests
+    */
     @Test
     @Throws(Exception::class)
     fun cascadeDelete() {
-        val liftId = 1
-        val lift = Lift(liftId, "Front Squat", 1)
-        val name = "Push"
-        val tag = Tag(name)
-        val tagLift = TagLift(tag.name, lift.id)
+        val lift = Lift(1L, "Front Squat", 1)
+        val tag = Tag("Push", lift.id)
         runBlocking {
             liftDao.insert(lift)
             liftDao.insert(tag)
-            liftDao.insert(tagLift)
             liftDao.delete(lift)
-            assertEquals(null, liftDao.getTagLift(name, liftId))
+            assertEquals(null, liftDao.getTag(tag.name, tag.liftId))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun cascadeDeleteMultipleTags() {
-        val liftId = 1
-        val lift = Lift(liftId, "Front Squat", 1)
-        val name1 = "Push"
-        val name2 = "Pull"
-        val tag1 = Tag(name1)
-        val tag2 = Tag(name2)
-        val tagLift1 = TagLift(tag1.name, lift.id)
-        val tagLift2 = TagLift(tag2.name, lift.id)
+        val lift = Lift(1L, "Front Squat", 1)
+        val tag1 = Tag("Push", lift.id)
+        val tag2 = Tag("Pull", lift.id)
         runBlocking {
             liftDao.insert(lift)
             liftDao.insert(tag1)
             liftDao.insert(tag2)
-            liftDao.insert(tagLift1)
-            liftDao.insert(tagLift2)
             liftDao.delete(tag1)
-            assertEquals(null, liftDao.getTagLift(name1, liftId))
-            assertEquals(tagLift2, liftDao.getTagLift(name2, liftId))
+            assertEquals(null, liftDao.getTag(tag1.name, tag1.liftId))
+            assertEquals(tag2, liftDao.getTag(tag2.name, tag2.liftId))
         }
     }
 
@@ -218,19 +180,18 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun getTagNamesForLift() {
-        val liftId = 1
-        val lift = Lift(liftId, "Front Squat", 1)
-        val names = listOf("Push", "Pull", "Legs")
+        val lift = Lift(1L, "Front Squat", 1)
+        val names = mutableListOf<String>()
         val tags = mutableListOf<Tag>()
         runBlocking {
             liftDao.insert(lift)
-            for (name in names) {
-                val tag = Tag(name)
+            for (name in 'a'..'z') {
+                val tag = Tag(name.toString(), lift.id)
                 tags.add(tag)
+                names.add(name.toString())
                 liftDao.insert((tag))
-                liftDao.insert(TagLift(name, liftId))
             }
-            assertEquals(names, liftDao.getTagNamesForLiftTest(liftId))
+            assertEquals(names, liftDao.getTagNamesForLiftTest(lift.id))
         }
     }
 
@@ -248,12 +209,11 @@ class LiftDatabaseTest {
             liftDao.insert(lift2)
             liftDao.insert(lift3)
             for (name in names) {
-                val tag = Tag(name)
+                val tag = Tag(name, lift1.id)
                 tags.add(tag)
                 liftDao.insert((tag))
-                liftDao.insert(TagLift(name, 1))
             }
-            liftDao.insert(TagLift("Push", 2))
+            liftDao.insert(Tag("Push", 2))
             assertEquals(lifts, liftDao.getLiftsForTagTest("Push"))
         }
     }

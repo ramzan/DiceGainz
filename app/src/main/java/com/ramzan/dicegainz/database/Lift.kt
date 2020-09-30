@@ -11,7 +11,7 @@ import kotlinx.android.parcel.Parcelize
 data class Lift(
 
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Long,
 
     @ColumnInfo(name = "name")
     var name: String,
