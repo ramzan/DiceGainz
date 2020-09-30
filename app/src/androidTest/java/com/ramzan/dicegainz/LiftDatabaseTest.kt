@@ -151,7 +151,7 @@ class LiftDatabaseTest {
                 tags.add(tag)
             }
             liftDao.insertAll(tags)
-            assertEquals(tags.map {it.name}.asReversed(), liftDao.getAllTagNamesTest())
+            assertEquals(tags.map { it.name }.asReversed(), liftDao.getAllTagNamesTest())
         }
     }
 

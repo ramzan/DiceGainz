@@ -27,20 +27,22 @@ class Repository(database: LiftDatabase) {
         return db.getTagNamesForLift(id)
     }
 
-    fun addLift(lift: Lift) {
+    fun addLift(lift: Lift, tags: List<String>) {
         Log.d("addLift", "Adding lift ${lift.name}")
         CoroutineScope(Dispatchers.IO).launch {
-//            val id = insert(lift)
-            insert(lift)
+            val id = insert(lift)
+            insertAll(tags.map { Tag(it, id) })
             Log.d("addLift", "Lift ${lift.name} added")
         }
     }
 
 
-    fun updateLift(lift: Lift) {
+    fun updateLift(lift: Lift, newTags: List<Tag>, deletedTags: List<Tag>) {
         Log.d("updateLift", "Updating lift ${lift.name}")
         CoroutineScope(Dispatchers.IO).launch {
             update(lift)
+            insertAll(newTags)
+            deleteAll(deletedTags)
             Log.d("updateLift", "Lift ${lift.name} updated")
         }
     }
@@ -58,8 +60,12 @@ class Repository(database: LiftDatabase) {
         return db.insert(lift)
     }
 
-    private suspend fun insert(tag: Tag) {
-        db.insert(tag)
+    private suspend fun insertAll(tags: List<Tag>) {
+        db.insertAll(tags)
+    }
+
+    private suspend fun deleteAll(tags: List<Tag>) {
+        db.deleteAll(tags)
     }
 
     private suspend fun update(lift: Lift) {

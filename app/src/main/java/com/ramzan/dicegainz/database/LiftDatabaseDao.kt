@@ -38,13 +38,13 @@ interface LiftDatabaseDao {
     suspend fun insert(tag: Tag)
 
     @Insert
-    fun insertAll(tags: List<Tag>)
+    suspend fun insertAll(tags: List<Tag>)
 
     @Delete
     suspend fun delete(tag: Tag)
 
     @Delete
-    fun deleteAll(tags: List<Tag>)
+    suspend fun deleteAll(tags: List<Tag>)
 
     @Query("SELECT * from tag_table WHERE tagName = :tagName AND liftId = :liftId")
     suspend fun getTag(tagName: String, liftId: Long): Tag?

@@ -13,6 +13,6 @@ class LiftsViewModel(application: Application) : AndroidViewModel(application) {
     val lifts = repo.getAllLifts()
 
     fun addLift(lift: Lift) {
-        repo.addLift(lift)
+        repo.addLift(lift, emptyList())
     }
 }

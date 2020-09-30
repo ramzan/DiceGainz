@@ -124,9 +124,12 @@ class EditorFragment : Fragment() {
                 })
                 // Load existing tags for lift into chips
                 oldTags?.observe(viewLifecycleOwner, { tags ->
-                    tags.forEach {
-                        addChip(getChip(it))
-                        editorViewModel.addCurrentTag((it))
+                    if (!editorViewModel.tagsLoaded) {
+                        tags.forEach {
+                            addChip(getChip(it))
+                            editorViewModel.addCurrentTag((it))
+                        }
+                        editorViewModel.tagsLoaded = true
                     }
                 })
                 // Refresh when new tag added
@@ -143,17 +146,22 @@ class EditorFragment : Fragment() {
         binding.chipGroup.addView(chip)
     }
 
-    private fun getChip(text: String): Chip {
+    private fun getChip(chipText: String): Chip {
         val chip = Chip(requireContext())
-        chip.setChipDrawable(ChipDrawable.createFromResource(requireContext(), R.xml.my_chip))
         val paddingDp = TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, 10f,
             resources.displayMetrics
         ).toInt()
-        chip.setPadding(paddingDp, paddingDp, paddingDp, paddingDp)
-        chip.text = text
-        chip.setOnCloseIconClickListener { binding.chipGroup.removeView(chip) }
-        return chip
+
+        return chip.apply {
+            setChipDrawable(ChipDrawable.createFromResource(requireContext(), R.xml.my_chip))
+            setPadding(paddingDp, paddingDp, paddingDp, paddingDp)
+            text = chipText
+            setOnCloseIconClickListener {
+                editorViewModel.removeCurrentTag(chipText)
+                binding.chipGroup.removeView(it)
+            }
+        }
     }
 
     private fun addNewTag() {
