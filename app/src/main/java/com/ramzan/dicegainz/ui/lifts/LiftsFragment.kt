@@ -70,7 +70,9 @@ class LiftsFragment : Fragment() {
         deletedLift?.let {
             Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_SHORT)
                 .setAction(getString(R.string.undo)) {
-                    viewModel.addLift(deletedLift as Lift)
+                    @Suppress("UNCHECKED_CAST")
+                    val deletedTags = arguments?.get("deletedTags") as Array<String>
+                    viewModel.addLift(deletedLift as Lift, deletedTags.toList())
                 }
                 .setAnchorView(binding.fab)
                 .show()
@@ -88,9 +90,10 @@ class LiftsFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(deletedLift: Lift?): LiftsFragment {
+        fun newInstance(deletedLift: Lift?, deletedTags: Array<String>?): LiftsFragment {
             val args = Bundle()
             args.putParcelable("deletedLift", deletedLift)
+            args.putStringArray("deletedTags", deletedTags)
             val liftsFragment = LiftsFragment()
             liftsFragment.arguments = args
             return liftsFragment

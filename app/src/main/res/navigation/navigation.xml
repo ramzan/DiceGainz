@@ -22,6 +22,11 @@
             app:argType="com.ramzan.dicegainz.database.Lift"
             app:nullable="true"
             android:defaultValue="@null" />
+        <argument
+            android:name="deletedTags"
+            app:argType="string[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
     <fragment
         android:id="@+id/editorFragment"

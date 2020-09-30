@@ -14,23 +14,19 @@ private val TAB_TITLES = arrayOf(
     R.string.tab_text_2
 )
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
 class SectionsPagerAdapter(
     private val context: Context,
     fm: FragmentManager,
-    private val deletedLift: Lift?
+    private val deletedLift: Lift?,
+    private val deletedTags: Array<String>?
 ) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        // getItem is called to instantiate the fragment for the given page.
-        // Return a PlaceholderFragment (defined as a static inner class below).
-        return if (position == 0) RollFragment.newInstance() else LiftsFragment.newInstance(
-            deletedLift
-        )
+        return when(position) {
+            0 -> RollFragment.newInstance()
+            else -> LiftsFragment.newInstance(deletedLift, deletedTags)
+        }
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -38,7 +34,6 @@ class SectionsPagerAdapter(
     }
 
     override fun getCount(): Int {
-        // Show 2 total pages.
         return 2
     }
 }

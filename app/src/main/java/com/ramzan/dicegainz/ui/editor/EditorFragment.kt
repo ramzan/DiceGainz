@@ -197,6 +197,7 @@ class EditorFragment : Fragment() {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
         val action = EditorFragmentDirections.actionEditorFragmentToMainFragment()
         action.deletedLift = deletedLift
+        action.deletedTags = editorViewModel.oldTags?.value?.toTypedArray()
         navController.navigate(action)
     }
 

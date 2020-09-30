@@ -6,17 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
 import com.ramzan.dicegainz.databinding.MainFragmentBinding
 import com.ramzan.dicegainz.ui.SectionsPagerAdapter
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MainFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class MainFragment : Fragment() {
 
     private lateinit var binding: MainFragmentBinding
@@ -26,30 +19,20 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        // Inflate view and get instance of binding class
         binding = DataBindingUtil.inflate(
             inflater,
             R.layout.main_fragment, container, false
         )
 
-        // Get lift from args
         val args = MainFragmentArgs.fromBundle(requireArguments())
+        val fm = childFragmentManager
 
-        val fm: FragmentManager = childFragmentManager
-        val sectionsPagerAdapter = SectionsPagerAdapter(requireContext(), fm, args.deletedLift)
-        val viewPager: ViewPager = binding.viewPager
-        viewPager.adapter = sectionsPagerAdapter
-        val tabs: TabLayout = binding.tabs
-        tabs.setupWithViewPager(viewPager)
-
-        viewPager.currentItem = args.tabIndex
+        binding.viewPager.apply {
+            adapter = SectionsPagerAdapter(requireContext(), fm, args.deletedLift, args.deletedTags)
+            currentItem = args.tabIndex
+            binding.tabs.setupWithViewPager(this)
+        }
 
         return binding.root
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            MainFragment()
     }
 }
