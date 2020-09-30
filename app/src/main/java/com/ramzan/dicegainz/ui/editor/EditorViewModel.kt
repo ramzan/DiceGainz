@@ -13,15 +13,13 @@ class EditorViewModel(val lift: Lift?, application: Application) : AndroidViewMo
 
     private val repo = Repository(LiftDatabase.getInstance(application))
 
-    val tags = repo.getAllTags()
+    val tags = repo.allTagsList
 
     val oldTags = lift?.id?.let { repo.getTagNamesForLift(it) }
 
     var usedTags = MutableLiveData(mutableListOf<String>())
 
-    var unusedTags = MutableLiveData(mutableListOf<String>())
-
-    // View setup
+    // ------------------View setup---------------------------------
     val editorTitleId = if (lift == null) R.string.editorTitleNew else R.string.editorTitleEdit
 
     val nameInputText = lift?.name ?: ""
@@ -30,16 +28,16 @@ class EditorViewModel(val lift: Lift?, application: Application) : AndroidViewMo
 
     val deleteButtonVisible = lift != null
 
-    fun addTag(name: String) {
-        usedTags.value?.add(name)
-    }
+    // -------------------------Methods-----------------------------
 
-    fun removeTag(name: String) {
-        usedTags.value?.remove(name)
-    }
-
-    fun getTagNamesForLift(id: Int) {
-        val tagNames = repo.getTagNamesForLift(id)
+    fun addCurrentTag(name: String): Boolean {
+        usedTags.value?.apply {
+            if (!contains(name)) {
+                add(name)
+                return true
+            }
+        }
+        return false
     }
 
     fun updateLift(lift: Lift) {
@@ -50,8 +48,8 @@ class EditorViewModel(val lift: Lift?, application: Application) : AndroidViewMo
         repo.addLift(lift)
     }
 
+
     fun deleteLift(lift: Lift) {
         repo.deleteLift(lift)
-
     }
 }
