@@ -28,7 +28,7 @@ interface LiftDatabaseDao {
     @Query("SELECT * FROM lift_table ORDER BY name ASC")
     fun getAllLifts(): LiveData<List<Lift>>
 
-    @Query("SELECT * FROM lift_table ORDER BY id ASC")
+    @Query("SELECT * FROM lift_table ORDER BY name ASC")
     fun getAllLiftsTest(): List<Lift>
 
     /*
@@ -62,14 +62,16 @@ interface LiftDatabaseDao {
     @Query(
         """SELECT DISTINCT(tagName) as tag_names
             FROM tag_table 
-            WHERE liftId = :liftId"""
+            WHERE liftId = :liftId
+            ORDER BY tagName ASC"""
     )
     fun getTagNamesForLiftTest(liftId: Long): List<String>
 
     @Query(
         """SELECT DISTINCT(tagName) as tag_names
             FROM tag_table 
-            WHERE liftId = :liftId"""
+            WHERE liftId = :liftId
+            ORDER BY tagName ASC"""
     )
     fun getTagNamesForLift(liftId: Long): LiveData<List<String>>
 
@@ -78,7 +80,8 @@ interface LiftDatabaseDao {
             FROM lift_table
             JOIN tag_table
             ON tag_table.liftId = lift_table.id
-            WHERE tag_table.tagName = :tagName"""
+            WHERE tag_table.tagName = :tagName
+            ORDER BY name ASC"""
     )
     fun getLiftsForTagTest(tagName: String): List<Lift>
 
@@ -87,7 +90,8 @@ interface LiftDatabaseDao {
             FROM lift_table
             JOIN tag_table
             ON tag_table.liftId = lift_table.id
-            WHERE tag_table.tagName = :tagName"""
+            WHERE tag_table.tagName = :tagName
+            ORDER BY name ASC"""
     )
     fun getLiftsForTag(tagName: String): LiveData<List<Lift>>
 }

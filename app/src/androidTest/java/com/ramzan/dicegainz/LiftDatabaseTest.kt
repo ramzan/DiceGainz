@@ -92,6 +92,7 @@ class LiftDatabaseTest {
                 lifts.add(lift)
                 liftDao.insert(lift)
             }
+            lifts.sortBy { it.name }
             assertEquals(lifts, liftDao.getAllLiftsTest())
         }
     }
@@ -216,13 +217,13 @@ class LiftDatabaseTest {
         val tags = mutableListOf<Tag>()
         runBlocking {
             liftDao.insert(lift)
-            for (name in 'a'..'z') {
+            for (name in 'z' downTo 'a') {
                 val tag = Tag(name.toString(), lift.id)
                 tags.add(tag)
                 names.add(name.toString())
                 liftDao.insert((tag))
             }
-            assertEquals(names, liftDao.getTagNamesForLiftTest(lift.id))
+            assertEquals(names.sorted(), liftDao.getTagNamesForLiftTest(lift.id))
         }
     }
 
