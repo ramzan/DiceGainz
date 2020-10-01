@@ -166,7 +166,7 @@ class EditorFragment : Fragment() {
 
     private fun addNewTag() {
         val tagName = binding.chipCreator.text.toString().trim()
-        if (tagName.isNotEmpty() and editorViewModel.addCurrentTag((tagName))) {
+        if (tagName.isNotEmpty() && editorViewModel.addCurrentTag((tagName))) {
             addChip(getChip(tagName))
         }
         binding.chipCreator.setText("")
