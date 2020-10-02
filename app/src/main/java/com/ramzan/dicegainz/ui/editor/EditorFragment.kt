@@ -21,6 +21,7 @@ import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.EditorFragmentBinding
+import com.ramzan.dicegainz.ui.NoFilterAdapter
 
 
 class EditorFragment : Fragment() {
@@ -94,7 +95,7 @@ class EditorFragment : Fragment() {
 
             // Tier selector
             tierStrings = resources.getStringArray(R.array.tier_string_array)
-            val adapter = ArrayAdapter(requireContext(), R.layout.tier_list_item, tierStrings)
+            val adapter = NoFilterAdapter(requireContext(), R.layout.tier_list_item, tierStrings)
             tierSelector.apply {
                 setAdapter(adapter)
                 setText(getText(editorViewModel.tier!!), false)
