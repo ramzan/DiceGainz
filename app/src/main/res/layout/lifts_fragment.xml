@@ -14,7 +14,31 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:paddingHorizontal="@dimen/defaultPadding">
+
+                <AutoCompleteTextView
+                    android:id="@+id/filter_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/filter"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/lift_list"
             android:name="com.ramzan.dicegainz.LiftFragment"
             android:layout_width="match_parent"
@@ -24,6 +48,8 @@
             app:layoutManager="LinearLayoutManager"
             tools:context=".ui.lifts.LiftsFragment"
             tools:listitem="@layout/list_item_lift" />
+
+        </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

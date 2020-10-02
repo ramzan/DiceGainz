@@ -22,6 +22,7 @@
     <string name="undo">Undo</string>
     <string name="empty_name_error_msg">Name cannot be empty</string>
     <string name="add_category">Add category</string>
+    <string name="filter">Filter</string>
     <string-array name="tier_string_array">
         <item>@string/both</item>
         <item>@string/t1</item>

@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -14,9 +16,6 @@ import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
 
-/**
- * A fragment representing a list of Lifts.
- */
 class LiftsFragment : Fragment() {
 
     private lateinit var binding: LiftsFragmentBinding
@@ -46,6 +45,16 @@ class LiftsFragment : Fragment() {
         // Get navController
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
 
+        // Set up filter spinner
+        viewModel.tagList.observe(viewLifecycleOwner, {
+            val adapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, it)
+            binding.filterBar.setAdapter(adapter)
+        })
+        binding.filterBar.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
+            viewModel.filterLifts(binding.filterBar.text.toString())
+        }
+
         // Set the recyclerview adapter
         val adapter = LiftAdapter(LiftAdapter.OnClickListener {
             navController.navigate(
@@ -57,9 +66,11 @@ class LiftsFragment : Fragment() {
 
         binding.liftList.adapter = adapter
 
-        viewModel.lifts.observe(viewLifecycleOwner, {
-            it?.let {
-                adapter.submitList(it)
+        viewModel.lifts.observe(viewLifecycleOwner, { it2 ->
+            it2?.let { it1 ->
+                it1.observe(viewLifecycleOwner) {
+                    adapter.submitList(it)
+                }
             }
         })
 

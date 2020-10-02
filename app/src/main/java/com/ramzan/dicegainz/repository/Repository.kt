@@ -19,6 +19,10 @@ class Repository(database: LiftDatabase) {
         return db.getAllLifts()
     }
 
+    fun getLiftsForTag(tag: String): LiveData<List<Lift>> {
+        return db.getLiftsForTag(tag)
+    }
+
     private fun getAllTags(): LiveData<List<String>> {
         return db.getAllTagNames()
     }
