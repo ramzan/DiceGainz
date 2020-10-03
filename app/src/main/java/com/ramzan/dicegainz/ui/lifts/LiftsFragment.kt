@@ -39,6 +39,14 @@ class LiftsFragment : Fragment() {
         // Get navController
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
 
+        // Get ViewModel
+        val application = requireNotNull(this.activity).application
+        val viewModelFactory = MainViewModelFactory(application)
+        val viewModel = ViewModelProvider(
+            requireParentFragment(),
+            viewModelFactory
+        ).get(MainViewModel::class.java)
+
         // Show undo snackbar for deleted lift
         val deletedLift = arguments?.get("deletedLift")
         deletedLift?.let {
@@ -53,13 +61,6 @@ class LiftsFragment : Fragment() {
             arguments?.putParcelable("deletedLift", null)
         }
 
-        // Get ViewModel
-        val application = requireNotNull(this.activity).application
-        val viewModelFactory = MainViewModelFactory(application)
-        val viewModel = ViewModelProvider(
-            requireParentFragment(),
-            viewModelFactory
-        ).get(MainViewModel::class.java)
 
         binding.apply {
             binding.viewModel = viewModel
