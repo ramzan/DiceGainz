@@ -1,7 +1,6 @@
 package com.ramzan.dicegainz.ui.roll
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,21 +42,24 @@ class RollFragment : Fragment() {
 
         // Set up filter spinners
         viewModel.tagList.observe(viewLifecycleOwner, {
-            setUpSpinner(binding.filter1, it)
-            setUpSpinner(binding.filter2, it)
-            setUpSpinner(binding.filter3, it)
+            setUpSpinner(binding.filter1, it, 1)
+            setUpSpinner(binding.filter2, it, 2)
+            setUpSpinner(binding.filter3, it, 3)
         })
 
         return binding.root
     }
 
-    private fun setUpSpinner(filter: AutoCompleteTextView, tags: List<String>) {
+    private fun setUpSpinner(filter: AutoCompleteTextView, tags: List<String>, id: Int) {
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, tags)
         filter.setAdapter(adapter)
         if (filter.text.isNullOrEmpty()) filter.setText(getString(R.string.all), false)
         filter.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-            Log.d("butt", "${filter.id} ${filter.text}")
+            when(val tag = filter.text.toString()) {
+                "All" -> viewModel.getAllLifts(id)
+                else -> viewModel.filterLifts(id, tag)
+            }
         }
     }
 
