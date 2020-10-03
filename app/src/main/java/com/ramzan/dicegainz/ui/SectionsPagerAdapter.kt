@@ -23,7 +23,7 @@ class SectionsPagerAdapter(
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
-        return when(position) {
+        return when (position) {
             0 -> RollFragment.newInstance()
             else -> LiftsFragment.newInstance(deletedLift, deletedTags)
         }

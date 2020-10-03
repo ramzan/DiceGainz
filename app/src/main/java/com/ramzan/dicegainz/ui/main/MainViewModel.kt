@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.ui.lifts
+package com.ramzan.dicegainz.ui.main
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -9,10 +9,11 @@ import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.repository.Repository
 
-class LiftsViewModel(application: Application) : AndroidViewModel(application) {
+class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repo = Repository(LiftDatabase.getInstance(application))
 
+    // Lifts data
     private var _lifts = MutableLiveData(repo.getAllLifts())
 
     val lifts: LiveData<LiveData<List<Lift>>>
@@ -36,4 +37,24 @@ class LiftsViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // Roll data
+    private var lifts1 = repo.getAllLifts()
+    private var lifts2 = repo.getAllLifts()
+    private var lifts3 = repo.getAllLifts()
+
+    fun getAllLifts(liftNumber: Int) {
+        when (liftNumber) {
+            1 -> lifts1 = repo.getAllLifts()
+            2 -> lifts2 = repo.getAllLifts()
+            3 -> lifts1 = repo.getAllLifts()
+        }
+    }
+
+    fun filterLifts(liftNumber: Int, tag: String) {
+        when (liftNumber) {
+            1 -> lifts1 = repo.getLiftsForTag(tag)
+            2 -> lifts2 = repo.getLiftsForTag(tag)
+            3 -> lifts1 = repo.getLiftsForTag(tag)
+        }
+    }
 }

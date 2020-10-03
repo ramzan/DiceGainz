@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz
+package com.ramzan.dicegainz.ui.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.databinding.MainFragmentBinding
 import com.ramzan.dicegainz.ui.SectionsPagerAdapter
 

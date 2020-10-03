@@ -1,7 +1,6 @@
 package com.ramzan.dicegainz.ui.roll
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.databinding.RollFragmentBinding
+import com.ramzan.dicegainz.ui.main.MainViewModel
+import com.ramzan.dicegainz.ui.main.MainViewModelFactory
 
 /**
  * A placeholder fragment containing a simple view.
@@ -21,7 +22,7 @@ class RollFragment : Fragment() {
 
     private lateinit var binding: RollFragmentBinding
 
-    private lateinit var viewModel: RollViewModel
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,28 +37,34 @@ class RollFragment : Fragment() {
 
         // Get ViewModel
         val application = requireNotNull(this.activity).application
-        val viewModelFactory = RollViewModelFactory(application)
-        viewModel = ViewModelProvider(this, viewModelFactory).get(RollViewModel::class.java)
-        binding.rollViewModel = viewModel
+        val viewModelFactory = MainViewModelFactory(application)
+        viewModel = ViewModelProvider(
+            requireParentFragment(),
+            viewModelFactory
+        ).get(MainViewModel::class.java)
+        binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
         // Set up filter spinners
         viewModel.tagList.observe(viewLifecycleOwner, {
-            setUpSpinner(binding.filter1, it)
-            setUpSpinner(binding.filter2, it)
-            setUpSpinner(binding.filter3, it)
+            setUpSpinner(binding.filter1, it, 1)
+            setUpSpinner(binding.filter2, it, 2)
+            setUpSpinner(binding.filter3, it, 3)
         })
 
         return binding.root
     }
 
-    private fun setUpSpinner(filter: AutoCompleteTextView, tags: List<String>) {
+    private fun setUpSpinner(filter: AutoCompleteTextView, tags: List<String>, id: Int) {
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, tags)
         filter.setAdapter(adapter)
         if (filter.text.isNullOrEmpty()) filter.setText(getString(R.string.all), false)
         filter.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-            Log.d("butt", "${filter.id} ${filter.text}")
+            when (val tag = filter.text.toString()) {
+                "All" -> viewModel.getAllLifts(id)
+                else -> viewModel.filterLifts(id, tag)
+            }
         }
     }
 

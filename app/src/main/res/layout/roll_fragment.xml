@@ -4,8 +4,8 @@
     <data>
 
         <variable
-            name="rollViewModel"
-            type="com.ramzan.dicegainz.ui.roll.RollViewModel" />
+            name="viewModel"
+            type="com.ramzan.dicegainz.ui.main.MainViewModel" />
     </data>
 
     <LinearLayout

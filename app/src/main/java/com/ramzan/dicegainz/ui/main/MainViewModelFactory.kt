@@ -1,16 +1,16 @@
-package com.ramzan.dicegainz.ui.lifts
+package com.ramzan.dicegainz.ui.main
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class LiftsViewModelFactory(
+class MainViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LiftsViewModel::class.java)) {
-            return LiftsViewModel(application) as T
+        if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
+            return MainViewModel(application) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

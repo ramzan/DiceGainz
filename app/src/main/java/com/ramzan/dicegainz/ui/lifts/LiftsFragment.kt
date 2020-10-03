@@ -11,16 +11,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
-import com.ramzan.dicegainz.MainFragmentDirections
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
+import com.ramzan.dicegainz.ui.main.MainFragmentDirections
+import com.ramzan.dicegainz.ui.main.MainViewModel
+import com.ramzan.dicegainz.ui.main.MainViewModelFactory
 
 class LiftsFragment : Fragment() {
 
     private lateinit var binding: LiftsFragmentBinding
 
-    private lateinit var viewModel: LiftsViewModel
+    private lateinit var viewModel: MainViewModel
 
 
     override fun onCreateView(
@@ -36,11 +38,14 @@ class LiftsFragment : Fragment() {
 
         // Get ViewModel Factory
         val application = requireNotNull(this.activity).application
-        val viewModelFactory = LiftsViewModelFactory(application)
+        val viewModelFactory = MainViewModelFactory(application)
 
         // Get ViewModel
-        viewModel = ViewModelProvider(this, viewModelFactory).get(LiftsViewModel::class.java)
-        binding.liftsViewModel = viewModel
+        viewModel = ViewModelProvider(
+            requireParentFragment(),
+            viewModelFactory
+        ).get(MainViewModel::class.java)
+        binding.viewModel = viewModel
 
         // Get navController
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
