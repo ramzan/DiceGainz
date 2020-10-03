@@ -12,35 +12,55 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repo = Repository(LiftDatabase.getInstance(application))
 
-    // Lifts data
-    private var _lifts = MutableLiveData(repo.getAllLifts())
-
-    val lifts: LiveData<LiveData<List<Lift>>>
-        get() = _lifts
-
+    // ------------------------Filter methods and data------------------------
     private val tags = repo.allTagsList
 
     val tagList = Transformations.map(tags) {
         listOf("All") + it
     }
 
+    fun updateFilterText(liftNumber: Int, tag: String) {
+        when (liftNumber) {
+            0 -> liftsFilterText.value = tag
+            1 -> lift1FilterText.value = tag
+            2 -> lift2FilterText.value = tag
+            3 -> lift3FilterText.value = tag
+        }
+    }
+
+    private fun getLifts(tag: String): LiveData<List<Lift>> {
+        return when (tag) {
+            "All" -> repo.getAllLifts()
+            else -> repo.getLiftsForTag(tag)
+        }
+    }
+
+    // -------------------------Lifts data----------------------------
+    // Current tag selection in the filter of the Lifts tab
+    private var liftsFilterText = MutableLiveData("All")
+
+    // Lists of lifts to display
+    private val _lifts = Transformations.switchMap(liftsFilterText) { tag -> getLifts(tag) }
+
+    val lifts: LiveData<List<Lift>>
+        get() = _lifts
+
     fun addLift(lift: Lift, tags: List<String>) {
         repo.addLift(lift, tags)
     }
 
-    fun filterLifts(tag: String) {
-        _lifts.value = if (tag == "All") {
-            repo.getAllLifts()
-        } else {
-            repo.getLiftsForTag(tag)
-        }
-    }
+    // ----------------------Roll data-----------------------------
+    // Current tag selection in the filters in th Roll tab
+    private var lift1FilterText = MutableLiveData("All")
+    private var lift2FilterText = MutableLiveData("All")
+    private var lift3FilterText = MutableLiveData("All")
 
-    // Roll data
-    private var lifts1 = repo.getAllLifts()
-    private var lifts2 = repo.getAllLifts()
-    private var lifts3 = repo.getAllLifts()
+    // Lists of lifts to roll from
+    private val lifts1 = Transformations.switchMap(lift1FilterText) { tag -> getLifts(tag) }
+    private val lifts2 = Transformations.switchMap(lift2FilterText) { tag -> getLifts(tag) }
+    private val lifts3 = Transformations.switchMap(lift3FilterText) { tag -> getLifts(tag) }
 
+    // Make sure lifts are loaded before rolling
     private val combinedValues =
         MediatorLiveData<Triple<List<Lift>?, List<Lift>?, List<Lift>?>>().apply {
             addSource(lifts1) {
@@ -58,6 +78,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         triple.first != null && triple.second != null && triple.third != null
     }
 
+    // String containing the rolled lift
     private var _lift1Text = MutableLiveData("")
     private var _lift2Text = MutableLiveData("")
     private var _lift3Text = MutableLiveData("")
@@ -69,23 +90,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val lift3Text: MutableLiveData<String>
         get() = _lift3Text
 
-
-    fun getAllLifts(liftNumber: Int) {
-        when (liftNumber) {
-            1 -> lifts1 = repo.getAllLifts()
-            2 -> lifts2 = repo.getAllLifts()
-            3 -> lifts3 = repo.getAllLifts()
-        }
+    private fun updateLiftText(lifts: LiveData<List<Lift>>, liftText: MutableLiveData<String>) {
+        val lift = lifts.value!!.random()
+        liftText.value = "${lift.name} ${getRM(lift.tier)}RM"
     }
 
-    fun filterLifts(liftNumber: Int, tag: String) {
-        when (liftNumber) {
-            1 -> lifts1 = repo.getLiftsForTag(tag)
-            2 -> lifts2 = repo.getLiftsForTag(tag)
-            3 -> lifts3 = repo.getLiftsForTag(tag)
-        }
-    }
-
+    // Roll methods
     fun roll(liftNumber: Int) {
         when (liftNumber) {
             1 -> updateLiftText(lifts1, _lift1Text)
@@ -98,11 +108,6 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         roll(1)
         roll(2)
         roll(3)
-    }
-
-    private fun updateLiftText(lifts: LiveData<List<Lift>>, liftText: MutableLiveData<String>) {
-        val lift = lifts.value!!.random()
-        liftText.value = "${lift.name} ${getRM(lift.tier)}RM"
     }
 
     private fun getRM(tier: Int): Int {

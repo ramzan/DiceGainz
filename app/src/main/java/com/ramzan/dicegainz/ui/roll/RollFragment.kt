@@ -61,10 +61,7 @@ class RollFragment : Fragment() {
         filter.setAdapter(adapter)
         if (filter.text.isNullOrEmpty()) filter.setText(getString(R.string.all), false)
         filter.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-            when (val tag = filter.text.toString()) {
-                "All" -> viewModel.getAllLifts(id)
-                else -> viewModel.filterLifts(id, tag)
-            }
+            viewModel.updateFilterText(id, filter.text.toString())
         }
     }
 

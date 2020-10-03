@@ -36,50 +36,8 @@ class LiftsFragment : Fragment() {
             R.layout.lifts_fragment, container, false
         )
 
-        // Get ViewModel Factory
-        val application = requireNotNull(this.activity).application
-        val viewModelFactory = MainViewModelFactory(application)
-
-        // Get ViewModel
-        viewModel = ViewModelProvider(
-            requireParentFragment(),
-            viewModelFactory
-        ).get(MainViewModel::class.java)
-        binding.viewModel = viewModel
-
         // Get navController
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-
-        // Set up filter spinner
-        viewModel.tagList.observe(viewLifecycleOwner, {
-            val adapter: ArrayAdapter<String> =
-                ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, it)
-            binding.filterBar.setAdapter(adapter)
-        })
-        binding.filterBar.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-            viewModel.filterLifts(binding.filterBar.text.toString())
-        }
-
-        // Set the recyclerview adapter
-        val adapter = LiftAdapter(LiftAdapter.OnClickListener {
-            navController.navigate(
-                MainFragmentDirections.actionMainFragmentToEditorFragment(
-                    it
-                )
-            )
-        })
-
-        binding.liftList.adapter = adapter
-
-        viewModel.lifts.observe(viewLifecycleOwner, { it2 ->
-            it2?.let { it1 ->
-                it1.observe(viewLifecycleOwner) {
-                    adapter.submitList(it)
-                }
-            }
-        })
-
-        binding.lifecycleOwner = this
 
         // Show undo snackbar for deleted lift
         val deletedLift = arguments?.get("deletedLift")
@@ -95,13 +53,53 @@ class LiftsFragment : Fragment() {
             arguments?.putParcelable("deletedLift", null)
         }
 
-        binding.fab.setOnClickListener {
-            navController.navigate(
-                MainFragmentDirections.actionMainFragmentToEditorFragment(null)
-            )
-        }
+        // Get ViewModel
+        val application = requireNotNull(this.activity).application
+        val viewModelFactory = MainViewModelFactory(application)
+        val viewModel = ViewModelProvider(
+            requireParentFragment(),
+            viewModelFactory
+        ).get(MainViewModel::class.java)
 
-        return binding.root
+        binding.apply {
+            binding.viewModel = viewModel
+
+            // Set up filter spinner
+            viewModel.tagList.observe(viewLifecycleOwner, {
+                val adapter: ArrayAdapter<String> =
+                    ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, it)
+                filterBar.setAdapter(adapter)
+                if (filterBar.text.isNullOrEmpty()) filterBar.setText(
+                    getString(R.string.all),
+                    false
+                )
+            })
+            filterBar.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
+                viewModel.updateFilterText(0, filterBar.text.toString())
+            }
+
+            // Set the recyclerview adapter
+            val adapter = LiftAdapter(LiftAdapter.OnClickListener {
+                navController.navigate(MainFragmentDirections.actionMainFragmentToEditorFragment(it))
+            })
+
+            liftList.adapter = adapter
+
+            viewModel.lifts.observe(viewLifecycleOwner, {
+                adapter.submitList(it)
+            })
+
+            fab.setOnClickListener {
+                navController.navigate(
+                    MainFragmentDirections.actionMainFragmentToEditorFragment(
+                        null
+                    )
+                )
+            }
+
+            lifecycleOwner = this@LiftsFragment
+            return root
+        }
     }
 
     companion object {
