@@ -46,7 +46,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         when (liftNumber) {
             1 -> lifts1 = repo.getAllLifts()
             2 -> lifts2 = repo.getAllLifts()
-            3 -> lifts1 = repo.getAllLifts()
+            3 -> lifts3 = repo.getAllLifts()
         }
     }
 
@@ -54,7 +54,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         when (liftNumber) {
             1 -> lifts1 = repo.getLiftsForTag(tag)
             2 -> lifts2 = repo.getLiftsForTag(tag)
-            3 -> lifts1 = repo.getLiftsForTag(tag)
+            3 -> lifts3 = repo.getLiftsForTag(tag)
         }
     }
 }
