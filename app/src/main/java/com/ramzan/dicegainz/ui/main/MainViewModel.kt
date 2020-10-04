@@ -8,6 +8,8 @@ import com.ramzan.dicegainz.database.T1
 import com.ramzan.dicegainz.database.T2
 import com.ramzan.dicegainz.repository.Repository
 
+private const val ALL = "All"
+
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repo = Repository(LiftDatabase.getInstance(application))
@@ -16,7 +18,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val tags = repo.allTagsList
 
     val tagList = Transformations.map(tags) {
-        listOf("All") + it
+        listOf(ALL) + it
     }
 
     fun updateFilterText(liftNumber: Int, tag: String) {
@@ -30,14 +32,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun getLifts(tag: String): LiveData<List<Lift>> {
         return when (tag) {
-            "All" -> repo.getAllLifts()
+            ALL -> repo.getAllLifts()
             else -> repo.getLiftsForTag(tag)
         }
     }
 
     // -------------------------Lifts data----------------------------
     // Current tag selection in the filter of the Lifts tab
-    private var liftsFilterText = MutableLiveData("All")
+    private var liftsFilterText = MutableLiveData(ALL)
 
     // Lists of lifts to display
     private val _lifts = Transformations.switchMap(liftsFilterText) { tag -> getLifts(tag) }
@@ -51,9 +53,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     // ----------------------Roll data-----------------------------
     // Current tag selection in the filters in th Roll tab
-    private var lift1FilterText = MutableLiveData("All")
-    private var lift2FilterText = MutableLiveData("All")
-    private var lift3FilterText = MutableLiveData("All")
+    private var lift1FilterText = MutableLiveData(ALL)
+    private var lift2FilterText = MutableLiveData(ALL)
+    private var lift3FilterText = MutableLiveData(ALL)
 
     // Lists of lifts to roll from
     private val lifts1 = Transformations.switchMap(lift1FilterText) { tag -> getLifts(tag) }
@@ -75,7 +77,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         }
 
     val liftsLoaded = Transformations.map(combinedValues) { triple ->
-        triple.first != null && triple.second != null && triple.third != null
+        !triple.first.isNullOrEmpty() && !triple.second.isNullOrEmpty() && !triple.third.isNullOrEmpty()
     }
 
     // String containing the rolled lift
