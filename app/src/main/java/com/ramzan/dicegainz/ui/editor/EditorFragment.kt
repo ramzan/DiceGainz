@@ -1,5 +1,6 @@
 package com.ramzan.dicegainz.ui.editor
 
+import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.text.TextUtils
@@ -13,9 +14,8 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
@@ -24,12 +24,26 @@ import com.ramzan.dicegainz.databinding.EditorFragmentBinding
 import com.ramzan.dicegainz.ui.NoFilterAdapter
 
 
-class EditorFragment : Fragment() {
+class EditorFragment : DialogFragment() {
 
     private lateinit var tierStrings: Array<String>
     private lateinit var binding: EditorFragmentBinding
     private lateinit var editorViewModel: EditorViewModel
     private lateinit var imm: InputMethodManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.EditorDialog);    }
+
+    override fun onStart() {
+        super.onStart()
+        val dialog: Dialog? = dialog
+        if (dialog != null) {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            dialog.window?.setLayout(width, height)
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,11 +55,11 @@ class EditorFragment : Fragment() {
             R.layout.editor_fragment, container, false
         )
 
-        val args = EditorFragmentArgs.fromBundle(requireArguments())
+        val selectedLift = arguments?.get("selectedLift") as Lift?
 
         // Get ViewModel
         val application = requireNotNull(this.activity).application
-        val viewModelFactory = EditorViewModelFactory(args.selectedLift, application)
+        val viewModelFactory = EditorViewModelFactory(selectedLift, application)
         editorViewModel = ViewModelProvider(this, viewModelFactory).get(EditorViewModel::class.java)
 
         binding.apply {
@@ -63,8 +77,8 @@ class EditorFragment : Fragment() {
 
                 deleteButton.isVisible = editorViewModel.deleteButtonVisible
                 deleteButton.setOnMenuItemClickListener {
-                    deleteLift(args.selectedLift!!)
-                    goBack(args.selectedLift!!)
+                    deleteLift(selectedLift!!)
+                    goBack(selectedLift)
                     true
                 }
 
@@ -74,7 +88,7 @@ class EditorFragment : Fragment() {
                         nameInputLayout.isErrorEnabled = true
                         nameInputLayout.error = getString(R.string.empty_name_error_msg)
                     } else {
-                        saveLift(args.selectedLift)
+                        saveLift(selectedLift)
                         goBack()
                     }
                     true
@@ -195,11 +209,9 @@ class EditorFragment : Fragment() {
 
     private fun goBack(deletedLift: Lift?) {
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-        val action = EditorFragmentDirections.actionEditorFragmentToMainFragment()
-        action.deletedLift = deletedLift
-        action.deletedTags = editorViewModel.oldTags?.value?.toTypedArray()
-        navController.navigate(action)
+        val listener = targetFragment as EditorDialogListener?
+        listener?.onFinishEditing(deletedLift, editorViewModel.oldTags?.value)
+        dismiss()
     }
 
     // For submitting tags when autocomplete item clicked
@@ -209,6 +221,21 @@ class EditorFragment : Fragment() {
                 func()
             }
             true
+        }
+    }
+
+    interface EditorDialogListener {
+        fun onFinishEditing(deletedLift: Lift?, deletedTags: List<String>?)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(selectedLift: Lift?): EditorFragment {
+            val args = Bundle()
+            args.putParcelable("selectedLift", selectedLift)
+            val editorFragment = EditorFragment()
+            editorFragment.arguments = args
+            return editorFragment
         }
     }
 }

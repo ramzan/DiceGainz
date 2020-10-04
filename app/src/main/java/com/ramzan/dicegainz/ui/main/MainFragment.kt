@@ -29,7 +29,7 @@ class MainFragment : Fragment() {
         val fm = childFragmentManager
 
         binding.viewPager.apply {
-            adapter = SectionsPagerAdapter(requireContext(), fm, args.deletedLift, args.deletedTags)
+            adapter = SectionsPagerAdapter(requireContext(), fm)
             currentItem = args.tabIndex
             binding.tabs.setupWithViewPager(this)
         }

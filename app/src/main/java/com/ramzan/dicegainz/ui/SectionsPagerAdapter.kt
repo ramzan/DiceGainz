@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.ui.lifts.LiftsFragment
 import com.ramzan.dicegainz.ui.roll.RollFragment
 
@@ -16,16 +15,14 @@ private val TAB_TITLES = arrayOf(
 
 class SectionsPagerAdapter(
     private val context: Context,
-    fm: FragmentManager,
-    private val deletedLift: Lift?,
-    private val deletedTags: Array<String>?
+    fm: FragmentManager
 ) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getItem(position: Int): Fragment {
         return when (position) {
             0 -> RollFragment.newInstance()
-            else -> LiftsFragment.newInstance(deletedLift, deletedTags)
+            else -> LiftsFragment.newInstance()
         }
     }
 
