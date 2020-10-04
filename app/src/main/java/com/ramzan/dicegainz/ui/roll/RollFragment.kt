@@ -12,8 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.databinding.RollFragmentBinding
-import com.ramzan.dicegainz.ui.main.MainViewModel
-import com.ramzan.dicegainz.ui.main.MainViewModelFactory
+import com.ramzan.dicegainz.ui.main.*
 
 /**
  * A placeholder fragment containing a simple view.
@@ -47,9 +46,9 @@ class RollFragment : Fragment() {
 
         // Set up filter spinners
         viewModel.tagList.observe(viewLifecycleOwner, {
-            setUpSpinner(binding.filter1, it, 1)
-            setUpSpinner(binding.filter2, it, 2)
-            setUpSpinner(binding.filter3, it, 3)
+            setUpSpinner(binding.filter1, it, ROLL_FILTER1_ID)
+            setUpSpinner(binding.filter2, it, ROLL_FILTER2_ID)
+            setUpSpinner(binding.filter3, it, ROLL_FILTER3_ID)
         })
 
         return binding.root
@@ -59,7 +58,13 @@ class RollFragment : Fragment() {
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, tags)
         filter.setAdapter(adapter)
-        if (filter.text.isNullOrEmpty()) filter.setText(getString(R.string.all), false)
+        val filterText = filter.text.toString()
+        if (filterText.isEmpty() || !viewModel.tagList.value!!.contains(filterText)) {
+            val all = getString(R.string.all)
+            filter.setText(all, false)
+            viewModel.updateFilterText(id, all)
+        }
+
         filter.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             viewModel.updateFilterText(id, filter.text.toString())
         }
@@ -67,7 +72,6 @@ class RollFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() =
-            RollFragment()
+        fun newInstance() = RollFragment()
     }
 }

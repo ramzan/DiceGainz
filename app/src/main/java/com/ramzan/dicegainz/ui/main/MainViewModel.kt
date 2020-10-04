@@ -9,6 +9,11 @@ import com.ramzan.dicegainz.database.T2
 import com.ramzan.dicegainz.repository.Repository
 
 private const val ALL = "All"
+const val LIFTS_FILTER_ID = 0
+const val ROLL_FILTER1_ID = 1
+const val ROLL_FILTER2_ID = 2
+const val ROLL_FILTER3_ID = 3
+
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
