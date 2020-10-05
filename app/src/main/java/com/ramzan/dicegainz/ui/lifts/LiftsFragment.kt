@@ -60,15 +60,14 @@ class LiftsFragment : Fragment() {
 
 
         // Set up filter spinner
-        viewModel.tagList.observe(viewLifecycleOwner, {
+        viewModel.tagList.observe(viewLifecycleOwner) {
             val adapter: ArrayAdapter<String> =
                 ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, it)
             binding.filterBar.setAdapter(adapter)
-            if (binding.filterBar.text.isNullOrEmpty()) binding.filterBar.setText(
-                getString(R.string.all),
-                false
-            )
-        })
+        }
+        viewModel.liftsFilterText.observe(viewLifecycleOwner) {
+            binding.filterBar.setText(it, false)
+        }
         binding.filterBar.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             viewModel.updateFilterText(LIFTS_FILTER_ID, binding.filterBar.text.toString())
         }

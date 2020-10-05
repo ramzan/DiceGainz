@@ -45,6 +45,15 @@ class RollFragment : Fragment() {
         binding.lifecycleOwner = this
 
         // Set up filter spinners
+        viewModel.filter1Text.observe(viewLifecycleOwner) {
+            binding.filter1.setText(it, false)
+        }
+        viewModel.filter2Text.observe(viewLifecycleOwner) {
+            binding.filter2.setText(it, false)
+        }
+        viewModel.filter3Text.observe(viewLifecycleOwner) {
+            binding.filter3.setText(it, false)
+        }
         viewModel.tagList.observe(viewLifecycleOwner, {
             setUpSpinner(binding.filter1, it, ROLL_FILTER1_ID)
             setUpSpinner(binding.filter2, it, ROLL_FILTER2_ID)
@@ -58,13 +67,9 @@ class RollFragment : Fragment() {
         val adapter: ArrayAdapter<String> =
             ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, tags)
         filter.setAdapter(adapter)
-        val filterText = filter.text.toString()
-        if (filterText.isEmpty() || !viewModel.tagList.value!!.contains(filterText)) {
-            val all = getString(R.string.all)
-            filter.setText(all, false)
-            viewModel.updateFilterText(id, all)
+        if (!tags.contains(filter.text.toString())) {
+            viewModel.updateFilterText(id, getString(R.string.all))
         }
-
         filter.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             viewModel.updateFilterText(id, filter.text.toString())
         }

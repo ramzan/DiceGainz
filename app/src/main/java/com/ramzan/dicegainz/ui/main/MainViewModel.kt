@@ -26,12 +26,28 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         listOf(ALL) + it
     }
 
+    // Current tag selection in the filter of the Lifts tab
+    private var _liftsFilterText = MutableLiveData(ALL)
+    // Current tag selection in the filters in th Roll tab
+    private var _filter1Text = MutableLiveData(ALL)
+    private var _filter2Text = MutableLiveData(ALL)
+    private var _filter3Text = MutableLiveData(ALL)
+
+    val liftsFilterText: LiveData<String>
+        get() = _liftsFilterText
+    val filter1Text: LiveData<String>
+        get() = _filter1Text
+    val filter2Text: LiveData<String>
+        get() = _filter2Text
+    val filter3Text: LiveData<String>
+        get() = _filter3Text
+
     fun updateFilterText(liftNumber: Int, tag: String) {
         when (liftNumber) {
-            0 -> liftsFilterText.value = tag
-            1 -> lift1FilterText.value = tag
-            2 -> lift2FilterText.value = tag
-            3 -> lift3FilterText.value = tag
+            0 -> _liftsFilterText.value = tag
+            1 -> _filter1Text.value = tag
+            2 -> _filter2Text.value = tag
+            3 -> _filter3Text.value = tag
         }
     }
 
@@ -43,11 +59,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // -------------------------Lifts data----------------------------
-    // Current tag selection in the filter of the Lifts tab
-    private var liftsFilterText = MutableLiveData(ALL)
-
     // Lists of lifts to display
-    private val _lifts = Transformations.switchMap(liftsFilterText) { tag -> getLifts(tag) }
+    private val _lifts = Transformations.switchMap(_liftsFilterText) { tag -> getLifts(tag) }
 
     val lifts: LiveData<List<Lift>>
         get() = _lifts
@@ -57,15 +70,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // ----------------------Roll data-----------------------------
-    // Current tag selection in the filters in th Roll tab
-    private var lift1FilterText = MutableLiveData(ALL)
-    private var lift2FilterText = MutableLiveData(ALL)
-    private var lift3FilterText = MutableLiveData(ALL)
-
     // Lists of lifts to roll from
-    private val lifts1 = Transformations.switchMap(lift1FilterText) { tag -> getLifts(tag) }
-    private val lifts2 = Transformations.switchMap(lift2FilterText) { tag -> getLifts(tag) }
-    private val lifts3 = Transformations.switchMap(lift3FilterText) { tag -> getLifts(tag) }
+    private val lifts1 = Transformations.switchMap(_filter1Text) { tag -> getLifts(tag) }
+    private val lifts2 = Transformations.switchMap(_filter2Text) { tag -> getLifts(tag) }
+    private val lifts3 = Transformations.switchMap(_filter3Text) { tag -> getLifts(tag) }
 
     // Make sure lifts are loaded before rolling
     private val combinedValues =
