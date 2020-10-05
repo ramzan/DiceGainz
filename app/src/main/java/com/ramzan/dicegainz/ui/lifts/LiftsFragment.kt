@@ -43,39 +43,37 @@ class LiftsFragment : Fragment(), EditorFragment.EditorDialogListener {
         ).get(MainViewModel::class.java)
         binding.lifecycleOwner = this
 
-        binding.apply {
 
-            // Set up filter spinner
-            viewModel.tagList.observe(viewLifecycleOwner, {
-                val adapter: ArrayAdapter<String> =
-                    ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, it)
-                filterBar.setAdapter(adapter)
-                if (filterBar.text.isNullOrEmpty()) filterBar.setText(
-                    getString(R.string.all),
-                    false
-                )
-            })
-            filterBar.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-                viewModel.updateFilterText(LIFTS_FILTER_ID, filterBar.text.toString())
-            }
-
-            // Set the recyclerview adapter
-            val adapter = LiftAdapter(LiftAdapter.OnClickListener {
-                showEditDialog(it)
-            })
-
-            liftList.adapter = adapter
-
-            viewModel.lifts.observe(viewLifecycleOwner, {
-                adapter.submitList(it)
-            })
-
-            fab.setOnClickListener {
-                showEditDialog(null)
-            }
-
-            return root
+        // Set up filter spinner
+        viewModel.tagList.observe(viewLifecycleOwner, {
+            val adapter: ArrayAdapter<String> =
+                ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, it)
+            binding.filterBar.setAdapter(adapter)
+            if (binding.filterBar.text.isNullOrEmpty()) binding.filterBar.setText(
+                getString(R.string.all),
+                false
+            )
+        })
+        binding.filterBar.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
+            viewModel.updateFilterText(LIFTS_FILTER_ID, binding.filterBar.text.toString())
         }
+
+        // Set the recyclerview adapter
+        val adapter = LiftAdapter(LiftAdapter.OnClickListener {
+            showEditDialog(it)
+        })
+
+        binding.liftList.adapter = adapter
+
+        viewModel.lifts.observe(viewLifecycleOwner, {
+            adapter.submitList(it)
+        })
+
+        binding.fab.setOnClickListener {
+            showEditDialog(null)
+        }
+
+        return binding.root
     }
 
     private fun showEditDialog(lift: Lift?) {
