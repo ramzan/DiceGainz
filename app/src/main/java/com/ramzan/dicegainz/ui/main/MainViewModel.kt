@@ -2,13 +2,13 @@ package com.ramzan.dicegainz.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.database.LiftDatabase
 import com.ramzan.dicegainz.database.T1
 import com.ramzan.dicegainz.database.T2
 import com.ramzan.dicegainz.repository.Repository
 
-private const val ALL = "All"
 const val LIFTS_FILTER_ID = 0
 const val ROLL_FILTER1_ID = 1
 const val ROLL_FILTER2_ID = 2
@@ -19,19 +19,21 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repo = Repository(LiftDatabase.getInstance(application))
 
+    private val allString = application.getString(R.string.all)
+
     // ------------------------Filter methods and data------------------------
     private val tags = repo.allTagsList
 
     val tagList = Transformations.map(tags) {
-        listOf(ALL) + it
+        listOf(allString) + it
     }
 
     // Current tag selection in the filter of the Lifts tab
-    private var _liftsFilterText = MutableLiveData(ALL)
+    private var _liftsFilterText = MutableLiveData(allString)
     // Current tag selection in the filters in th Roll tab
-    private var _filter1Text = MutableLiveData(ALL)
-    private var _filter2Text = MutableLiveData(ALL)
-    private var _filter3Text = MutableLiveData(ALL)
+    private var _filter1Text = MutableLiveData(allString)
+    private var _filter2Text = MutableLiveData(allString)
+    private var _filter3Text = MutableLiveData(allString)
 
     val liftsFilterText: LiveData<String>
         get() = _liftsFilterText
@@ -53,7 +55,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun getLifts(tag: String): LiveData<List<Lift>> {
         return when (tag) {
-            ALL -> repo.getAllLifts()
+            allString -> repo.getAllLifts()
             else -> repo.getLiftsForTag(tag)
         }
     }
@@ -94,9 +96,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // String containing the rolled lift
-    private var _lift1Text = MutableLiveData("")
-    private var _lift2Text = MutableLiveData("")
-    private var _lift3Text = MutableLiveData("")
+    private var _lift1Text = MutableLiveData(application.getString(R.string.tap_to_roll))
+    private var _lift2Text = MutableLiveData(application.getString(R.string.tap_to_roll))
+    private var _lift3Text = MutableLiveData(application.getString(R.string.tap_to_roll))
 
     val lift1Text: MutableLiveData<String>
         get() = _lift1Text
