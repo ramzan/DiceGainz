@@ -9,16 +9,17 @@ import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
-import com.ramzan.dicegainz.ui.editor.EditorFragment
 import com.ramzan.dicegainz.ui.main.LIFTS_FILTER_ID
+import com.ramzan.dicegainz.ui.main.MainFragmentDirections
 import com.ramzan.dicegainz.ui.main.MainViewModel
 import com.ramzan.dicegainz.ui.main.MainViewModelFactory
 
-class LiftsFragment : Fragment(), EditorFragment.EditorDialogListener {
+class LiftsFragment : Fragment() {
 
     private lateinit var binding: LiftsFragmentBinding
     private lateinit var viewModel: MainViewModel
@@ -38,10 +39,24 @@ class LiftsFragment : Fragment(), EditorFragment.EditorDialogListener {
         val application = requireNotNull(this.activity).application
         val viewModelFactory = MainViewModelFactory(application)
         viewModel = ViewModelProvider(
-            requireParentFragment(),
+            requireActivity(),
             viewModelFactory
         ).get(MainViewModel::class.java)
         binding.lifecycleOwner = this
+
+        // Show undo snackbar for deleted lift
+        val deletedLift = arguments?.get("deletedLift")
+        deletedLift?.let {
+            Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_SHORT)
+                .setAction(getString(R.string.undo)) {
+                    @Suppress("UNCHECKED_CAST")
+                    val deletedTags = arguments?.get("deletedTags") as Array<String>
+                    viewModel.addLift(deletedLift as Lift, deletedTags.toList())
+                }
+                .setAnchorView(binding.fab)
+                .show()
+            arguments?.putParcelable("deletedLift", null)
+        }
 
 
         // Set up filter spinner
@@ -77,27 +92,20 @@ class LiftsFragment : Fragment(), EditorFragment.EditorDialogListener {
     }
 
     private fun showEditDialog(lift: Lift?) {
-        val fm = parentFragmentManager
-        val editorDialogFragment = EditorFragment.newInstance(lift)
-        editorDialogFragment.setTargetFragment(this, 300)
-        editorDialogFragment.show(fm, tag)
-    }
-
-    override fun onFinishEditing(deletedLift: Lift?, deletedTags: List<String>?) {
-        // Show undo snackbar for deleted lift
-        if (deletedLift != null && deletedTags != null) (
-                Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.undo)) {
-                        @Suppress("UNCHECKED_CAST")
-                        viewModel.addLift(deletedLift, deletedTags)
-                    }
-                    .setAnchorView(binding.fab)
-                    .show()
-                )
+        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
+        val action = MainFragmentDirections.actionMainFragmentToEditorFragment(lift)
+        navController.navigate(action)
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(): LiftsFragment = LiftsFragment()
+        fun newInstance(deletedLift: Lift?, deletedTags: Array<String>?): LiftsFragment {
+            val args = Bundle()
+            args.putParcelable("deletedLift", deletedLift)
+            args.putStringArray("deletedTags", deletedTags)
+            val liftsFragment = LiftsFragment()
+            liftsFragment.arguments = args
+            return liftsFragment
+        }
     }
 }

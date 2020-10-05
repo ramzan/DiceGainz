@@ -38,7 +38,7 @@ class RollFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val viewModelFactory = MainViewModelFactory(application)
         viewModel = ViewModelProvider(
-            requireParentFragment(),
+            requireActivity(),
             viewModelFactory
         ).get(MainViewModel::class.java)
         binding.viewModel = viewModel

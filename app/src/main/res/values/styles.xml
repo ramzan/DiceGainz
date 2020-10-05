@@ -14,7 +14,7 @@
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="EditorDialog" parent="AppTheme" >
+    <style name="EditorDialog" parent="AppTheme">
         <item name="android:windowIsFloating">false</item>
     </style>
 

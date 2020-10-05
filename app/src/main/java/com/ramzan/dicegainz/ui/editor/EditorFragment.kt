@@ -16,6 +16,7 @@ import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
@@ -33,7 +34,8 @@ class EditorFragment : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.EditorDialog);    }
+        setStyle(STYLE_NORMAL, R.style.EditorDialog)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -209,9 +211,11 @@ class EditorFragment : DialogFragment() {
 
     private fun goBack(deletedLift: Lift?) {
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-        val listener = targetFragment as EditorDialogListener?
-        listener?.onFinishEditing(deletedLift, editorViewModel.oldTags?.value)
-        dismiss()
+        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
+        val action = EditorFragmentDirections.actionEditorFragmentToMainFragment()
+        action.deletedLift = deletedLift
+        action.deletedTags = editorViewModel.oldTags?.value?.toTypedArray()
+        navController.navigate(action)
     }
 
     // For submitting tags when autocomplete item clicked
@@ -221,21 +225,6 @@ class EditorFragment : DialogFragment() {
                 func()
             }
             true
-        }
-    }
-
-    interface EditorDialogListener {
-        fun onFinishEditing(deletedLift: Lift?, deletedTags: List<String>?)
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(selectedLift: Lift?): EditorFragment {
-            val args = Bundle()
-            args.putParcelable("selectedLift", selectedLift)
-            val editorFragment = EditorFragment()
-            editorFragment.arguments = args
-            return editorFragment
         }
     }
 }
