@@ -46,10 +46,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateFilterText(liftNumber: Int, tag: String) {
         when (liftNumber) {
-            0 -> _liftsFilterText.value = tag
-            1 -> _filter1Text.value = tag
-            2 -> _filter2Text.value = tag
-            3 -> _filter3Text.value = tag
+            LIFTS_FILTER_ID -> _liftsFilterText.value = tag
+            ROLL_FILTER1_ID -> _filter1Text.value = tag
+            ROLL_FILTER2_ID -> _filter2Text.value = tag
+            ROLL_FILTER3_ID -> _filter3Text.value = tag
         }
     }
 
@@ -122,9 +122,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun rollAll() {
-        roll(1)
-        roll(2)
-        roll(3)
+        roll(ROLL_FILTER1_ID)
+        roll(ROLL_FILTER2_ID)
+        roll(ROLL_FILTER3_ID)
     }
 
     private fun getRM(tier: Int): Int {
