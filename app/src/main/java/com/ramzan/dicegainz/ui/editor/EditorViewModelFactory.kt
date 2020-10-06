@@ -7,7 +7,6 @@ import com.ramzan.dicegainz.database.Lift
 
 class EditorViewModelFactory(
     private val lift: Lift?,
-
     private val application: Application,
 ) : ViewModelProvider.Factory {
     @Suppress("unchecked_cast")
