@@ -65,7 +65,7 @@ class Repository(database: LiftDatabase) {
     }
 
     private suspend fun insertAll(tags: List<Tag>) {
-        db.insertAll(tags)
+        db.insertTags(tags)
     }
 
     private suspend fun deleteAll(tags: List<Tag>) {

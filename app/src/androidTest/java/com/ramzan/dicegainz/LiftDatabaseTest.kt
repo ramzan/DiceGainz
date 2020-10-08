@@ -135,7 +135,7 @@ class LiftDatabaseTest {
                 val tag = Tag(name.toString(), id)
                 tags.add(tag)
             }
-            liftDao.insertAll(tags)
+            liftDao.insertTags(tags)
             liftDao.deleteAll(tags)
             assertEquals(emptyList<String>(), liftDao.getAllTagNamesTest())
         }
@@ -151,7 +151,7 @@ class LiftDatabaseTest {
                 val tag = Tag(name.toString(), id)
                 tags.add(tag)
             }
-            liftDao.insertAll(tags)
+            liftDao.insertTags(tags)
             assertEquals(tags.map { it.name }.asReversed(), liftDao.getAllTagNamesTest())
         }
     }

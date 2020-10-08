@@ -16,6 +16,9 @@ interface LiftDatabaseDao {
     @Insert
     suspend fun insert(lift: Lift): Long
 
+    @Insert
+    suspend fun insertLifts(lifts: List<Lift>)
+
     @Update
     suspend fun update(lift: Lift)
 
@@ -38,7 +41,7 @@ interface LiftDatabaseDao {
     suspend fun insert(tag: Tag)
 
     @Insert
-    suspend fun insertAll(tags: List<Tag>)
+    suspend fun insertTags(tags: List<Tag>)
 
     @Delete
     suspend fun delete(tag: Tag)
