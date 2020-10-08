@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.databinding.RollFragmentBinding
@@ -21,8 +21,7 @@ import com.ramzan.dicegainz.ui.main.*
 class RollFragment : Fragment() {
 
     private lateinit var binding: RollFragmentBinding
-
-    private lateinit var viewModel: MainViewModel
+    val viewModel: MainViewModel by activityViewModels { MainViewModelFactory(requireNotNull(this.activity).application) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,13 +34,6 @@ class RollFragment : Fragment() {
             R.layout.roll_fragment, container, false
         )
 
-        // Get ViewModel
-        val application = requireNotNull(this.activity).application
-        val viewModelFactory = MainViewModelFactory(application)
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            viewModelFactory
-        ).get(MainViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 

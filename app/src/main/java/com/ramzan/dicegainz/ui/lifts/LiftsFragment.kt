@@ -8,7 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.ramzan.dicegainz.R
@@ -22,7 +22,7 @@ import com.ramzan.dicegainz.ui.main.MainViewModelFactory
 class LiftsFragment : Fragment() {
 
     private lateinit var binding: LiftsFragmentBinding
-    private lateinit var viewModel: MainViewModel
+    val viewModel: MainViewModel by activityViewModels { MainViewModelFactory(requireNotNull(this.activity).application) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,13 +35,6 @@ class LiftsFragment : Fragment() {
             R.layout.lifts_fragment, container, false
         )
 
-        // Get ViewModel
-        val application = requireNotNull(this.activity).application
-        val viewModelFactory = MainViewModelFactory(application)
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            viewModelFactory
-        ).get(MainViewModel::class.java)
         binding.lifecycleOwner = this
 
         // Show undo snackbar for deleted lift
@@ -53,7 +46,6 @@ class LiftsFragment : Fragment() {
                     .show()
             }
         }
-
 
         // Set up filter spinner
         viewModel.tagList.observe(viewLifecycleOwner) {

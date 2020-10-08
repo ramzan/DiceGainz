@@ -15,7 +15,8 @@ import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
@@ -30,8 +31,18 @@ class EditorFragment : DialogFragment() {
 
     private lateinit var tierStrings: Array<String>
     private lateinit var binding: EditorFragmentBinding
-    private lateinit var editorViewModel: EditorViewModel
-    private lateinit var mainViewModel: MainViewModel
+    private val editorViewModel: EditorViewModel by viewModels {
+        EditorViewModelFactory(
+            arguments?.get(
+                "selectedLift"
+            ) as Lift?, requireNotNull(this.activity).application
+        )
+    }
+    private val mainViewModel: MainViewModel by activityViewModels {
+        MainViewModelFactory(
+            requireNotNull(this.activity).application
+        )
+    }
     private lateinit var imm: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,17 +71,6 @@ class EditorFragment : DialogFragment() {
         )
 
         val selectedLift = arguments?.get("selectedLift") as Lift?
-
-        // Get ViewModel
-        val application = requireNotNull(this.activity).application
-        editorViewModel =
-            ViewModelProvider(this, EditorViewModelFactory(selectedLift, application)).get(
-                EditorViewModel::class.java
-            )
-        mainViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory(application)).get(
-            MainViewModel::class.java
-        )
-
 
         binding.apply {
             viewModel = editorViewModel
