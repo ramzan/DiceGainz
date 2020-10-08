@@ -25,12 +25,9 @@ class MainFragment : Fragment() {
             R.layout.main_fragment, container, false
         )
 
-        val args = MainFragmentArgs.fromBundle(requireArguments())
-        val fm = childFragmentManager
-
         binding.viewPager.apply {
-            adapter = SectionsPagerAdapter(requireContext(), fm, args.deletedLift, args.deletedTags)
-            currentItem = args.tabIndex
+            adapter = SectionsPagerAdapter(requireContext(), childFragmentManager)
+            currentItem = MainFragmentArgs.fromBundle(requireArguments()).tabIndex
             binding.tabs.setupWithViewPager(this)
         }
 

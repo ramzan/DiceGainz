@@ -16,13 +16,14 @@ import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.Navigation
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.databinding.EditorFragmentBinding
 import com.ramzan.dicegainz.ui.NoFilterAdapter
+import com.ramzan.dicegainz.ui.main.MainViewModel
+import com.ramzan.dicegainz.ui.main.MainViewModelFactory
 
 
 class EditorFragment : DialogFragment() {
@@ -30,6 +31,7 @@ class EditorFragment : DialogFragment() {
     private lateinit var tierStrings: Array<String>
     private lateinit var binding: EditorFragmentBinding
     private lateinit var editorViewModel: EditorViewModel
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var imm: InputMethodManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -61,8 +63,14 @@ class EditorFragment : DialogFragment() {
 
         // Get ViewModel
         val application = requireNotNull(this.activity).application
-        val viewModelFactory = EditorViewModelFactory(selectedLift, application)
-        editorViewModel = ViewModelProvider(this, viewModelFactory).get(EditorViewModel::class.java)
+        editorViewModel =
+            ViewModelProvider(this, EditorViewModelFactory(selectedLift, application)).get(
+                EditorViewModel::class.java
+            )
+        mainViewModel = ViewModelProvider(requireActivity(), MainViewModelFactory(application)).get(
+            MainViewModel::class.java
+        )
+
 
         binding.apply {
             viewModel = editorViewModel
@@ -211,11 +219,9 @@ class EditorFragment : DialogFragment() {
 
     private fun goBack(deletedLift: Lift?) {
         imm.hideSoftInputFromWindow(requireView().windowToken, 0)
-        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-        val action = EditorFragmentDirections.actionEditorFragmentToMainFragment()
-        action.deletedLift = deletedLift
-        action.deletedTags = editorViewModel.oldTags?.value?.toTypedArray()
-        navController.navigate(action)
+        dismiss()
+        mainViewModel.deletedLift.value = deletedLift
+        mainViewModel.deletedLiftTags.value = editorViewModel.oldTags?.value
     }
 
     // For submitting tags when autocomplete item clicked

@@ -21,6 +21,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val allString = application.getString(R.string.all)
 
+    // -----------------------Deleted lift methods and data-------------------
+
+    val deletedLift = MutableLiveData<Lift>()
+    val deletedLiftTags = MutableLiveData<List<String>>()
+
+    fun restoreDeletedLift() {
+        deletedLift.value?.let {
+            addLift(it, deletedLiftTags.value ?: emptyList())
+            deletedLift.value = null
+            deletedLiftTags.value = null
+        }
+    }
+
     // ------------------------Filter methods and data------------------------
     private val tags = repo.allTagsList
 
