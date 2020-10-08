@@ -13,10 +13,6 @@
             android:id="@+id/action_mainFragment_to_editorFragment"
             app:destination="@id/editorFragment"
             app:popUpTo="@id/mainFragment" />
-        <argument
-            android:name="tabIndex"
-            app:argType="integer"
-            android:defaultValue="0" />
     </fragment>
     <dialog
         android:id="@+id/editorFragment"

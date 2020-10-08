@@ -27,7 +27,6 @@ class MainFragment : Fragment() {
 
         binding.viewPager.apply {
             adapter = SectionsPagerAdapter(requireContext(), childFragmentManager)
-            currentItem = MainFragmentArgs.fromBundle(requireArguments()).tabIndex
             binding.tabs.setupWithViewPager(this)
         }
 
