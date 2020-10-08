@@ -8,6 +8,8 @@
         <variable
             name="viewModel"
             type="com.ramzan.dicegainz.ui.main.MainViewModel" />
+
+        <import type="android.view.View" />
     </data>
 
 
@@ -17,7 +19,8 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.liftsLoaded ? View.VISIBLE : View.GONE}">
 
             <LinearLayout
                 android:id="@+id/roll_layout"
@@ -58,12 +61,12 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/filter_container_1"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                                android:layout_height="wrap_content"
                                 android:layout_width="wrap_content"
-                                android:layout_weight="5"
+                                android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
+                                android:layout_weight="5"
                                 android:paddingHorizontal="@dimen/defaultPadding">
 
                                 <AutoCompleteTextView
@@ -125,10 +128,10 @@
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="5"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
+                                android:layout_weight="5"
                                 android:paddingHorizontal="@dimen/defaultPadding">
 
                                 <AutoCompleteTextView
@@ -191,10 +194,10 @@
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="5"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
+                                android:layout_weight="5"
                                 android:paddingHorizontal="@dimen/defaultPadding">
 
                                 <AutoCompleteTextView
@@ -227,6 +230,17 @@
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
+        <TextView
+            android:id="@+id/welcome_message"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/defaultPadding"
+            android:gravity="center"
+            android:text="@string/welcome_message"
+            android:textAlignment="center"
+            android:visibility="@{viewModel.liftsLoaded ? View.GONE : View.VISIBLE}" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/rollAllButton"
@@ -234,8 +248,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/defaultPadding"
-            android:enabled="@{viewModel.liftsLoaded}"
             android:onClick="@{() -> viewModel.rollAll()}"
+            android:visibility="@{viewModel.liftsLoaded ? View.VISIBLE : View.GONE}"
             app:srcCompat="@drawable/ic_baseline_casino_24" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

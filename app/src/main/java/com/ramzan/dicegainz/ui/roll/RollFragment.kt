@@ -10,6 +10,7 @@ import android.widget.AutoCompleteTextView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.Navigation
 import com.ramzan.dicegainz.R
 import com.ramzan.dicegainz.databinding.RollFragmentBinding
 import com.ramzan.dicegainz.ui.main.*
@@ -60,7 +61,17 @@ class RollFragment : Fragment() {
             setUpSpinner(binding.filter3, it, ROLL_FILTER3_ID)
         })
 
+        binding.welcomeMessage.setOnClickListener {
+            showEditDialog()
+        }
+
         return binding.root
+    }
+
+    private fun showEditDialog() {
+        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
+        val action = MainFragmentDirections.actionMainFragmentToEditorFragment(null)
+        navController.navigate(action)
     }
 
     private fun setUpSpinner(filter: AutoCompleteTextView, tags: List<String>, id: Int) {

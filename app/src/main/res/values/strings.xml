@@ -25,6 +25,8 @@
     <string name="filter">Filter</string>
     <string name="all">All</string>
     <string name="tap_to_roll">Tap to roll</string>
+    <string name="search">Search</string>
+    <string name="welcome_message">Welcome to Dice Gainz! Click anywhere to add a lift.</string>
     <string-array name="tier_string_array">
         <item>@string/both</item>
         <item>@string/t1</item>
