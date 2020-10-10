@@ -80,7 +80,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     val lifts: LiveData<List<Lift>>
         get() = _lifts
 
-    fun addLift(lift: Lift, tags: List<String>) {
+    private fun addLift(lift: Lift, tags: List<String>) {
         repo.addLift(lift, tags)
     }
 
@@ -109,9 +109,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // String containing the rolled lift
-    private var _lift1Text = MutableLiveData(application.getString(R.string.tap_to_roll))
-    private var _lift2Text = MutableLiveData(application.getString(R.string.tap_to_roll))
-    private var _lift3Text = MutableLiveData(application.getString(R.string.tap_to_roll))
+    private var _lift1Text = MutableLiveData("")
+    private var _lift2Text = MutableLiveData("")
+    private var _lift3Text = MutableLiveData("")
 
     val lift1Text: MutableLiveData<String>
         get() = _lift1Text
