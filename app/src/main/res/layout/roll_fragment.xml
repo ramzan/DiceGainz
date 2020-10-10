@@ -64,13 +64,15 @@
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
-                                android:paddingHorizontal="@dimen/defaultPadding">
+                                android:paddingStart="@dimen/defaultPadding"
+                                tools:ignore="RtlSymmetry">
 
                                 <AutoCompleteTextView
                                     android:id="@+id/filter_1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/filter"
+                                    android:singleLine="true"
                                     android:inputType="none" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -126,13 +128,15 @@
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
-                                android:paddingHorizontal="@dimen/defaultPadding">
+                                android:paddingStart="@dimen/defaultPadding"
+                                tools:ignore="RtlSymmetry">
 
                                 <AutoCompleteTextView
                                     android:id="@+id/filter_2"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/filter"
+                                    android:singleLine="true"
                                     android:inputType="none" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -189,13 +193,15 @@
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
-                                android:paddingHorizontal="@dimen/defaultPadding">
+                                android:paddingStart="@dimen/defaultPadding"
+                                tools:ignore="RtlSymmetry">
 
                                 <AutoCompleteTextView
                                     android:id="@+id/filter_3"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/filter"
+                                    android:singleLine="true"
                                     android:inputType="none" />
 
                             </com.google.android.material.textfield.TextInputLayout>
