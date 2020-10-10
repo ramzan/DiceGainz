@@ -200,10 +200,9 @@ class EditorFragment : DialogFragment() {
     private fun saveLift(lift: Lift?) {
         val name = binding.nameInput.text.toString().trim()
         val tier = tierStrings.indexOf(binding.tierSelector.text.toString())
+        val newLift = Lift(lift?.id ?: 0, name, tier)
         if (lift !== null) {
-            lift.name = name
-            lift.tier = tier
-            editorViewModel.updateLift(lift)
+            editorViewModel.updateLift(newLift)
         } else {
             editorViewModel.addLift(Lift(name, tier))
         }
