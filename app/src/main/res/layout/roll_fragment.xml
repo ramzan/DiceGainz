@@ -52,7 +52,6 @@
                                 android:id="@+id/lift_1_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:text="@string/lift_1"
                                 android:textAlignment="center"
                                 android:textAppearance="?attr/textAppearanceHeadline6" />
@@ -60,12 +59,11 @@
                             <com.google.android.material.textfield.TextInputLayout
                                 android:id="@+id/filter_container_1"
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
-                                android:layout_weight="5"
                                 android:paddingHorizontal="@dimen/defaultPadding">
 
                                 <AutoCompleteTextView
@@ -117,19 +115,17 @@
                                 android:id="@+id/lift_2_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:text="@string/lift_2"
                                 android:textAlignment="center"
                                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
-                                android:layout_weight="5"
                                 android:paddingHorizontal="@dimen/defaultPadding">
 
                                 <AutoCompleteTextView
@@ -181,7 +177,6 @@
                                 android:id="@+id/lift_3_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:text="@string/lift_3"
                                 android:textAlignment="center"
 
@@ -189,12 +184,11 @@
 
                             <com.google.android.material.textfield.TextInputLayout
                                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginEnd="4dp"
-                                android:layout_weight="5"
                                 android:paddingHorizontal="@dimen/defaultPadding">
 
                                 <AutoCompleteTextView
