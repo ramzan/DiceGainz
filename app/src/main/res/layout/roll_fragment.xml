@@ -20,14 +20,15 @@
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.liftsLoaded ? View.VISIBLE : View.GONE}">
+            android:visibility="@{viewModel.lifts == null ? View.GONE : View.VISIBLE}">
 
             <LinearLayout
                 android:id="@+id/roll_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="@dimen/defaultPadding">
+                android:paddingHorizontal="@dimen/defaultPadding"
+                android:visibility="@{(viewModel.lifts != null &amp;&amp; !viewModel.liftsLoaded) ? View.GONE : View.VISIBLE}">
 
                 <com.google.android.material.card.MaterialCardView
                     android:layout_width="match_parent"
@@ -54,7 +55,6 @@
                                 android:layout_weight="1"
                                 android:text="@string/lift_1"
                                 android:textAlignment="center"
-
                                 android:textAppearance="?attr/textAppearanceHeadline6" />
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -236,7 +236,7 @@
             android:gravity="center"
             android:text="@string/welcome_message"
             android:textAlignment="center"
-            android:visibility="@{viewModel.liftsLoaded ? View.GONE : View.VISIBLE}" />
+            android:visibility="@{(viewModel.lifts == null || viewModel.liftsLoaded)?  View.GONE : View.VISIBLE}" />
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
