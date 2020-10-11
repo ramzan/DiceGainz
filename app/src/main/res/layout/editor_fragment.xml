@@ -26,9 +26,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="0dp"
-                tools:title="@string/editorTitleEdit"
                 app:menu="@menu/editor_menu"
-                app:navigationIcon="@drawable/ic_baseline_close_24">
+                app:navigationIcon="@drawable/ic_baseline_close_24"
+                tools:title="@string/editorTitleEdit">
 
             </com.google.android.material.appbar.MaterialToolbar>
 
