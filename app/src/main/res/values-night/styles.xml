@@ -4,6 +4,15 @@
         <item name="colorPrimary">@color/blue_light</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
         <item name="colorSecondary">@color/blue_light</item>
-        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="toolbarStyle">@style/Theme.App.ToolBar</item>
     </style>
+
+    <style name="Theme.App.ToolBar" parent="@style/Widget.MaterialComponents.Toolbar.Primary">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Toolbar</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Toolbar" parent="">
+        <item name="colorPrimary">@color/secondaryTextColorLight</item>
+    </style>
+
 </resources>
