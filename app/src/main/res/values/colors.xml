@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="blue_grey">#263238</color>
-    <color name="blue_grey_light">#4f5b62</color>
     <color name="blue_grey_dark">#000a12</color>
     <color name="blue">#01579b</color>
     <color name="blue_light">#5ea1ff</color>
     <color name="blue_dark">#002f6c</color>
     <color name="primaryTextColor">#ffffff</color>
     <color name="secondaryTextColor">#ffffff</color>
-    <color name="secondaryTextColorLight">#000000</color>
+    <color name="dark_grey">#111111</color>
     <color name="surfaceColor">#e1e2e1</color>
     <color name="backgroundColor">#f5f5f6</color>
 </resources>

@@ -14,7 +14,7 @@
     <style name="Theme.App.Tabs" parent="Widget.MaterialComponents.TabLayout.PrimarySurface">
         <item name="android:background">@color/surfaceColor</item>
         <item name="tabIndicatorColor">@color/blue_grey</item>
-        <item name="tabTextColor">@color/secondaryTextColorLight</item>
+        <item name="tabTextColor">@color/blue_grey_dark</item>
     </style>
 
     <style name="EditorDialog" parent="Theme.App">

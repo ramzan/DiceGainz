@@ -12,7 +12,7 @@
     </style>
 
     <style name="ThemeOverlay.App.Toolbar" parent="">
-        <item name="colorPrimary">@color/secondaryTextColorLight</item>
+        <item name="colorPrimary">@color/dark_grey</item>
     </style>
 
 </resources>
