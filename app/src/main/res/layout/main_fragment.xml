@@ -18,6 +18,7 @@
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"
+                android:background="@color/surfaceColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.appbar.AppBarLayout>
