@@ -1,6 +1,5 @@
 package com.ramzan.dicegainz.repository
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import com.ramzan.dicegainz.database.Lift
 import com.ramzan.dicegainz.database.LiftDatabase
@@ -32,30 +31,24 @@ class Repository(database: LiftDatabase) {
     }
 
     fun addLift(lift: Lift, tags: List<String>) {
-        Log.d("addLift", "Adding lift ${lift.name}")
         CoroutineScope(Dispatchers.IO).launch {
             val id = insert(lift)
             insertAll(tags.map { Tag(it, id) })
-            Log.d("addLift", "Lift ${lift.name} added")
         }
     }
 
 
     fun updateLift(lift: Lift, newTags: List<Tag>, deletedTags: List<Tag>) {
-        Log.d("updateLift", "Updating lift ${lift.name}")
         CoroutineScope(Dispatchers.IO).launch {
             update(lift)
             insertAll(newTags)
             deleteAll(deletedTags)
-            Log.d("updateLift", "Lift ${lift.name} updated")
         }
     }
 
     fun deleteLift(lift: Lift) {
-        Log.d("deleteLift", "Deleting lift ${lift.name}")
         CoroutineScope(Dispatchers.IO).launch {
             delete(lift)
-            Log.d("deleteLift", "Lift ${lift.name} deleted!")
         }
     }
 
