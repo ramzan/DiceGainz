@@ -43,6 +43,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     // Current tag selection in the filter of the Lifts tab
     private var _liftsFilterText = MutableLiveData(allString)
+
     // Current tag selection in the filters in th Roll tab
     private var _filter1Text = MutableLiveData(allString)
     private var _filter2Text = MutableLiveData(allString)

@@ -1,6 +1,6 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.App" parent="@style/Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.App" parent="@style/Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/blue_grey</item>
         <item name="colorPrimaryDark">@color/blue_grey_dark</item>
         <item name="colorOnPrimary">@color/primaryTextColor</item>
@@ -8,6 +8,13 @@
         <item name="colorSecondaryVariant">@color/blue_dark</item>
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
         <item name="android:colorBackground">@color/backgroundColor</item>
+        <item name="tabStyle">@style/Theme.App.Tabs</item>
+    </style>
+
+    <style name="Theme.App.Tabs" parent="Widget.MaterialComponents.TabLayout.PrimarySurface">
+        <item name="android:background">@color/surfaceColor</item>
+        <item name="tabIndicatorColor">@color/blue_grey</item>
+        <item name="tabTextColor">@color/secondaryTextColorLight</item>
     </style>
 
     <style name="EditorDialog" parent="Theme.App">

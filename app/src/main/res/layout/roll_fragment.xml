@@ -72,8 +72,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/filter"
-                                    android:singleLine="true"
-                                    android:inputType="none" />
+                                    android:inputType="none"
+                                    android:singleLine="true" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -136,8 +136,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/filter"
-                                    android:singleLine="true"
-                                    android:inputType="none" />
+                                    android:inputType="none"
+                                    android:singleLine="true" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 
@@ -201,8 +201,8 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:hint="@string/filter"
-                                    android:singleLine="true"
-                                    android:inputType="none" />
+                                    android:inputType="none"
+                                    android:singleLine="true" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 

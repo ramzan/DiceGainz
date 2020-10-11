@@ -1,5 +1,5 @@
-<chip style="@style/Widget.MaterialComponents.Chip.Entry"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<chip xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.MaterialComponents.Chip.Entry"
     android:checkable="false"
     app:iconStartPadding="5dp" />
