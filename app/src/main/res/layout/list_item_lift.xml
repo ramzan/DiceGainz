@@ -12,10 +12,11 @@
         android:id="@+id/lift_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
         android:ellipsize="end"
         android:maxLines="1"
         android:paddingHorizontal="@dimen/defaultPadding"
-        android:paddingTop="8dp"
-        android:paddingBottom="0dp"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:textSize="24sp" />
 </layout>
