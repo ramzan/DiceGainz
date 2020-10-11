@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:paddingHorizontal="@dimen/defaultPadding"
+        android:paddingTop="8dp"
+        android:paddingBottom="0dp"
         android:textSize="24sp" />
 </layout>
