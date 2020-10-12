@@ -72,6 +72,7 @@ class LiftsFragment : Fragment() {
         })
 
         binding.fab.setOnClickListener {
+            it?.apply { isEnabled = false; postDelayed({ isEnabled = true }, 400) } //400 ms
             showEditDialog(null)
         }
 
