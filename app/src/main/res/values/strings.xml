@@ -31,9 +31,18 @@
     <string name="about">About</string>
     <string name="theme">Theme</string>
     <string name="ok">OK</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="system">System</string>
+    <string name="about_message"><a href="https://github.com/ramzan/dicegainz/">Source code</a>\n\nThis app is based on the <a href="https://redd.it/aqkdgo/">General Gainz</a> training method by <a href="https://swoleateveryheight.blogspot.com/">Cody Lefever</a>.</string>
     <string-array name="tier_string_array">
         <item>@string/both</item>
         <item>@string/t1</item>
         <item>@string/t2</item>
+    </string-array>
+    <string-array name="theme_string_array">
+        <item>@string/light</item>
+        <item>@string/dark</item>
+        <item>@string/system</item>
     </string-array>
 </resources>

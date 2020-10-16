@@ -3,9 +3,11 @@ package com.ramzan.dicegainz.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
@@ -38,6 +40,7 @@ class MainFragment : Fragment() {
         binding.mainToolbar.setOnMenuItemClickListener {
             when (it) {
                 binding.mainToolbar.menu[0] -> showThemeDialog()
+                binding.mainToolbar.menu[1] -> showAboutDialog()
                 else -> false
             }
         }
@@ -45,9 +48,8 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    private val singleItems = arrayOf("Light", "Dark", "System")
-
     private fun showThemeDialog(): Boolean {
+        val themeStrings = resources.getStringArray(R.array.theme_string_array)
         val sharedPrefs = requireActivity().getPreferences(Context.MODE_PRIVATE)
         val themeString = getString(R.string.theme)
         val oldTheme = sharedPrefs.getInt(themeString, AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
@@ -61,7 +63,6 @@ class MainFragment : Fragment() {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(themeString)
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                // Respond to positive button press
                 if (newTheme != oldTheme) {
                     with(sharedPrefs.edit()) {
                         putInt(themeString, newTheme)
@@ -70,9 +71,7 @@ class MainFragment : Fragment() {
                     startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
                 }
             }
-            // Single-choice items (initialized with checked item)
-            .setSingleChoiceItems(singleItems, checkedItem) { _, which ->
-                // Respond to item chose
+            .setSingleChoiceItems(themeStrings, checkedItem) { _, which ->
                 newTheme = when (which) {
                     0 -> AppCompatDelegate.MODE_NIGHT_NO
                     1 -> AppCompatDelegate.MODE_NIGHT_YES
@@ -82,4 +81,18 @@ class MainFragment : Fragment() {
             .show()
         return true
     }
+
+    private fun showAboutDialog(): Boolean {
+        val alert = MaterialAlertDialogBuilder(requireContext())
+            .setTitle(getString(R.string.about))
+            .setPositiveButton(getString(R.string.ok), null)
+            .setMessage(R.string.about_message)
+            .create()
+
+        alert.show()
+        alert.findViewById<TextView>(android.R.id.message)?.movementMethod =
+            LinkMovementMethod.getInstance()
+        return true
+    }
+
 }
