@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.database
+package com.nazmar.dicegainz.database
 
 // Tiers
 const val T1 = 1

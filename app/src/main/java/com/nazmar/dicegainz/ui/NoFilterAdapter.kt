@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.ui
+package com.nazmar.dicegainz.ui
 
 import android.content.Context
 import android.widget.ArrayAdapter

@@ -1,9 +1,9 @@
-package com.ramzan.dicegainz.ui.editor
+package com.nazmar.dicegainz.ui.editor
 
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.ramzan.dicegainz.database.Lift
+import com.nazmar.dicegainz.database.Lift
 
 class EditorViewModelFactory(
     private val lift: Lift?,

@@ -1,12 +1,12 @@
-package com.ramzan.dicegainz.ui.editor
+package com.nazmar.dicegainz.ui.editor
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.*
-import com.ramzan.dicegainz.repository.Repository
+import com.nazmar.dicegainz.R
+import com.nazmar.dicegainz.database.*
+import com.nazmar.dicegainz.repository.Repository
 
 val tierMap = mapOf(Pair(BOTH, R.string.both), Pair(T1, R.string.t1), Pair(T2, R.string.t2))
 

@@ -1,12 +1,12 @@
-package com.ramzan.dicegainz.ui.lifts
+package com.nazmar.dicegainz.ui.lifts
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.ramzan.dicegainz.database.Lift
-import com.ramzan.dicegainz.databinding.ListItemLiftBinding
+import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.databinding.ListItemLiftBinding
 
 
 class LiftAdapter(private val onClickListener: OnClickListener) :

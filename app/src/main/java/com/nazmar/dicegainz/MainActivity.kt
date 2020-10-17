@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz
+package com.nazmar.dicegainz
 
 import android.content.Context
 import android.os.Bundle

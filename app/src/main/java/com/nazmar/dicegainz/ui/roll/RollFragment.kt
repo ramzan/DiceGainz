@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.ui.roll
+package com.nazmar.dicegainz.ui.roll
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,9 +11,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.databinding.RollFragmentBinding
-import com.ramzan.dicegainz.ui.main.*
+import com.nazmar.dicegainz.R
+import com.nazmar.dicegainz.databinding.RollFragmentBinding
+import com.nazmar.dicegainz.ui.main.*
 
 /**
  * A placeholder fragment containing a simple view.

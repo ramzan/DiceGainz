@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.ui.editor
+package com.nazmar.dicegainz.ui.editor
 
 import android.app.Dialog
 import android.content.Context
@@ -19,12 +19,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
-import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.Lift
-import com.ramzan.dicegainz.databinding.EditorFragmentBinding
-import com.ramzan.dicegainz.ui.NoFilterAdapter
-import com.ramzan.dicegainz.ui.main.MainViewModel
-import com.ramzan.dicegainz.ui.main.MainViewModelFactory
+import com.nazmar.dicegainz.R
+import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.databinding.EditorFragmentBinding
+import com.nazmar.dicegainz.ui.NoFilterAdapter
+import com.nazmar.dicegainz.ui.main.MainViewModel
+import com.nazmar.dicegainz.ui.main.MainViewModelFactory
 
 
 class EditorFragment : DialogFragment() {

@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.ui.lifts
+package com.nazmar.dicegainz.ui.lifts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,13 +11,13 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
-import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.Lift
-import com.ramzan.dicegainz.databinding.LiftsFragmentBinding
-import com.ramzan.dicegainz.ui.main.LIFTS_FILTER_ID
-import com.ramzan.dicegainz.ui.main.MainFragmentDirections
-import com.ramzan.dicegainz.ui.main.MainViewModel
-import com.ramzan.dicegainz.ui.main.MainViewModelFactory
+import com.nazmar.dicegainz.R
+import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.databinding.LiftsFragmentBinding
+import com.nazmar.dicegainz.ui.main.LIFTS_FILTER_ID
+import com.nazmar.dicegainz.ui.main.MainFragmentDirections
+import com.nazmar.dicegainz.ui.main.MainViewModel
+import com.nazmar.dicegainz.ui.main.MainViewModelFactory
 
 class LiftsFragment : Fragment() {
 

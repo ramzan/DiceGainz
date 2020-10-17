@@ -1,12 +1,12 @@
-package com.ramzan.dicegainz
+package com.nazmar.dicegainz
 
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.ramzan.dicegainz.database.Lift
-import com.ramzan.dicegainz.database.LiftDatabase
-import com.ramzan.dicegainz.database.LiftDatabaseDao
-import com.ramzan.dicegainz.database.Tag
+import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.database.LiftDatabase
+import com.nazmar.dicegainz.database.LiftDatabaseDao
+import com.nazmar.dicegainz.database.Tag
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals

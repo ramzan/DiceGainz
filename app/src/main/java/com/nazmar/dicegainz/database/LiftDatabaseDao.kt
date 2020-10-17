@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.database
+package com.nazmar.dicegainz.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*

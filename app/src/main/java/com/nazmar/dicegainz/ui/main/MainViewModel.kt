@@ -1,13 +1,13 @@
-package com.ramzan.dicegainz.ui.main
+package com.nazmar.dicegainz.ui.main
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.database.Lift
-import com.ramzan.dicegainz.database.LiftDatabase
-import com.ramzan.dicegainz.database.T1
-import com.ramzan.dicegainz.database.T2
-import com.ramzan.dicegainz.repository.Repository
+import com.nazmar.dicegainz.R
+import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.database.LiftDatabase
+import com.nazmar.dicegainz.database.T1
+import com.nazmar.dicegainz.database.T2
+import com.nazmar.dicegainz.repository.Repository
 
 const val LIFTS_FILTER_ID = 0
 const val ROLL_FILTER1_ID = 1

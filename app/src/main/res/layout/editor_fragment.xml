@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.ramzan.dicegainz.ui.editor.EditorViewModel" />
+            type="com.nazmar.dicegainz.ui.editor.EditorViewModel" />
     </data>
 
     <LinearLayout

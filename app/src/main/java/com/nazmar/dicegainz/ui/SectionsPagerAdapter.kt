@@ -1,12 +1,12 @@
-package com.ramzan.dicegainz.ui
+package com.nazmar.dicegainz.ui
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
-import com.ramzan.dicegainz.R
-import com.ramzan.dicegainz.ui.lifts.LiftsFragment
-import com.ramzan.dicegainz.ui.roll.RollFragment
+import com.nazmar.dicegainz.R
+import com.nazmar.dicegainz.ui.lifts.LiftsFragment
+import com.nazmar.dicegainz.ui.roll.RollFragment
 
 private val TAB_TITLES = arrayOf(
     R.string.tab_text_1,

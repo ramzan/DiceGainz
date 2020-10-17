@@ -1,4 +1,4 @@
-package com.ramzan.dicegainz.ui.main
+package com.nazmar.dicegainz.ui.main
 
 import android.app.Application
 import androidx.lifecycle.ViewModel

@@ -2,12 +2,11 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
     app:startDestination="@id/mainFragment">
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.ramzan.dicegainz.ui.main.MainFragment"
+        android:name="com.nazmar.dicegainz.ui.main.MainFragment"
         android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_editorFragment"
@@ -16,7 +15,7 @@
     </fragment>
     <dialog
         android:id="@+id/editorFragment"
-        android:name="com.ramzan.dicegainz.ui.editor.EditorFragment"
+        android:name="com.nazmar.dicegainz.ui.editor.EditorFragment"
         android:label="editor_fragment"
         tools:layout="@layout/editor_fragment">
         <action
@@ -30,7 +29,7 @@
         </action>
         <argument
             android:name="selectedLift"
-            app:argType="com.ramzan.dicegainz.database.Lift"
+            app:argType="com.nazmar.dicegainz.database.Lift"
             app:nullable="true" />
     </dialog>
 </navigation>

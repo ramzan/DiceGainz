@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.ramzan.dicegainz.ui.main.MainViewModel" />
+            type="com.nazmar.dicegainz.ui.main.MainViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -40,7 +40,7 @@
 
             <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/lift_list"
-                android:name="com.ramzan.dicegainz.LiftFragment"
+                android:name="com.nazmar.dicegainz.LiftFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="0dp"
@@ -57,7 +57,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_baseline_add_24" />
+            app:srcCompat="@drawable/ic_baseline_add_24"
+            android:contentDescription="@string/editorTitleNew" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

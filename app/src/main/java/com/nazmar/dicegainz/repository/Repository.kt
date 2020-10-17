@@ -1,9 +1,9 @@
-package com.ramzan.dicegainz.repository
+package com.nazmar.dicegainz.repository
 
 import androidx.lifecycle.LiveData
-import com.ramzan.dicegainz.database.Lift
-import com.ramzan.dicegainz.database.LiftDatabase
-import com.ramzan.dicegainz.database.Tag
+import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.database.LiftDatabase
+import com.nazmar.dicegainz.database.Tag
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

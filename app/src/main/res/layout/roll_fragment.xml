@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.ramzan.dicegainz.ui.main.MainViewModel" />
+            type="com.nazmar.dicegainz.ui.main.MainViewModel" />
 
         <import type="android.view.View" />
     </data>
@@ -247,7 +247,8 @@
             android:layout_margin="@dimen/defaultPadding"
             android:onClick="@{() -> viewModel.rollAll()}"
             android:visibility="@{viewModel.liftsLoaded ? View.VISIBLE : View.GONE}"
-            app:srcCompat="@drawable/ic_baseline_casino_24" />
+            app:srcCompat="@drawable/ic_baseline_casino_24"
+            android:contentDescription="@string/tap_to_roll" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
