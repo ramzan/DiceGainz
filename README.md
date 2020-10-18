@@ -10,10 +10,10 @@
 
 ## Screenshots
 <div align="center">
-<img src="assets/ss1.jpg" width=245>
-<img src="assets/ss2.jpg" width=245>
-<img src="assets/ss3.jpg" width=245>
-<img src="assets/ss4.jpg" width=245>
+<img src="assets/ss1.jpg" width=280>
+<img src="assets/ss2.jpg" width=280>
+<img src="assets/ss3.jpg" width=280>
+<img src="assets/ss4.jpg" width=280>
 </div>
 
 ### Features
