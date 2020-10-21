@@ -2,8 +2,10 @@
 <h2 align="center"><b>Dice Gainz</b></h2>
 <h4 align="center">A random workout generator based on the <a href="https://redd.it/aqkdgo/">General Gainz</a> training method by <a href="https://swoleateveryheight.blogspot.com/">Cody Lefever</h4>
 <p align="center">
-  <!-- <a href="https://f-droid.org/packages/com.ramzan.dicegainz/"><img src="https://f-droid.org/wiki/images/0/06/F-Droid-button_get-it-on.png"></a> -->
-  <a href="https://github.com/ramzan/dicegainz/releases/" alt="GitHub release">Direct APK</a>
+<a href="https://play.google.com/store/apps/details?id=com.nazmar.dicegainz"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="100"></a>
+</p> 
+<p align="center">
+<a href="https://github.com/ramzan/dicegainz/releases/" alt="GitHub release">Get the APK</a>
 </p> 
 <hr>
 
@@ -32,4 +34,3 @@ published by the Free Software Foundation, either version 3 of the License, or
 (at your option) any later version.  
 
 The app icon is derived from [Dice, gamble, gambling icon](https://www.iconfinder.com/icons/3525384/dice_gamble_gambling_icon) by [Chanut is Industries](https://elements.envato.com/user/Chanut_industries/graphics) under [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/legalcode).
-
