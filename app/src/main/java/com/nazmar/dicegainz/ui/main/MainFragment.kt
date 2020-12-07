@@ -14,6 +14,7 @@ import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.tabs.TabLayoutMediator
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.databinding.MainFragmentBinding
 import com.nazmar.dicegainz.ui.SectionsPagerAdapter
@@ -33,10 +34,13 @@ class MainFragment : Fragment() {
             R.layout.main_fragment, container, false
         )
 
-        binding.viewPager.apply {
-            adapter = SectionsPagerAdapter(requireContext(), childFragmentManager)
-            binding.tabs.setupWithViewPager(this)
-        }
+        binding.viewPager.adapter = SectionsPagerAdapter(this)
+        TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
+            tab.text = if (position == 0)
+                getString(R.string.tab_text_1)
+            else
+                getString(R.string.tab_text_2)
+        }.attach()
 
         binding.mainToolbar.setOnMenuItemClickListener {
             when (it) {
