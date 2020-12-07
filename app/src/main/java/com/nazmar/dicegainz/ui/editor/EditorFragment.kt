@@ -3,7 +3,6 @@ package com.nazmar.dicegainz.ui.editor
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -93,7 +92,7 @@ class EditorFragment : DialogFragment() {
                 }
 
                 saveButton.setOnMenuItemClickListener {
-                    if (TextUtils.isEmpty(binding.nameInput.text?.trim())) {
+                    if (binding.nameInput.text?.trim().isNullOrEmpty()) {
                         binding.nameInput.setText("")
                         nameInputLayout.isErrorEnabled = true
                         nameInputLayout.error = getString(R.string.empty_name_error_msg)

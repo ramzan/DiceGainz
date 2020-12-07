@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.edit
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -64,9 +65,8 @@ class MainFragment : Fragment() {
             .setTitle(themeString)
             .setPositiveButton(getString(R.string.ok)) { _, _ ->
                 if (newTheme != oldTheme) {
-                    with(sharedPrefs.edit()) {
+                    sharedPrefs.edit {
                         putInt(themeString, newTheme)
-                        apply()
                     }
                     startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
                 }
