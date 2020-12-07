@@ -27,7 +27,7 @@ class LiftsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         // Inflate view and get instance of binding class
         binding = DataBindingUtil.inflate(

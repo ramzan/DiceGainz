@@ -105,8 +105,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
-    val liftsLoaded = Transformations.map(combinedValues) { triple ->
-        !triple.first.isNullOrEmpty() && !triple.second.isNullOrEmpty() && !triple.third.isNullOrEmpty()
+    val liftsLoaded = Transformations.map(combinedValues) { (first, second, third) ->
+        !first.isNullOrEmpty() && !second.isNullOrEmpty() && !third.isNullOrEmpty()
     }
 
     // String containing the rolled lift
