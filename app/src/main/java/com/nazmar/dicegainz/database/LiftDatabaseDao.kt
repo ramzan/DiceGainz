@@ -28,7 +28,7 @@ interface LiftDatabaseDao {
     @Delete
     suspend fun delete(lift: Lift)
 
-    @Query("SELECT * FROM lift_table ORDER BY name ASC")
+    @Query("SELECT * FROM lift_table ORDER BY name COLLATE NOCASE ASC")
     fun getAllLifts(): LiveData<List<Lift>>
 
     @Query("SELECT * FROM lift_table ORDER BY name ASC")
@@ -55,7 +55,7 @@ interface LiftDatabaseDao {
     @Query("SELECT DISTINCT tagName FROM tag_table ORDER BY tagName ASC")
     fun getAllTagNamesTest(): List<String>
 
-    @Query("SELECT DISTINCT tagName FROM tag_table ORDER BY tagName ASC")
+    @Query("SELECT DISTINCT tagName FROM tag_table ORDER BY tagName COLLATE NOCASE ASC")
     fun getAllTagNames(): LiveData<List<String>>
 
     /*
@@ -74,7 +74,7 @@ interface LiftDatabaseDao {
         """SELECT DISTINCT(tagName) as tag_names
             FROM tag_table
             WHERE liftId = :liftId
-            ORDER BY tagName ASC"""
+            ORDER BY tagName COLLATE NOCASE ASC"""
     )
     fun getTagNamesForLift(liftId: Long): LiveData<List<String>>
 
@@ -94,7 +94,7 @@ interface LiftDatabaseDao {
             JOIN tag_table
             ON tag_table.liftId = lift_table.id
             WHERE tag_table.tagName = :tagName
-            ORDER BY name ASC"""
+            ORDER BY name COLLATE NOCASE ASC"""
     )
     fun getLiftsForTag(tagName: String): LiveData<List<Lift>>
 }
