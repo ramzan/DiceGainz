@@ -1,7 +1,6 @@
 package com.nazmar.dicegainz.ui.main
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
@@ -72,7 +71,7 @@ class MainFragment : Fragment() {
                     sharedPrefs.edit {
                         putInt(themeString, newTheme)
                     }
-                    startActivity(Intent.makeRestartActivityTask(activity?.intent?.component))
+                    requireActivity().recreate()
                 }
             }
             .setSingleChoiceItems(themeStrings, checkedItem) { _, which ->
