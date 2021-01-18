@@ -1,256 +1,237 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.nazmar.dicegainz.ui.main.MainViewModel" />
-
-        <import type="android.view.View" />
-    </data>
-
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/roll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:visibility="visible">
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
+            android:id="@+id/roll_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="@{viewModel.lifts == null ? View.GONE : View.VISIBLE}">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/defaultPadding">
 
-            <LinearLayout
-                android:id="@+id/roll_layout"
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="@dimen/defaultPadding"
-                android:visibility="@{(viewModel.lifts != null &amp;&amp; !viewModel.liftsLoaded) ? View.GONE : View.VISIBLE}">
+                android:layout_margin="8dp">
 
-                <com.google.android.material.card.MaterialCardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:onClick="@{() -> viewModel.roll(1)}">
+                    android:orientation="vertical"
+                    android:padding="@dimen/defaultPadding">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/defaultPadding">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="bottom"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/lift_1_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/lift_1"
-                                android:textAlignment="center"
-                                android:textAppearance="?attr/textAppearanceHeadline6" />
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                android:id="@+id/filter_container_1"
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginEnd="4dp"
-                                android:paddingStart="@dimen/defaultPadding"
-                                tools:ignore="RtlSymmetry">
-
-                                <AutoCompleteTextView
-                                    android:id="@+id/filter_1"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="@string/filter"
-                                    android:inputType="none"
-                                    android:singleLine="true" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                        </LinearLayout>
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/lift_1_text"
+                            android:id="@+id/lift_1_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lift_1"
+                            android:textAlignment="center"
+                            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/filter_container_1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="@{viewModel.lift1Text.isEmpty() ? @string/tap_to_roll : viewModel.lift1Text}"
-                            android:textAlignment="center"
-                            android:textAppearance="?attr/textAppearanceHeadline5"
-                            android:textColor="?android:attr/textColorSecondary"
-                            tools:text="@string/tap_to_roll" />
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:paddingStart="@dimen/defaultPadding"
+                            tools:ignore="RtlSymmetry">
 
+                            <AutoCompleteTextView
+                                android:id="@+id/filter_1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/filter"
+                                android:inputType="none"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/lift_1_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/tap_to_roll"
+                        android:textAlignment="center"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        android:textColor="?android:attr/textColorSecondary"
+                        tools:text="@string/tap_to_roll" />
 
-                <com.google.android.material.card.MaterialCardView
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:onClick="@{() -> viewModel.roll(2)}">
+                    android:orientation="vertical"
+                    android:padding="@dimen/defaultPadding">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/defaultPadding">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="bottom"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/lift_2_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/lift_2"
-                                android:textAlignment="center"
-                                android:textAppearance="?attr/textAppearanceHeadline6" />
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginEnd="4dp"
-                                android:paddingStart="@dimen/defaultPadding"
-                                tools:ignore="RtlSymmetry">
-
-                                <AutoCompleteTextView
-                                    android:id="@+id/filter_2"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="@string/filter"
-                                    android:inputType="none"
-                                    android:singleLine="true" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                        </LinearLayout>
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/lift_2_text"
+                            android:id="@+id/lift_2_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lift_2"
+                            android:textAlignment="center"
+                            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="@{viewModel.lift2Text.isEmpty() ? @string/tap_to_roll : viewModel.lift2Text}"
-                            android:textAlignment="center"
-                            android:textAppearance="?attr/textAppearanceHeadline5"
-                            android:textColor="?android:attr/textColorSecondary"
-                            tools:text="@string/tap_to_roll" />
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:paddingStart="@dimen/defaultPadding"
+                            tools:ignore="RtlSymmetry">
 
+                            <AutoCompleteTextView
+                                android:id="@+id/filter_2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/filter"
+                                android:inputType="none"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/lift_2_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/tap_to_roll"
+                        android:textAlignment="center"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        android:textColor="?android:attr/textColorSecondary"
+                        tools:text="@string/tap_to_roll" />
 
-                <com.google.android.material.card.MaterialCardView
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:onClick="@{() -> viewModel.roll(3)}">
+                    android:orientation="vertical"
+                    android:padding="@dimen/defaultPadding">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="@dimen/defaultPadding">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="bottom"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/lift_3_title"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="@string/lift_3"
-                                android:textAlignment="center"
-
-                                android:textAppearance="?attr/textAppearanceHeadline6" />
-
-                            <com.google.android.material.textfield.TextInputLayout
-                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="4dp"
-                                android:layout_marginTop="4dp"
-                                android:layout_marginEnd="4dp"
-                                android:paddingStart="@dimen/defaultPadding"
-                                tools:ignore="RtlSymmetry">
-
-                                <AutoCompleteTextView
-                                    android:id="@+id/filter_3"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="@string/filter"
-                                    android:inputType="none"
-                                    android:singleLine="true" />
-
-                            </com.google.android.material.textfield.TextInputLayout>
-
-                        </LinearLayout>
+                        android:gravity="bottom"
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/lift_3_text"
+                            android:id="@+id/lift_3_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lift_3"
+                            android:textAlignment="center"
+
+                            android:textAppearance="?attr/textAppearanceHeadline6" />
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp"
-                            android:text="@{viewModel.lift3Text.isEmpty() ? @string/tap_to_roll : viewModel.lift3Text}"
-                            android:textAlignment="center"
-                            android:textAppearance="?attr/textAppearanceHeadline5"
-                            android:textColor="?android:attr/textColorSecondary"
-                            tools:text="@string/tap_to_roll" />
+                            android:layout_marginStart="4dp"
+                            android:layout_marginTop="4dp"
+                            android:layout_marginEnd="4dp"
+                            android:paddingStart="@dimen/defaultPadding"
+                            tools:ignore="RtlSymmetry">
 
+                            <AutoCompleteTextView
+                                android:id="@+id/filter_3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="@string/filter"
+                                android:inputType="none"
+                                android:singleLine="true" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+                    <TextView
+                        android:id="@+id/lift_3_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="@string/tap_to_roll"
+                        android:textAlignment="center"
+                        android:textAppearance="?attr/textAppearanceHeadline5"
+                        android:textColor="?android:attr/textColorSecondary"
+                        tools:text="@string/tap_to_roll" />
 
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                </LinearLayout>
 
-        <TextView
-            android:id="@+id/welcome_message"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/defaultPadding"
-            android:gravity="center"
-            android:text="@string/welcome_message"
-            android:textAlignment="center"
-            android:visibility="@{(viewModel.lifts == null || viewModel.liftsLoaded)?  View.GONE : View.VISIBLE}" />
+            </com.google.android.material.card.MaterialCardView>
 
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/rollAllButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/defaultPadding"
-            android:onClick="@{() -> viewModel.rollAll()}"
-            android:visibility="@{viewModel.liftsLoaded ? View.VISIBLE : View.GONE}"
-            app:srcCompat="@drawable/ic_baseline_casino_24"
-            android:contentDescription="@string/tap_to_roll" />
+    <TextView
+        android:id="@+id/welcome_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/defaultPadding"
+        android:gravity="center"
+        android:text="@string/welcome_message"
+        android:textAlignment="center" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/rollAllButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/defaultPadding"
+        android:contentDescription="@string/tap_to_roll"
+        android:visibility="gone"
+        app:srcCompat="@drawable/ic_baseline_casino_24"
+        tools:visibility="visible" />
 
-
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

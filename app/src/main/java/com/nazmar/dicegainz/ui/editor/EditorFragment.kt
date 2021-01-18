@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,7 +28,9 @@ import com.nazmar.dicegainz.ui.main.MainViewModelFactory
 class EditorFragment : DialogFragment() {
 
     private lateinit var tierStrings: Array<String>
-    private lateinit var binding: EditorFragmentBinding
+    private var _binding: EditorFragmentBinding? = null
+    private val binding get() = _binding!!
+
     private val editorViewModel: EditorViewModel by viewModels {
         EditorViewModelFactory(
             arguments?.get(
@@ -64,16 +65,12 @@ class EditorFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.editor_fragment, container, false
-        )
+        _binding = EditorFragmentBinding.inflate(inflater)
+
 
         val selectedLift = arguments?.get("selectedLift") as Lift?
 
         binding.apply {
-            viewModel = editorViewModel
-
             // Toolbar settings
             editorToolbar.apply {
                 title = getText(editorViewModel.editorTitleId)
@@ -230,5 +227,10 @@ class EditorFragment : DialogFragment() {
             }
             true
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

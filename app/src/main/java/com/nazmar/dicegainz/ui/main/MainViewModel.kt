@@ -37,14 +37,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     // ------------------------Filter methods and data------------------------
     private val tags = repo.allTagsList
 
-    val tagList = Transformations.map(tags) {
+    val tagList: LiveData<List<String>> = Transformations.map(tags) {
         listOf(allString) + it
     }
 
     // Current tag selection in the filter of the Lifts tab
     private var _liftsFilterText = MutableLiveData(allString)
 
-    // Current tag selection in the filters in th Roll tab
+    // Current tag selection in the filters in the Roll tab
     private var _filter1Text = MutableLiveData(allString)
     private var _filter2Text = MutableLiveData(allString)
     private var _filter3Text = MutableLiveData(allString)
@@ -105,9 +105,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
 
-    val liftsLoaded = Transformations.map(combinedValues) { (first, second, third) ->
-        !first.isNullOrEmpty() && !second.isNullOrEmpty() && !third.isNullOrEmpty()
-    }
+    val liftsLoaded: LiveData<Boolean> =
+        Transformations.map(combinedValues) { (first, second, third) ->
+            !first.isNullOrEmpty() && !second.isNullOrEmpty() && !third.isNullOrEmpty()
+        }
 
     // String containing the rolled lift
     private var _lift1Text = MutableLiveData("")

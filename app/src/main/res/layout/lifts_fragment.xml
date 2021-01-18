@@ -1,64 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lifts_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.nazmar.dicegainz.ui.main.MainViewModel" />
-    </data>
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/lifts_fragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
+            android:paddingHorizontal="@dimen/defaultPadding">
+
+            <AutoCompleteTextView
+                android:id="@+id/filter_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/filter"
+                android:inputType="none" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/lift_list"
+            android:name="com.nazmar.dicegainz.LiftFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
+            app:layoutManager="LinearLayoutManager"
+            tools:context=".ui.lifts.LiftsFragment"
+            tools:listitem="@layout/list_item_lift" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="match_parent"
+    </LinearLayout>
 
-                android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:paddingHorizontal="@dimen/defaultPadding">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:contentDescription="@string/editorTitleNew"
+        app:srcCompat="@drawable/ic_baseline_add_24" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/filter_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/filter"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/lift_list"
-                android:name="com.nazmar.dicegainz.LiftFragment"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="0dp"
-                app:layoutManager="LinearLayoutManager"
-                tools:context=".ui.lifts.LiftsFragment"
-                tools:listitem="@layout/list_item_lift" />
-
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@drawable/ic_baseline_add_24"
-            android:contentDescription="@string/editorTitleNew" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</layout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

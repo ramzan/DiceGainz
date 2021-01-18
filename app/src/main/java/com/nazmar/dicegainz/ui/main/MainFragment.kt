@@ -10,7 +10,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.core.view.get
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayoutMediator
@@ -21,17 +20,15 @@ import com.nazmar.dicegainz.ui.SectionsPagerAdapter
 
 class MainFragment : Fragment() {
 
-    private lateinit var binding: MainFragmentBinding
+    private var _binding: MainFragmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.main_fragment, container, false
-        )
+        _binding = MainFragmentBinding.inflate(inflater)
 
         binding.viewPager.adapter = SectionsPagerAdapter(this)
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
@@ -98,4 +95,8 @@ class MainFragment : Fragment() {
         return true
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

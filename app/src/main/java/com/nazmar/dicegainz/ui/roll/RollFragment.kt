@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
@@ -20,43 +19,84 @@ import com.nazmar.dicegainz.ui.main.*
  */
 class RollFragment : Fragment() {
 
-    private lateinit var binding: RollFragmentBinding
-    val viewModel: MainViewModel by activityViewModels { MainViewModelFactory(requireNotNull(this.activity).application) }
+    private var _binding: RollFragmentBinding? = null
+    private val binding get() = _binding!!
+    private val viewModel: MainViewModel by activityViewModels {
+        MainViewModelFactory(
+            requireNotNull(
+                this.activity
+            ).application
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        // Inflate view and get instance of binding class
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.roll_fragment, container, false
-        )
+        _binding = RollFragmentBinding.inflate(inflater)
 
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
-
-        // Set up filter spinners
-        viewModel.filter1Text.observe(viewLifecycleOwner) {
-            binding.filter1.setText(it, false)
+        binding.apply {
+            // Set up filter spinners
+            viewModel.tagList.observe(viewLifecycleOwner, {
+                setUpSpinner(filter1, it, ROLL_FILTER1_ID)
+                setUpSpinner(filter2, it, ROLL_FILTER2_ID)
+                setUpSpinner(filter3, it, ROLL_FILTER3_ID)
+            })
+            viewModel.filter1Text.observe(viewLifecycleOwner) {
+                binding.filter1.setText(it, false)
+            }
+            viewModel.filter2Text.observe(viewLifecycleOwner) {
+                binding.filter2.setText(it, false)
+            }
+            viewModel.filter3Text.observe(viewLifecycleOwner) {
+                binding.filter3.setText(it, false)
+            }
+            // Click listeners
+            welcomeMessage.setOnClickListener {
+                showEditDialog()
+            }
+            card1.setOnClickListener {
+                viewModel.roll(1)
+            }
+            card2.setOnClickListener {
+                viewModel.roll(2)
+            }
+            card3.setOnClickListener {
+                viewModel.roll(3)
+            }
+            rollAllButton.setOnClickListener {
+                viewModel.rollAll()
+            }
+            // View control
+            viewModel.liftsLoaded.observe(viewLifecycleOwner) { liftsLoaded ->
+                if (liftsLoaded) {
+                    rollAllButton.visibility = View.VISIBLE
+                    rollView.visibility = View.VISIBLE
+                    welcomeMessage.visibility = View.GONE
+                } else {
+                    rollAllButton.visibility = View.GONE
+                    rollView.visibility = View.GONE
+                    welcomeMessage.visibility = View.VISIBLE
+                }
+            }
+            // Card roll text
+            viewModel.lift1Text.observe(viewLifecycleOwner) {
+                lift1Text.text = if (it.isNullOrBlank()) {
+                    getString(R.string.tap_to_roll)
+                } else it
+            }
+            viewModel.lift2Text.observe(viewLifecycleOwner) {
+                lift2Text.text = if (it.isNullOrBlank()) {
+                    getString(R.string.tap_to_roll)
+                } else it
+            }
+            viewModel.lift3Text.observe(viewLifecycleOwner) {
+                lift3Text.text = if (it.isNullOrBlank()) {
+                    getString(R.string.tap_to_roll)
+                } else it
+            }
         }
-        viewModel.filter2Text.observe(viewLifecycleOwner) {
-            binding.filter2.setText(it, false)
-        }
-        viewModel.filter3Text.observe(viewLifecycleOwner) {
-            binding.filter3.setText(it, false)
-        }
-        viewModel.tagList.observe(viewLifecycleOwner, {
-            setUpSpinner(binding.filter1, it, ROLL_FILTER1_ID)
-            setUpSpinner(binding.filter2, it, ROLL_FILTER2_ID)
-            setUpSpinner(binding.filter3, it, ROLL_FILTER3_ID)
-        })
-
-        binding.welcomeMessage.setOnClickListener {
-            showEditDialog()
-        }
-
         return binding.root
     }
 
@@ -76,6 +116,11 @@ class RollFragment : Fragment() {
         filter.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
             viewModel.updateFilterText(id, filter.text.toString())
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

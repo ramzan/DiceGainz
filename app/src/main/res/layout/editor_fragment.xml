@@ -1,132 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.nazmar.dicegainz.ui.editor.EditorViewModel" />
-    </data>
-
-    <LinearLayout
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/editorToolbar"
+            style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="0dp"
+            app:menu="@menu/editor_menu"
+            app:navigationIcon="@drawable/ic_baseline_close_24"
+            tools:title="@string/editorTitleEdit">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/editorToolbar"
-                style="@style/Widget.MaterialComponents.Toolbar.Primary"
+        </com.google.android.material.appbar.MaterialToolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.google.android.material.textfield.TextInputLayout
+
+                android:id="@+id/name_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="0dp"
-                app:menu="@menu/editor_menu"
-                app:navigationIcon="@drawable/ic_baseline_close_24"
-                tools:title="@string/editorTitleEdit">
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="4dp"
+                android:hint="@string/nameInputHint"
+                android:paddingHorizontal="@dimen/defaultPadding">
 
-            </com.google.android.material.appbar.MaterialToolbar>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name_input"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:maxLength="40" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        </com.google.android.material.appbar.AppBarLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/tierSelectorContainer"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
 
-        <ScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:paddingHorizontal="@dimen/defaultPadding">
 
-            <LinearLayout
+                <AutoCompleteTextView
+                    android:id="@+id/tierSelector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/tier"
+                    android:inputType="none" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="@dimen/defaultPadding"
+                android:text="@string/categories"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
-                <com.google.android.material.textfield.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/chipCreatorContainer"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
 
-                    android:id="@+id/name_input_layout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginRight="4dp"
+                android:paddingHorizontal="@dimen/defaultPadding">
+
+                <AutoCompleteTextView
+                    android:id="@+id/chip_creator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="4dp"
-                    android:hint="@string/nameInputHint"
-                    android:paddingHorizontal="@dimen/defaultPadding">
+                    android:hint="@string/add_category"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="20"
+                    android:singleLine="true" />
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/name_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text"
-                        android:maxLength="40" />
-                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tierSelectorContainer"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:paddingHorizontal="@dimen/defaultPadding" />
 
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:paddingHorizontal="@dimen/defaultPadding">
+        </LinearLayout>
 
-                    <AutoCompleteTextView
-                        android:id="@+id/tierSelector"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/tier"
-                        android:inputType="none" />
+    </ScrollView>
 
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:paddingHorizontal="@dimen/defaultPadding"
-                    android:text="@string/categories"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/chipCreatorContainer"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginEnd="4dp"
-                    android:layout_marginRight="4dp"
-                    android:paddingHorizontal="@dimen/defaultPadding">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/chip_creator"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/add_category"
-                        android:imeOptions="actionDone"
-                        android:inputType="text"
-                        android:maxLength="20"
-                        android:singleLine="true" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.chip.ChipGroup
-                    android:id="@+id/chip_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:paddingHorizontal="@dimen/defaultPadding" />
-
-            </LinearLayout>
-
-        </ScrollView>
-
-    </LinearLayout>
-</layout>
+</LinearLayout>

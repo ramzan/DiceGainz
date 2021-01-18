@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
@@ -21,7 +20,8 @@ import com.nazmar.dicegainz.ui.main.MainViewModelFactory
 
 class LiftsFragment : Fragment() {
 
-    private lateinit var binding: LiftsFragmentBinding
+    private var _binding: LiftsFragmentBinding? = null
+    private val binding get() = _binding!!
     val viewModel: MainViewModel by activityViewModels { MainViewModelFactory(requireNotNull(this.activity).application) }
 
     override fun onCreateView(
@@ -29,13 +29,7 @@ class LiftsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        // Inflate view and get instance of binding class
-        binding = DataBindingUtil.inflate(
-            inflater,
-            R.layout.lifts_fragment, container, false
-        )
-
-        binding.lifecycleOwner = this
+        _binding = LiftsFragmentBinding.inflate(inflater)
 
         // Show undo snackbar for deleted lift
         viewModel.deletedLift.observe(viewLifecycleOwner) { deletedLift ->
@@ -83,6 +77,11 @@ class LiftsFragment : Fragment() {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
         val action = MainFragmentDirections.actionMainFragmentToEditorFragment(lift)
         navController.navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
