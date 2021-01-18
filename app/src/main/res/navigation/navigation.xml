@@ -12,6 +12,12 @@
             android:id="@+id/action_mainFragment_to_editorFragment"
             app:destination="@id/editorFragment"
             app:popUpTo="@id/mainFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_themeDialogFragment"
+            app:destination="@id/themeDialogFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_aboutDialog"
+            app:destination="@id/aboutDialog" />
     </fragment>
     <dialog
         android:id="@+id/editorFragment"
@@ -32,4 +38,12 @@
             app:argType="com.nazmar.dicegainz.database.Lift"
             app:nullable="true" />
     </dialog>
+    <dialog
+        android:id="@+id/themeDialogFragment"
+        android:name="com.nazmar.dicegainz.ui.main.ThemeDialogFragment"
+        android:label="ThemeDialogFragment" />
+    <dialog
+        android:id="@+id/aboutDialog"
+        android:name="com.nazmar.dicegainz.ui.main.AboutDialog"
+        android:label="AboutDialog" />
 </navigation>
