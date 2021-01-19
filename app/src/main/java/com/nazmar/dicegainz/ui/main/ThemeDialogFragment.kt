@@ -9,7 +9,12 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.nazmar.dicegainz.R
 
+const val THEME_PREF_KEY = "themeSelection"
+
 class ThemeDialogFragment : DialogFragment() {
+
+    private var newTheme = 0
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val themeStrings = resources.getStringArray(R.array.theme_string_array)
         val sharedPrefs = requireActivity().getPreferences(Context.MODE_PRIVATE)
@@ -20,7 +25,7 @@ class ThemeDialogFragment : DialogFragment() {
             AppCompatDelegate.MODE_NIGHT_YES -> 1
             else -> 2
         }
-        var newTheme = oldTheme
+        newTheme = savedInstanceState?.getInt(THEME_PREF_KEY) ?: oldTheme
 
         return MaterialAlertDialogBuilder(requireContext())
             .setTitle(themeString)
@@ -40,5 +45,10 @@ class ThemeDialogFragment : DialogFragment() {
                 }
             }
             .show()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(THEME_PREF_KEY, newTheme)
     }
 }
