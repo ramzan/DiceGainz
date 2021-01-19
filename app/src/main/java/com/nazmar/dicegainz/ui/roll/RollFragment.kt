@@ -65,17 +65,13 @@ class RollFragment : Fragment() {
             card3.setOnClickListener {
                 viewModel.roll(3)
             }
-            rollAllButton.setOnClickListener {
-                viewModel.rollAll()
-            }
+
             // View control
             viewModel.liftsLoaded.observe(viewLifecycleOwner) { liftsLoaded ->
                 if (liftsLoaded) {
-                    rollAllButton.visibility = View.VISIBLE
                     rollView.visibility = View.VISIBLE
                     welcomeMessage.visibility = View.GONE
                 } else {
-                    rollAllButton.visibility = View.GONE
                     rollView.visibility = View.GONE
                     welcomeMessage.visibility = View.VISIBLE
                 }

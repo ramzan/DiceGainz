@@ -30,6 +30,7 @@
     <string name="dark">Dark</string>
     <string name="system">System</string>
     <string name="about_message"><a href="https://github.com/ramzan/dicegainz/">Source code</a>\n\nThis app is based on the <a href="https://redd.it/aqkdgo/">General Gainz</a> training method by <a href="https://swoleateveryheight.blogspot.com/">Cody Lefever</a>.</string>
+    <string name="fab_description">Floating action button</string>
     <string-array name="tier_string_array">
         <item>@string/both</item>
         <item>@string/t1</item>

@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.Navigation
-import com.google.android.material.snackbar.Snackbar
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.databinding.LiftsFragmentBinding
@@ -22,7 +21,13 @@ class LiftsFragment : Fragment() {
 
     private var _binding: LiftsFragmentBinding? = null
     private val binding get() = _binding!!
-    val viewModel: MainViewModel by activityViewModels { MainViewModelFactory(requireNotNull(this.activity).application) }
+    private val viewModel: MainViewModel by activityViewModels {
+        MainViewModelFactory(
+            requireNotNull(
+                this.activity
+            ).application
+        )
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,16 +35,6 @@ class LiftsFragment : Fragment() {
     ): View {
 
         _binding = LiftsFragmentBinding.inflate(inflater)
-
-        // Show undo snackbar for deleted lift
-        viewModel.deletedLift.observe(viewLifecycleOwner) { deletedLift ->
-            deletedLift?.let {
-                Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_LONG)
-                    .setAction(getString(R.string.undo)) { viewModel.restoreDeletedLift() }
-                    .setAnchorView(binding.fab)
-                    .show()
-            }
-        }
 
         // Set up filter spinner
         viewModel.tagList.observe(viewLifecycleOwner) {
@@ -65,15 +60,10 @@ class LiftsFragment : Fragment() {
             adapter.submitList(it)
         })
 
-        binding.fab.setOnClickListener {
-            it?.apply { isEnabled = false; postDelayed({ isEnabled = true }, 400) } //400 ms
-            showEditDialog(null)
-        }
-
         return binding.root
     }
 
-    private fun showEditDialog(lift: Lift?) {
+    private fun showEditDialog(lift: Lift) {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
         val action = MainFragmentDirections.actionMainFragmentToEditorFragment(lift)
         navController.navigate(action)
