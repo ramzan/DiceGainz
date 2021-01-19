@@ -50,8 +50,7 @@
                     android:id="@+id/name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:maxLength="40" />
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -75,7 +74,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -103,7 +101,7 @@
                     android:hint="@string/add_category"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:maxLength="20"
+                    android:ellipsize="end"
                     android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>
