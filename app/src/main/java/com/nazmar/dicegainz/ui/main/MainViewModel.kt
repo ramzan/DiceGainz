@@ -29,9 +29,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun restoreDeletedLift() {
         deletedLift.value?.let {
             addLift(it, deletedLiftTags.value ?: emptyList())
-            deletedLift.value = null
-            deletedLiftTags.value = null
         }
+    }
+
+    fun clearDeletedLift() {
+        deletedLift.value = null
+        deletedLiftTags.value = null
     }
 
     // ------------------------Filter methods and data------------------------

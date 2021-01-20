@@ -44,6 +44,11 @@ class MainFragment : Fragment() {
                 Snackbar.make(binding.root, getString(R.string.lift_deleted), Snackbar.LENGTH_LONG)
                     .setAction(getString(R.string.undo)) { viewModel.restoreDeletedLift() }
                     .setAnchorView(binding.fab)
+                    .addCallback(object : Snackbar.Callback() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            viewModel.clearDeletedLift()
+                        }
+                    })
                     .show()
             }
         }
