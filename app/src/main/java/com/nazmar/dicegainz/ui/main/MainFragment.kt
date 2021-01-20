@@ -64,13 +64,6 @@ class MainFragment : Fragment() {
                             setOnClickListener {
                                 viewModel.rollAll()
                             }
-                            viewModel.liftsLoaded.observe(viewLifecycleOwner) { liftsLoaded ->
-                                visibility = if (liftsLoaded) {
-                                    View.VISIBLE
-                                } else {
-                                    View.GONE
-                                }
-                            }
                         }
                         1 -> binding.fab.apply {
                             setImageDrawable(

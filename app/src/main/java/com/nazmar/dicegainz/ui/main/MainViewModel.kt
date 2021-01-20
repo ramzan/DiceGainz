@@ -123,8 +123,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         get() = _lift3Text
 
     private fun updateLiftText(lifts: LiveData<List<Lift>>, liftText: MutableLiveData<String>) {
-        val lift = lifts.value!!.random()
-        liftText.value = "${lift.name} ${getRM(lift.tier)}RM"
+        if (!lifts.value.isNullOrEmpty()) {
+            lifts.value!!.random().let {lift ->
+                liftText.value = "${lift.name} ${getRM(lift.tier)}RM"
+            }
+        }
     }
 
     // Roll methods
