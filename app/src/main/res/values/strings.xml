@@ -22,7 +22,7 @@
     <string name="filter">Filter</string>
     <string name="all">All</string>
     <string name="tap_to_roll">Tap to roll</string>
-    <string name="welcome_message">Welcome to Dice Gainz! Click anywhere to add a lift.</string>
+    <string name="welcome_message">Welcome to Dice Gainz! Tap anywhere to add a lift.</string>
     <string name="about">About</string>
     <string name="theme">Theme</string>
     <string name="ok">OK</string>
