@@ -24,11 +24,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory(
-            requireNotNull(
-                this.activity
-            ).application
-        )
+        MainViewModelFactory()
     }
 
     override fun onCreateView(

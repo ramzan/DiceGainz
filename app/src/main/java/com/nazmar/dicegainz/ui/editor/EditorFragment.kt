@@ -32,16 +32,10 @@ class EditorFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private val editorViewModel: EditorViewModel by viewModels {
-        EditorViewModelFactory(
-            arguments?.get(
-                "selectedLift"
-            ) as Lift?, requireNotNull(this.activity).application
-        )
+        EditorViewModelFactory(arguments?.get("selectedLift") as Lift?)
     }
     private val mainViewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory(
-            requireNotNull(this.activity).application
-        )
+        MainViewModelFactory()
     }
     private lateinit var imm: InputMethodManager
 

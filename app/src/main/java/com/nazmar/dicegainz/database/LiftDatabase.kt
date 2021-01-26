@@ -20,7 +20,9 @@ abstract class LiftDatabase : RoomDatabase() {
     /**
      * Connects the database to the DAO.
      */
-    abstract val liftDatabaseDao: LiftDatabaseDao
+    abstract val liftDao: LiftDao
+    abstract val tagDao: TagDao
+
 
     /**
      * Define a companion object, this allows us to add functions on the LiftDatabase class.
@@ -87,9 +89,9 @@ abstract class LiftDatabase : RoomDatabase() {
                                 // moving to a new thread
                                 GlobalScope.launch(Dispatchers.IO) {
                                     withContext(Dispatchers.IO) {
-                                        getInstance(context).liftDatabaseDao.apply {
-                                            insertLifts(PREPOPULATE_LIFTS)
-                                            insertTags(PREPOPULATE_TAGS)
+                                        getInstance(context).apply {
+                                            liftDao.insertAll(PREPOPULATE_LIFTS)
+                                            tagDao.insertAll(PREPOPULATE_TAGS)
                                         }
                                     }
                                 }

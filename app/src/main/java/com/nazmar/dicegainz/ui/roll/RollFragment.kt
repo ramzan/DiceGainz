@@ -22,11 +22,7 @@ class RollFragment : Fragment() {
     private var _binding: RollFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory(
-            requireNotNull(
-                this.activity
-            ).application
-        )
+        MainViewModelFactory()
     }
 
     override fun onCreateView(
@@ -39,9 +35,11 @@ class RollFragment : Fragment() {
         binding.apply {
             // Set up filter spinners
             viewModel.tagList.observe(viewLifecycleOwner, {
-                setUpSpinner(filter1, it, ROLL_FILTER1_ID)
-                setUpSpinner(filter2, it, ROLL_FILTER2_ID)
-                setUpSpinner(filter3, it, ROLL_FILTER3_ID)
+                (listOf(getString(R.string.all)) + it).run {
+                    setUpSpinner(filter1, this, ROLL_FILTER1_ID)
+                    setUpSpinner(filter2, this, ROLL_FILTER2_ID)
+                    setUpSpinner(filter3, this, ROLL_FILTER3_ID)
+                }
             })
             viewModel.filter1Text.observe(viewLifecycleOwner) {
                 binding.filter1.setText(it, false)

@@ -22,11 +22,7 @@ class LiftsFragment : Fragment() {
     private var _binding: LiftsFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory(
-            requireNotNull(
-                this.activity
-            ).application
-        )
+        MainViewModelFactory()
     }
 
     override fun onCreateView(
@@ -39,7 +35,11 @@ class LiftsFragment : Fragment() {
         // Set up filter spinner
         viewModel.tagList.observe(viewLifecycleOwner) {
             val adapter: ArrayAdapter<String> =
-                ArrayAdapter<String>(requireContext(), R.layout.tier_list_item, it)
+                ArrayAdapter<String>(
+                    requireContext(),
+                    R.layout.tier_list_item,
+                    listOf(getString(R.string.all)) + it
+                )
             binding.filterBar.setAdapter(adapter)
         }
         viewModel.liftsFilterText.observe(viewLifecycleOwner) {

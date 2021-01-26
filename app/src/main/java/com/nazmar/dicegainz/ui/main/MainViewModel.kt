@@ -1,10 +1,7 @@
 package com.nazmar.dicegainz.ui.main
 
-import android.app.Application
 import androidx.lifecycle.*
-import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.Lift
-import com.nazmar.dicegainz.database.LiftDatabase
 import com.nazmar.dicegainz.database.T1
 import com.nazmar.dicegainz.database.T2
 import com.nazmar.dicegainz.repository.Repository
@@ -15,11 +12,7 @@ const val ROLL_FILTER2_ID = 2
 const val ROLL_FILTER3_ID = 3
 
 
-class MainViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val repo = Repository(LiftDatabase.getInstance(application))
-
-    private val allString = application.getString(R.string.all)
+class MainViewModel : ViewModel() {
 
     // -----------------------Deleted lift methods and data-------------------
 
@@ -38,19 +31,19 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // ------------------------Filter methods and data------------------------
-    private val tags = repo.allTagsList
+    private val tags = Repository.allTagsList
 
     val tagList: LiveData<List<String>> = Transformations.map(tags) {
-        listOf(allString) + it
+        it
     }
 
     // Current tag selection in the filter of the Lifts tab
-    private var _liftsFilterText = MutableLiveData(allString)
+    private var _liftsFilterText = MutableLiveData("")
 
     // Current tag selection in the filters in the Roll tab
-    private var _filter1Text = MutableLiveData(allString)
-    private var _filter2Text = MutableLiveData(allString)
-    private var _filter3Text = MutableLiveData(allString)
+    private var _filter1Text = MutableLiveData("")
+    private var _filter2Text = MutableLiveData("")
+    private var _filter3Text = MutableLiveData("")
 
     val liftsFilterText: LiveData<String>
         get() = _liftsFilterText
@@ -71,9 +64,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     private fun getLifts(tag: String): LiveData<List<Lift>> {
-        return when (tag) {
-            allString -> repo.getAllLifts()
-            else -> repo.getLiftsForTag(tag)
+        return when {
+            tagList.value.isNullOrEmpty() || !tagList.value!!.contains(tag) -> Repository.getAllLifts()
+            else -> Repository.getLiftsForTag(tag)
         }
     }
 
@@ -85,7 +78,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         get() = _lifts
 
     private fun addLift(lift: Lift, tags: List<String>) {
-        repo.addLift(lift, tags)
+        Repository.addLift(lift, tags)
     }
 
     // ----------------------Roll data-----------------------------
@@ -127,7 +120,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun updateLiftText(lifts: LiveData<List<Lift>>, liftText: MutableLiveData<String>) {
         if (!lifts.value.isNullOrEmpty()) {
-            lifts.value!!.random().let {lift ->
+            lifts.value!!.random().let { lift ->
                 liftText.value = "${lift.name} ${getRM(lift.tier)}RM"
             }
         }

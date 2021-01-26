@@ -1,24 +1,21 @@
 package com.nazmar.dicegainz.ui.editor
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.*
 import com.nazmar.dicegainz.repository.Repository
 
 val tierMap = mapOf(Pair(BOTH, R.string.both), Pair(T1, R.string.t1), Pair(T2, R.string.t2))
 
-class EditorViewModel(val lift: Lift?, application: Application) : AndroidViewModel(application) {
+class EditorViewModel(val lift: Lift?) : ViewModel() {
 
-    private val repo = Repository(LiftDatabase.getInstance(application))
-
-    val tags = repo.allTagsList
+    val tags = Repository.allTagsList
 
     var tagsLoaded = false
 
-    val oldTags = lift?.id?.let { repo.getTagNamesForLift(it) }
+    val oldTags = lift?.id?.let { Repository.getTagNamesForLift(it) }
 
     private var _usedTags = MutableLiveData(mutableSetOf<String>())
 
@@ -48,14 +45,14 @@ class EditorViewModel(val lift: Lift?, application: Application) : AndroidViewMo
         val old = (oldTags?.value ?: emptyList()).toSet()
         val new = usedTags.value!!.filter { !old.contains(it) }.map { Tag(it, lift.id) }
         val deleted = old.filter { !usedTags.value!!.contains(it) }.map { Tag(it, lift.id) }
-        repo.updateLift(lift, new, deleted)
+        Repository.updateLift(lift, new, deleted)
     }
 
     fun addLift(lift: Lift) {
-        repo.addLift(lift, usedTags.value?.toList() ?: emptyList())
+        Repository.addLift(lift, usedTags.value?.toList() ?: emptyList())
     }
 
     fun deleteLift(lift: Lift) {
-        repo.deleteLift(lift)
+        Repository.deleteLift(lift)
     }
 }
