@@ -31,7 +31,7 @@ class EditorFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private val editorViewModel: EditorViewModel by viewModels {
-        EditorViewModelFactory(arguments?.get("liftId") as Long)
+        EditorViewModelFactory(requireArguments().getLong("liftId"))
     }
     private val mainViewModel: MainViewModel by activityViewModels {
         MainViewModelFactory()
