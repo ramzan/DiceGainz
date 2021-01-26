@@ -8,7 +8,6 @@ import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
@@ -114,9 +113,7 @@ class MainFragment : Fragment() {
     }
 
     private fun showEditDialog() {
-        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-        val action = MainFragmentDirections.actionMainFragmentToEditorFragment()
-        navController.navigate(action)
+        findNavController().navigate(MainFragmentDirections.actionMainFragmentToEditorFragment())
     }
 
     private fun showThemeDialog(): Boolean {

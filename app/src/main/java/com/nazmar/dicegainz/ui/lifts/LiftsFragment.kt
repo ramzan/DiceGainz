@@ -69,7 +69,6 @@ class LiftsFragment : Fragment() {
                 liftId = lift.id
             }
         )
-
     }
 
     override fun onDestroyView() {
