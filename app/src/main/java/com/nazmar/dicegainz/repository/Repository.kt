@@ -39,20 +39,24 @@ object Repository {
     }
 
     fun addLift(lift: Lift, tags: List<String>) {
-        db.runInTransaction {
-            CoroutineScope(Dispatchers.IO).launch {
-                val id = liftDao.insert(lift)
-                tagDao.insertAll(tags.map { Tag(it, id) })
+        CoroutineScope(Dispatchers.IO).launch {
+            db.runInTransaction {
+                CoroutineScope(Dispatchers.IO).launch {
+                    val id = liftDao.insert(lift)
+                    tagDao.insertAll(tags.map { Tag(it, id) })
+                }
             }
         }
     }
 
     fun updateLift(lift: Lift, newTags: List<Tag>, deletedTags: List<Tag>) {
-        db.runInTransaction {
-            CoroutineScope(Dispatchers.IO).launch {
-                liftDao.update(lift)
-                tagDao.insertAll(newTags)
-                tagDao.deleteAll(deletedTags)
+        CoroutineScope(Dispatchers.IO).launch {
+            db.runInTransaction {
+                CoroutineScope(Dispatchers.IO).launch {
+                    liftDao.update(lift)
+                    tagDao.insertAll(newTags)
+                    tagDao.deleteAll(deletedTags)
+                }
             }
         }
     }
