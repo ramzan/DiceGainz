@@ -108,16 +108,16 @@ abstract class LiftDatabase : RoomDatabase() {
         }
 
         val PREPOPULATE_LIFTS = listOf(
-            Lift(1, "Squat", BOTH),
-            Lift(2, "Bench Press", BOTH),
-            Lift(3, "Deadlift", BOTH),
-            Lift(4, "Overhead Press", BOTH),
-            Lift(5, "Front Squat", BOTH),
-            Lift(6, "Barbell Row", BOTH),
-            Lift(7, "Incline Press", BOTH),
-            Lift(8, "Pull Up", BOTH),
-            Lift(9, "Chin Up", BOTH),
-            Lift(10, "Dips", BOTH)
+            Lift("Squat", BOTH),
+            Lift("Bench Press", BOTH),
+            Lift("Deadlift", BOTH),
+            Lift("Overhead Press", BOTH),
+            Lift("Front Squat", BOTH),
+            Lift("Barbell Row", BOTH),
+            Lift("Incline Press", BOTH),
+            Lift("Pull Up", BOTH),
+            Lift("Chin Up", BOTH),
+            Lift("Dips", BOTH)
         )
         private const val PULL = "Pull"
         private const val PUSH = "Push"

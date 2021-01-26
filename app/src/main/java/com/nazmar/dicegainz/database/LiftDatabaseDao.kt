@@ -81,5 +81,5 @@ interface TagDao : BaseDao<Tag> {
             WHERE liftId = :liftId
             ORDER BY tagName COLLATE NOCASE ASC"""
     )
-    fun getTagNamesForLift(liftId: Long): LiveData<List<String>>
+    suspend fun getTagNamesForLift(liftId: Long): List<String>
 }

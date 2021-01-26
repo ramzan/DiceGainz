@@ -1,24 +1,23 @@
 package com.nazmar.dicegainz.ui.editor
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
-import com.nazmar.dicegainz.R
-import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.*
+import com.nazmar.dicegainz.database.BOTH
+import com.nazmar.dicegainz.database.T1
+import com.nazmar.dicegainz.database.T2
 import com.nazmar.dicegainz.databinding.EditorFragmentBinding
 import com.nazmar.dicegainz.ui.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainViewModel
@@ -32,12 +31,15 @@ class EditorFragment : DialogFragment() {
     private val binding get() = _binding!!
 
     private val editorViewModel: EditorViewModel by viewModels {
-        EditorViewModelFactory(arguments?.get("selectedLift") as Lift?)
+        EditorViewModelFactory(arguments?.get("liftId") as Long)
     }
     private val mainViewModel: MainViewModel by activityViewModels {
         MainViewModelFactory()
     }
     private lateinit var imm: InputMethodManager
+
+    private val tierMap =
+        mapOf(Pair(BOTH, R.string.both), Pair(T1, R.string.t1), Pair(T2, R.string.t2))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,59 +63,25 @@ class EditorFragment : DialogFragment() {
 
         _binding = EditorFragmentBinding.inflate(inflater)
 
-
-        val selectedLift = arguments?.get("selectedLift") as Lift?
+        imm = requireActivity().getInputMethodManager()
 
         binding.apply {
-            // Toolbar settings
             editorToolbar.apply {
-                title = getText(editorViewModel.editorTitleId)
                 setNavigationOnClickListener {
                     goBack()
                 }
-
-                val deleteButton = menu.getItem(0)
-                val saveButton = menu.getItem(1)
-
-                deleteButton.isVisible = editorViewModel.deleteButtonVisible
-                deleteButton.setOnMenuItemClickListener {
-                    deleteLift(selectedLift!!)
-                    goBack(selectedLift)
+                // Save button
+                menu.findItem(R.id.editor_save_btn).setOnMenuItemClickListener {
+                    saveLift()
                     true
                 }
-
-                saveButton.setOnMenuItemClickListener {
-                    if (binding.nameInput.text?.trim().isNullOrEmpty()) {
-                        binding.nameInput.setText("")
-                        nameInputLayout.isErrorEnabled = true
-                        nameInputLayout.error = getString(R.string.empty_name_error_msg)
-                    } else {
-                        saveLift(selectedLift)
-                        goBack()
-                    }
-                    true
-                }
-            }
-
-            // Show the keyboard.
-            imm =
-                requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.toggleSoftInput(
-                InputMethodManager.SHOW_IMPLICIT,
-                InputMethodManager.HIDE_IMPLICIT_ONLY
-            )
-            nameInput.apply {
-                setText(editorViewModel.nameInputText)
-                nameInput.requestFocus()
             }
 
             // Tier selector
             tierStrings = resources.getStringArray(R.array.tier_string_array)
-            val adapter = NoFilterAdapter(requireContext(), R.layout.tier_list_item, tierStrings)
-            tierSelector.apply {
-                setAdapter(adapter)
-                setText(getText(editorViewModel.tier!!), false)
-            }
+            tierSelector.setAdapter(
+                NoFilterAdapter(requireContext(), R.layout.tier_list_item, tierStrings)
+            )
 
             // Tag editor
             chipCreator.apply {
@@ -123,36 +91,57 @@ class EditorFragment : DialogFragment() {
                 onItemClickListener = OnItemClickListener { _, _, _, _ ->
                     addNewTag()
                 }
+
+                // Populate autocomplete with all preexisting tags
+                editorViewModel.tags.observe(viewLifecycleOwner) {
+                    setAdapter(ArrayAdapter(requireContext(), R.layout.tier_list_item, it))
+                }
+            }
+        }
+
+        editorViewModel.state.observe(viewLifecycleOwner) { state ->
+
+            binding.apply {
+                nameInput.setText(state.name)
+
+                // Tier selector
+                tierSelector.apply {
+                    setText(tierMap[state.tier]?.let { getString(it) }, false)
+                }
             }
 
-            // Tag editor data
-            editorViewModel.apply {
-                // Populate tag autocomplete with all preexisting tags
-                tags.observe(viewLifecycleOwner, {
-                    chipCreator.setAdapter(
-                        ArrayAdapter(
-                            requireContext(),
-                            R.layout.tier_list_item,
-                            it
-                        )
-                    )
-                })
-                // Load existing tags for lift into chips
-                oldTags?.observe(viewLifecycleOwner, { tags ->
-                    if (!editorViewModel.tagsLoaded) {
-                        tags.forEach {
-                            addChip(getChip(it))
-                            editorViewModel.addCurrentTag((it))
-                        }
-                        editorViewModel.tagsLoaded = true
+            when (state) {
+                is EditorViewState.New -> {
+                    binding.editorToolbar.apply {
+                        title = getText(state.editorTitleId)
+
+                        // Delete button
+                        menu.findItem(R.id.editor_delete_btn).isVisible = false
                     }
-                })
-                // Refresh when new tag added
-                usedTags.observe(viewLifecycleOwner, { tags ->
-                    tags.forEach { addChip(getChip(it)) }
-                })
-            }
+                    state.currentTags.forEach { addChip(getChip(it)) }
 
+                    imm.showKeyboard()
+                    binding.nameInput.requestFocus()
+                }
+
+                is EditorViewState.Editing -> {
+                    binding.editorToolbar.apply {
+                        title = getText(state.editorTitleId)
+
+                        menu.findItem(R.id.editor_delete_btn).apply {
+                            setOnMenuItemClickListener {
+                                deleteLift(state)
+                                true
+                            }
+                            isVisible = true
+                        }
+                    }
+                    state.currentTags.forEach { addChip(getChip(it)) }
+                }
+
+                else -> {
+                }
+            }
         }
         return binding.root
     }
@@ -173,7 +162,7 @@ class EditorFragment : DialogFragment() {
             setPadding(paddingDp, paddingDp, paddingDp, paddingDp)
             text = chipText
             setOnCloseIconClickListener {
-                editorViewModel.removeCurrentTag(chipText)
+                editorViewModel.state.value?.removeCurrentTag(chipText)
                 binding.chipGroup.removeView(it)
             }
         }
@@ -181,46 +170,42 @@ class EditorFragment : DialogFragment() {
 
     private fun addNewTag() {
         val tagName = binding.chipCreator.text.toString().trim()
-        if (tagName.isNotEmpty() && editorViewModel.addCurrentTag((tagName))) {
+        if (tagName.isNotEmpty() && editorViewModel.state.value?.addCurrentTag((tagName)) == true) {
             addChip(getChip(tagName))
         }
         binding.chipCreator.setText("")
     }
 
-    private fun saveLift(lift: Lift?) {
-        val name = binding.nameInput.text.toString().trim()
-        val tier = tierStrings.indexOf(binding.tierSelector.text.toString())
-        val newLift = Lift(lift?.id ?: 0, name, tier)
-        if (lift !== null) {
-            editorViewModel.updateLift(newLift)
+    private fun saveLift() {
+        if (binding.nameInput.text?.trim().isNullOrEmpty()) {
+            binding.nameInput.setText("")
+            binding.nameInputLayout.isErrorEnabled = true
+            binding.nameInputLayout.error = getString(R.string.empty_name_error_msg)
         } else {
-            editorViewModel.addLift(Lift(name, tier))
+            editorViewModel.state.value.run {
+                when (this) {
+                    is EditorViewState.Editing, is EditorViewState -> {
+                        this.name = binding.nameInput.text.toString().trim()
+                        this.tier = tierStrings.indexOf(binding.tierSelector.text.toString())
+                        this.saveLift()
+                        goBack()
+                    }
+                    else -> return
+                }
+            }
         }
     }
 
-    private fun deleteLift(lift: Lift) {
-        editorViewModel.deleteLift(lift)
+    private fun deleteLift(state: EditorViewState.Editing) {
+        mainViewModel.deletedLift.value = state.lift
+        mainViewModel.deletedLiftTags.value = state.oldTags
+        state.deleteLift()
+        goBack()
     }
 
     private fun goBack() {
-        goBack(null)
-    }
-
-    private fun goBack(deletedLift: Lift?) {
-        imm.hideSoftInputFromWindow(requireView().windowToken, 0)
+        imm.hideKeyboard(requireView().windowToken)
         dismiss()
-        mainViewModel.deletedLift.value = deletedLift
-        mainViewModel.deletedLiftTags.value = editorViewModel.oldTags?.value
-    }
-
-    // For submitting tags when autocomplete item clicked
-    private fun AutoCompleteTextView.onSubmit(func: () -> Unit) {
-        setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                func()
-            }
-            true
-        }
     }
 
     override fun onDestroyView() {

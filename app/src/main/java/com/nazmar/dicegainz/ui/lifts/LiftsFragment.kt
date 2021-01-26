@@ -8,7 +8,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.databinding.LiftsFragmentBinding
@@ -64,9 +64,12 @@ class LiftsFragment : Fragment() {
     }
 
     private fun showEditDialog(lift: Lift) {
-        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-        val action = MainFragmentDirections.actionMainFragmentToEditorFragment(lift)
-        navController.navigate(action)
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToEditorFragment().apply {
+                liftId = lift.id
+            }
+        )
+
     }
 
     override fun onDestroyView() {

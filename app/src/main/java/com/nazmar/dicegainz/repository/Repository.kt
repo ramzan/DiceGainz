@@ -8,15 +8,19 @@ import kotlinx.coroutines.launch
 
 object Repository {
 
+    private lateinit var db: LiftDatabase
     private lateinit var liftDao: LiftDao
     private lateinit var tagDao: TagDao
     lateinit var allTagsList: LiveData<List<String>>
 
-    fun setDataSource(db: LiftDatabase) {
+    fun setDataSource(dataBase: LiftDatabase) {
+        db = dataBase
         liftDao = db.liftDao
         tagDao = db.tagDao
         allTagsList = getAllTags()
     }
+
+    suspend fun getLift(liftId: Long): Lift? = liftDao.getLift(liftId)
 
     fun getAllLifts(): LiveData<List<Lift>> {
         return liftDao.getAllLifts()
@@ -30,23 +34,26 @@ object Repository {
         return tagDao.getAllTagNames()
     }
 
-    fun getTagNamesForLift(id: Long): LiveData<List<String>> {
+    suspend fun getTagNamesForLift(id: Long): List<String> {
         return tagDao.getTagNamesForLift(id)
     }
 
     fun addLift(lift: Lift, tags: List<String>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val id = liftDao.insert(lift)
-            tagDao.insertAll(tags.map { Tag(it, id) })
+        db.runInTransaction {
+            CoroutineScope(Dispatchers.IO).launch {
+                val id = liftDao.insert(lift)
+                tagDao.insertAll(tags.map { Tag(it, id) })
+            }
         }
     }
 
-
     fun updateLift(lift: Lift, newTags: List<Tag>, deletedTags: List<Tag>) {
-        CoroutineScope(Dispatchers.IO).launch {
-            liftDao.update(lift)
-            tagDao.insertAll(newTags)
-            tagDao.deleteAll(deletedTags)
+        db.runInTransaction {
+            CoroutineScope(Dispatchers.IO).launch {
+                liftDao.update(lift)
+                tagDao.insertAll(newTags)
+                tagDao.deleteAll(deletedTags)
+            }
         }
     }
 

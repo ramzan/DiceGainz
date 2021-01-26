@@ -3,56 +3,98 @@ package com.nazmar.dicegainz.ui.editor
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.nazmar.dicegainz.R
-import com.nazmar.dicegainz.database.*
+import com.nazmar.dicegainz.database.BOTH
+import com.nazmar.dicegainz.database.Lift
+import com.nazmar.dicegainz.database.Tag
 import com.nazmar.dicegainz.repository.Repository
+import kotlinx.coroutines.launch
 
-val tierMap = mapOf(Pair(BOTH, R.string.both), Pair(T1, R.string.t1), Pair(T2, R.string.t2))
-
-class EditorViewModel(val lift: Lift?) : ViewModel() {
+class EditorViewModel(val liftId: Long) : ViewModel() {
 
     val tags = Repository.allTagsList
 
-    var tagsLoaded = false
+    private var _state = MutableLiveData<EditorViewState>(EditorViewState.Loading)
 
-    val oldTags = lift?.id?.let { Repository.getTagNamesForLift(it) }
+    val state: LiveData<EditorViewState>
+        get() = _state
 
-    private var _usedTags = MutableLiveData(mutableSetOf<String>())
+    init {
+        if (liftId == 0L) {
+            _state.value = EditorViewState.New()
+        } else {
+            viewModelScope.launch {
+                Repository.getLift(liftId)?.let {
+                    _state.value = EditorViewState.Editing(
+                        lift = it,
+                        name = it.name,
+                        tier = it.tier,
+                        oldTags = Repository.getTagNamesForLift(liftId),
+                    ).apply {
+                        currentTags.addAll(oldTags)
+                    }
+                }
+            }
+        }
+    }
+}
 
-    val usedTags: LiveData<MutableSet<String>>
-        get() = _usedTags
 
-    // ------------------View setup---------------------------------
-    val editorTitleId = if (lift == null) R.string.editorTitleNew else R.string.editorTitleEdit
+sealed class EditorViewState {
 
-    val nameInputText = lift?.name ?: ""
+    abstract var name: String
+    abstract var tier: Int
+    abstract var currentTags: MutableList<String>
 
-    val tier = if (lift == null) tierMap[BOTH] else tierMap[lift.tier]
-
-    val deleteButtonVisible = lift != null
-
-    // -------------------------Methods-----------------------------
+    abstract fun saveLift()
 
     fun addCurrentTag(name: String): Boolean {
-        return usedTags.value?.add(name) ?: false
+        return currentTags.run {
+            if (!this.contains(name)) {
+                add(name)
+                true
+            } else false
+        }
     }
 
-    fun removeCurrentTag(name: String) {
-        usedTags.value?.remove(name)
+    fun removeCurrentTag(name: String) = currentTags.remove(name)
+
+    object Loading : EditorViewState() {
+        override var name = ""
+        override var tier = 0
+        override var currentTags = mutableListOf<String>()
+        override fun saveLift() = Unit
     }
 
-    fun updateLift(lift: Lift) {
-        val old = (oldTags?.value ?: emptyList()).toSet()
-        val new = usedTags.value!!.filter { !old.contains(it) }.map { Tag(it, lift.id) }
-        val deleted = old.filter { !usedTags.value!!.contains(it) }.map { Tag(it, lift.id) }
-        Repository.updateLift(lift, new, deleted)
+    data class Editing(
+        val lift: Lift,
+        override var name: String,
+        override var tier: Int,
+        val oldTags: List<String>,
+        override var currentTags: MutableList<String> = mutableListOf(),
+        val editorTitleId: Int = R.string.editorTitleEdit
+    ) : EditorViewState() {
+
+        override fun saveLift() {
+            val old = oldTags.toSet()
+            Repository.updateLift(
+                lift.copy(name = name, tier = tier),
+                currentTags.filter { !old.contains(it) }.map { Tag(it, lift.id) },
+                old.filter { !currentTags.contains(it) }.map { Tag(it, lift.id) }
+            )
+        }
+
+        fun deleteLift() = Repository.deleteLift(lift)
     }
 
-    fun addLift(lift: Lift) {
-        Repository.addLift(lift, usedTags.value?.toList() ?: emptyList())
-    }
+    data class New(
+        override var name: String = "",
+        override var tier: Int = BOTH,
+        override var currentTags: MutableList<String> = mutableListOf(),
+        val editorTitleId: Int = R.string.editorTitleNew
+    ) : EditorViewState() {
 
-    fun deleteLift(lift: Lift) {
-        Repository.deleteLift(lift)
+        override fun saveLift() = Repository.addLift(Lift(name, tier), currentTags.toList())
     }
 }

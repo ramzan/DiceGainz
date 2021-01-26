@@ -5,6 +5,7 @@
 
 
     <item
+        android:id="@+id/editor_delete_btn"
         android:contentDescription="@string/delete"
         android:icon="@drawable/ic_baseline_delete_24"
         android:title="@string/delete"
@@ -13,6 +14,7 @@
         tools:visible="true" />
 
     <item
+        android:id="@+id/editor_save_btn"
         android:contentDescription="@string/save"
         android:icon="@drawable/ic_baseline_check_24"
         android:title="@string/save"

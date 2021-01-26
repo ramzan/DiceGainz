@@ -96,7 +96,7 @@ class RollFragment : Fragment() {
 
     private fun showEditDialog() {
         val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-        val action = MainFragmentDirections.actionMainFragmentToEditorFragment(null)
+        val action = MainFragmentDirections.actionMainFragmentToEditorFragment()
         navController.navigate(action)
     }
 
