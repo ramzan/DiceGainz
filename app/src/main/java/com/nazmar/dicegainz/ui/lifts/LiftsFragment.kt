@@ -15,15 +15,12 @@ import com.nazmar.dicegainz.databinding.LiftsFragmentBinding
 import com.nazmar.dicegainz.ui.main.LIFTS_FILTER_ID
 import com.nazmar.dicegainz.ui.main.MainFragmentDirections
 import com.nazmar.dicegainz.ui.main.MainViewModel
-import com.nazmar.dicegainz.ui.main.MainViewModelFactory
 
 class LiftsFragment : Fragment() {
 
     private var _binding: LiftsFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory()
-    }
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

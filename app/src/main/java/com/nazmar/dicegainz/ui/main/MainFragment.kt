@@ -22,9 +22,7 @@ class MainFragment : Fragment() {
     private var _binding: MainFragmentBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory()
-    }
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -95,10 +93,8 @@ class MainFragment : Fragment() {
         }
 
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
-            tab.text = if (position == 0)
-                getString(R.string.tab_text_1)
-            else
-                getString(R.string.tab_text_2)
+            tab.text =
+                if (position == 0) getString(R.string.tab_text_1) else getString(R.string.tab_text_2)
         }.attach()
 
         binding.mainToolbar.setOnMenuItemClickListener {

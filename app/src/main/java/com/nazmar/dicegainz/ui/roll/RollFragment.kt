@@ -21,9 +21,7 @@ class RollFragment : Fragment() {
 
     private var _binding: RollFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory()
-    }
+    private val viewModel: MainViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

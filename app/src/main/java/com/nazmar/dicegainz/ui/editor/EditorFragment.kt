@@ -21,7 +21,6 @@ import com.nazmar.dicegainz.database.T2
 import com.nazmar.dicegainz.databinding.EditorFragmentBinding
 import com.nazmar.dicegainz.ui.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainViewModel
-import com.nazmar.dicegainz.ui.main.MainViewModelFactory
 
 
 class EditorFragment : DialogFragment() {
@@ -33,9 +32,7 @@ class EditorFragment : DialogFragment() {
     private val editorViewModel: EditorViewModel by viewModels {
         EditorViewModelFactory(requireArguments().getLong("liftId"))
     }
-    private val mainViewModel: MainViewModel by activityViewModels {
-        MainViewModelFactory()
-    }
+    private val mainViewModel: MainViewModel by activityViewModels()
     private lateinit var imm: InputMethodManager
 
     private val tierMap =
