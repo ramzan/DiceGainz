@@ -12,15 +12,13 @@ import androidx.navigation.fragment.findNavController
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.databinding.LiftsFragmentBinding
-import com.nazmar.dicegainz.ui.main.LIFTS_FILTER_ID
 import com.nazmar.dicegainz.ui.main.MainFragmentDirections
-import com.nazmar.dicegainz.ui.main.MainViewModel
 
 class LiftsFragment : Fragment() {
 
     private var _binding: LiftsFragmentBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: MainViewModel by activityViewModels()
+    private val viewModel: LiftsViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +41,7 @@ class LiftsFragment : Fragment() {
             binding.filterBar.setText(it, false)
         }
         binding.filterBar.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, _ ->
-            viewModel.updateFilterText(LIFTS_FILTER_ID, binding.filterBar.text.toString())
+            viewModel.updateFilterText(binding.filterBar.text.toString())
         }
 
         // Set the recyclerview adapter
