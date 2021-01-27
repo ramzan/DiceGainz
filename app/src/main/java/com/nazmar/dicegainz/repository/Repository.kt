@@ -22,21 +22,18 @@ object Repository {
 
     suspend fun getLift(liftId: Long): Lift? = liftDao.getLift(liftId)
 
-    fun getAllLifts(): LiveData<List<Lift>> {
-        return liftDao.getAllLifts()
-    }
+    fun getAllLifts() = liftDao.getAllLifts()
 
-    fun getLiftsForTag(tag: String): LiveData<List<Lift>> {
-        return liftDao.getLiftsForTag(tag)
-    }
+    suspend fun getAllLiftsOneShot() = liftDao.getAllLiftsOneShot()
 
-    private fun getAllTags(): LiveData<List<String>> {
-        return tagDao.getAllTagNames()
-    }
+    fun getLiftsForTag(tag: String) = liftDao.getLiftsForTag(tag)
 
-    suspend fun getTagNamesForLift(id: Long): List<String> {
-        return tagDao.getTagNamesForLift(id)
-    }
+    suspend fun getLiftsForTagOneShot(tag: String) = liftDao.getLiftsForTagOneShot(tag)
+
+
+    private fun getAllTags() = tagDao.getAllTagNames()
+
+    suspend fun getTagNamesForLift(id: Long) = tagDao.getTagNamesForLift(id)
 
     fun addLift(lift: Lift, tags: List<String>) {
         CoroutineScope(Dispatchers.IO).launch {

@@ -30,6 +30,9 @@ interface LiftDao : BaseDao<Lift> {
     @Query("SELECT * FROM lift_table ORDER BY name COLLATE NOCASE ASC")
     fun getAllLifts(): LiveData<List<Lift>>
 
+    @Query("SELECT * FROM lift_table ORDER BY name COLLATE NOCASE ASC")
+    suspend fun getAllLiftsOneShot(): List<Lift>
+
     @Query("SELECT * FROM lift_table ORDER BY name ASC")
     fun getAllLiftsTest(): List<Lift>
 
@@ -52,6 +55,16 @@ interface LiftDao : BaseDao<Lift> {
             ORDER BY name COLLATE NOCASE ASC"""
     )
     fun getLiftsForTag(tagName: String): LiveData<List<Lift>>
+
+    @Query(
+        """SELECT lift_table.*
+            FROM lift_table
+            JOIN tag_table
+            ON tag_table.liftId = lift_table.id
+            WHERE tag_table.tagName = :tagName
+            ORDER BY name COLLATE NOCASE ASC"""
+    )
+    suspend fun getLiftsForTagOneShot(tagName: String): List<Lift>
 
 }
 

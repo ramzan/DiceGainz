@@ -1,144 +1,56 @@
 package com.nazmar.dicegainz.ui.main
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.database.T1
 import com.nazmar.dicegainz.database.T2
 import com.nazmar.dicegainz.repository.Repository
-
-const val LIFTS_FILTER_ID = 0
-const val ROLL_FILTER1_ID = 1
-const val ROLL_FILTER2_ID = 2
-const val ROLL_FILTER3_ID = 3
-
+import com.nazmar.dicegainz.ui.roll.RollCard
+import com.nazmar.dicegainz.updateFilterText
+import com.nazmar.dicegainz.updateRollResult
+import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    // -----------------------Deleted lift methods and data-------------------
-
-    val deletedLift = MutableLiveData<Lift>()
-    val deletedLiftTags = MutableLiveData<List<String>>()
-
-    fun restoreDeletedLift() {
-        deletedLift.value?.let {
-            addLift(it, deletedLiftTags.value ?: emptyList())
-        }
-    }
-
-    fun clearDeletedLift() {
-        deletedLift.value = null
-        deletedLiftTags.value = null
-    }
-
-    // ------------------------Filter methods and data------------------------
-    private val tags = Repository.allTagsList
-
-    val tagList: LiveData<List<String>> = Transformations.map(tags) {
-        it
-    }
-
-    // Current tag selection in the filter of the Lifts tab
-    private var _liftsFilterText = MutableLiveData("")
-
-    // Current tag selection in the filters in the Roll tab
-    private var _filter1Text = MutableLiveData("")
-    private var _filter2Text = MutableLiveData("")
-    private var _filter3Text = MutableLiveData("")
-
-    val liftsFilterText: LiveData<String>
-        get() = _liftsFilterText
-    val filter1Text: LiveData<String>
-        get() = _filter1Text
-    val filter2Text: LiveData<String>
-        get() = _filter2Text
-    val filter3Text: LiveData<String>
-        get() = _filter3Text
-
-    fun updateFilterText(liftNumber: Int, tag: String) {
-        when (liftNumber) {
-            LIFTS_FILTER_ID -> _liftsFilterText.value = tag
-            ROLL_FILTER1_ID -> _filter1Text.value = tag
-            ROLL_FILTER2_ID -> _filter2Text.value = tag
-            ROLL_FILTER3_ID -> _filter3Text.value = tag
-        }
-    }
-
-    private fun getLifts(tag: String): LiveData<List<Lift>> {
-        return when {
-            tagList.value.isNullOrEmpty() || !tagList.value!!.contains(tag) -> Repository.getAllLifts()
-            else -> Repository.getLiftsForTag(tag)
-        }
-    }
-
-    // -------------------------Lifts data----------------------------
-    // Lists of lifts to display
-    private val _lifts = Transformations.switchMap(_liftsFilterText) { tag -> getLifts(tag) }
-
-    val lifts: LiveData<List<Lift>>
-        get() = _lifts
-
-    private fun addLift(lift: Lift, tags: List<String>) {
-        Repository.addLift(lift, tags)
-    }
-
-    // ----------------------Roll data-----------------------------
-    // Lists of lifts to roll from
-    private val lifts1 = Transformations.switchMap(_filter1Text) { tag -> getLifts(tag) }
-    private val lifts2 = Transformations.switchMap(_filter2Text) { tag -> getLifts(tag) }
-    private val lifts3 = Transformations.switchMap(_filter3Text) { tag -> getLifts(tag) }
-
-    // Make sure lifts are loaded before rolling
-    private val combinedValues =
-        MediatorLiveData<Triple<List<Lift>?, List<Lift>?, List<Lift>?>>().apply {
-            addSource(lifts1) {
-                value = Triple(it, lifts2.value, lifts3.value)
-            }
-            addSource(lifts2) {
-                value = Triple(lifts1.value, it, lifts3.value)
-            }
-            addSource(lifts3) {
-                value = Triple(lifts1.value, lifts2.value, it)
+    private var _rollCards = MutableLiveData(
+        mutableListOf<RollCard>().apply {
+            for (i in 0..3) {
+                this.add(RollCard(i))
             }
         }
+    )
 
-    val liftsLoaded: LiveData<Boolean> =
-        Transformations.map(combinedValues) { (first, second, third) ->
-            !first.isNullOrEmpty() && !second.isNullOrEmpty() && !third.isNullOrEmpty()
-        }
+    val rollCards: LiveData<MutableList<RollCard>>
+        get() = _rollCards
 
-    // String containing the rolled lift
-    private var _lift1Text = MutableLiveData("")
-    private var _lift2Text = MutableLiveData("")
-    private var _lift3Text = MutableLiveData("")
+    val lifts = Repository.getAllLifts()
 
-    val lift1Text: MutableLiveData<String>
-        get() = _lift1Text
-    val lift2Text: MutableLiveData<String>
-        get() = _lift2Text
-    val lift3Text: MutableLiveData<String>
-        get() = _lift3Text
+    val tags = Repository.allTagsList
 
-    private fun updateLiftText(lifts: LiveData<List<Lift>>, liftText: MutableLiveData<String>) {
-        if (!lifts.value.isNullOrEmpty()) {
-            lifts.value!!.random().let { lift ->
-                liftText.value = "${lift.name} ${getRM(lift.tier)}RM"
+    fun roll(index: Int) {
+        viewModelScope.launch {
+            rollCards.value?.get(index)?.let { card ->
+                val lift = (tags.value?.let {
+                    if (it.contains(card.filterText)) {
+                        Repository.getLiftsForTagOneShot(card.filterText)
+                    } else {
+                        Repository.getAllLiftsOneShot()
+                    }
+                } ?: Repository.getAllLiftsOneShot()).random()
+                _rollCards.updateRollResult(index, "${lift.name} ${getRM(lift.tier)}RM")
             }
         }
     }
 
-    // Roll methods
-    fun roll(liftNumber: Int) {
-        when (liftNumber) {
-            1 -> updateLiftText(lifts1, _lift1Text)
-            2 -> updateLiftText(lifts2, _lift2Text)
-            3 -> updateLiftText(lifts3, _lift3Text)
-        }
-    }
+    fun updateFilterText(position: Int, text: String) = _rollCards.updateFilterText(position, text)
 
     fun rollAll() {
-        roll(ROLL_FILTER1_ID)
-        roll(ROLL_FILTER2_ID)
-        roll(ROLL_FILTER3_ID)
+        rollCards.value?.let { list ->
+            if (!lifts.value.isNullOrEmpty()) list.indices.forEach { roll(it) }
+        }
     }
 
     private fun getRM(tier: Int): Int {
@@ -147,5 +59,21 @@ class MainViewModel : ViewModel() {
             T2 -> (6..10).random()
             else -> (3..10).random()
         }
+    }
+
+    // -----------------------Deleted lift methods and data-------------------
+
+    val deletedLift = MutableLiveData<Lift>()
+    val deletedLiftTags = MutableLiveData<List<String>>()
+
+    fun restoreDeletedLift() {
+        deletedLift.value?.let {
+            Repository.addLift(it, deletedLiftTags.value ?: emptyList())
+        }
+    }
+
+    fun clearDeletedLift() {
+        deletedLift.value = null
+        deletedLiftTags.value = null
     }
 }
