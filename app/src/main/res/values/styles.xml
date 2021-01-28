@@ -17,8 +17,4 @@
         <item name="tabTextColor">@color/blue_grey_dark</item>
     </style>
 
-    <style name="EditorDialog" parent="Theme.App">
-        <item name="android:windowIsFloating">false</item>
-    </style>
-
 </resources>

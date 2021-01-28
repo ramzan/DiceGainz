@@ -1,6 +1,5 @@
 package com.nazmar.dicegainz.ui.editor
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -9,9 +8,10 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
 import com.nazmar.dicegainz.*
@@ -23,7 +23,7 @@ import com.nazmar.dicegainz.ui.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainViewModel
 
 
-class EditorFragment : DialogFragment() {
+class EditorFragment : Fragment() {
 
     private lateinit var tierStrings: Array<String>
     private var _binding: EditorFragmentBinding? = null
@@ -37,21 +37,6 @@ class EditorFragment : DialogFragment() {
 
     private val tierMap =
         mapOf(Pair(BOTH, R.string.both), Pair(T1, R.string.t1), Pair(T2, R.string.t2))
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.EditorDialog)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val dialog: Dialog? = dialog
-        if (dialog != null) {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
-            dialog.window?.setLayout(width, height)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -202,7 +187,7 @@ class EditorFragment : DialogFragment() {
 
     private fun goBack() {
         imm.hideKeyboard(requireView().windowToken)
-        dismiss()
+        findNavController().popBackStack()
     }
 
     override fun onDestroyView() {

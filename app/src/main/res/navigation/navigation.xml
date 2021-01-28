@@ -11,6 +11,7 @@
         <action
             android:id="@+id/action_mainFragment_to_editorFragment"
             app:destination="@id/editorFragment"
+            app:enterAnim="@android:anim/fade_in"
             app:popUpTo="@id/mainFragment" />
         <action
             android:id="@+id/action_mainFragment_to_themeDialogFragment"
@@ -19,25 +20,16 @@
             android:id="@+id/action_mainFragment_to_aboutDialog"
             app:destination="@id/aboutDialog" />
     </fragment>
-    <dialog
+    <fragment
         android:id="@+id/editorFragment"
         android:name="com.nazmar.dicegainz.ui.editor.EditorFragment"
         android:label="editor_fragment"
         tools:layout="@layout/editor_fragment">
-        <action
-            android:id="@+id/action_editorFragment_to_mainFragment"
-            app:destination="@id/mainFragment"
-            app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true">
-            <argument
-                android:name="tabIndex"
-                android:defaultValue="1" />
-        </action>
         <argument
             android:name="liftId"
             android:defaultValue="0L"
             app:argType="long" />
-    </dialog>
+    </fragment>
     <dialog
         android:id="@+id/themeDialogFragment"
         android:name="com.nazmar.dicegainz.ui.main.ThemeDialogFragment"
