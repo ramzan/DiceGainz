@@ -50,7 +50,7 @@
                     android:id="@+id/name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text"/>
+                    android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -98,10 +98,10 @@
                     android:id="@+id/chip_creator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
                     android:hint="@string/add_category"
                     android:imeOptions="actionDone"
                     android:inputType="text"
-                    android:ellipsize="end"
                     android:singleLine="true" />
 
             </com.google.android.material.textfield.TextInputLayout>

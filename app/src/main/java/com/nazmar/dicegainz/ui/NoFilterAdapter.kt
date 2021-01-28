@@ -4,7 +4,9 @@ import android.content.Context
 import android.widget.ArrayAdapter
 import android.widget.Filter
 
-
+/*
+ * Used to prevent AutoCompleteTextView from filtering options
+ */
 class NoFilterAdapter(context: Context, resource: Int, objects: Array<String>) : ArrayAdapter<Any?>(
     context,
     resource,

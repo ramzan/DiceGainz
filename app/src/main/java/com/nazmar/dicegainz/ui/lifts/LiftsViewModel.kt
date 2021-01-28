@@ -22,7 +22,7 @@ class LiftsViewModel : ViewModel() {
 
     private val _lifts: LiveData<List<Lift>> = Transformations.switchMap(_liftsFilterText) { tag ->
         tagList.value?.let {
-            if (it.contains(tag))  Repository.getLiftsForTag(tag) else Repository.getAllLifts()
+            if (it.contains(tag)) Repository.getLiftsForTag(tag) else Repository.getAllLifts()
         } ?: Repository.getAllLifts()
 
     }

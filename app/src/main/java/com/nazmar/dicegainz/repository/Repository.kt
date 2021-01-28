@@ -26,6 +26,8 @@ object Repository {
         allTagsList = getAllTags()
     }
 
+    // ------------------------------Card number preferences----------------------------------
+
     private var _numCards = MutableLiveData(3)
 
     val numCards: LiveData<Int>
@@ -50,20 +52,23 @@ object Repository {
         }
     }
 
+    // ------------------------------Queries----------------------------------
+
     suspend fun getLift(liftId: Long): Lift? = liftDao.getLift(liftId)
 
     fun getAllLifts() = liftDao.getAllLifts()
 
     suspend fun getAllLiftsOneShot() = liftDao.getAllLiftsOneShot()
 
-    fun getLiftsForTag(tag: String) = liftDao.getLiftsForTag(tag)
-
     suspend fun getLiftsForTagOneShot(tag: String) = liftDao.getLiftsForTagOneShot(tag)
 
+    fun getLiftsForTag(tag: String) = liftDao.getLiftsForTag(tag)
 
     private fun getAllTags() = tagDao.getAllTagNames()
 
     suspend fun getTagNamesForLift(id: Long) = tagDao.getTagNamesForLift(id)
+
+    // ------------------------------Editing----------------------------------
 
     fun addLift(lift: Lift, tags: List<String>) {
         CoroutineScope(Dispatchers.IO).launch {

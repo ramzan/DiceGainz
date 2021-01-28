@@ -52,7 +52,6 @@ class EditorFragment : Fragment() {
                 setNavigationOnClickListener {
                     goBack()
                 }
-                // Save button
                 menu.findItem(R.id.editor_save_btn).setOnMenuItemClickListener {
                     saveLift()
                     true
@@ -86,7 +85,6 @@ class EditorFragment : Fragment() {
             binding.apply {
                 nameInput.setText(state.name)
 
-                // Tier selector
                 tierSelector.apply {
                     setText(tierMap[state.tier]?.let { getString(it) }, false)
                 }
@@ -97,7 +95,6 @@ class EditorFragment : Fragment() {
                     binding.editorToolbar.apply {
                         title = getText(state.editorTitleId)
 
-                        // Delete button
                         menu.findItem(R.id.editor_delete_btn).isVisible = false
                     }
                     state.currentTags.forEach { addChip(getChip(it)) }
@@ -167,9 +164,9 @@ class EditorFragment : Fragment() {
             editorViewModel.state.value.run {
                 when (this) {
                     is EditorViewState.Editing, is EditorViewState -> {
-                        this.name = binding.nameInput.text.toString().trim()
-                        this.tier = tierStrings.indexOf(binding.tierSelector.text.toString())
-                        this.saveLift()
+                        name = binding.nameInput.text.toString().trim()
+                        tier = tierStrings.indexOf(binding.tierSelector.text.toString())
+                        saveLift()
                         goBack()
                     }
                     else -> return

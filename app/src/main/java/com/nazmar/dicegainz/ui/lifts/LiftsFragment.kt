@@ -44,16 +44,15 @@ class LiftsFragment : Fragment() {
             viewModel.updateFilterText(binding.filterBar.text.toString())
         }
 
-        // Set the recyclerview adapter
-        val adapter = LiftAdapter(LiftAdapter.OnClickListener {
+        LiftAdapter(LiftAdapter.OnClickListener {
             showEditDialog(it)
-        })
+        }).run {
+            binding.liftList.adapter = this
 
-        binding.liftList.adapter = adapter
-
-        viewModel.lifts.observe(viewLifecycleOwner, {
-            adapter.submitList(it)
-        })
+            viewModel.lifts.observe(viewLifecycleOwner, {
+                this.submitList(it)
+            })
+        }
 
         return binding.root
     }

@@ -6,23 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.databinding.RollFragmentBinding
 import com.nazmar.dicegainz.ui.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainFragmentDirections
 import com.nazmar.dicegainz.ui.main.MainViewModel
 
-/**
- * A placeholder fragment containing a simple view.
- */
 class RollFragment : Fragment() {
 
     private var _binding: RollFragmentBinding? = null
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
-
-    private lateinit var adapter: RollCardAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,7 +43,7 @@ class RollFragment : Fragment() {
                 }
             }
 
-            adapter = RollCardAdapter(object : RollCardAdapter.OnClickListener {
+            RollCardAdapter(object : RollCardAdapter.OnClickListener {
                 override fun onRoll(id: Int) = viewModel.roll(id)
 
                 override fun onFilterChange(id: Int, text: String) {
@@ -58,32 +53,33 @@ class RollFragment : Fragment() {
                 override fun onAddCard() = viewModel.addCard()
 
                 override fun onDeleteCard(id: Int) = viewModel.deleteCard(id)
-            }, resources)
+            }, resources).run {
 
-            rollCardList.adapter = adapter
+                rollCardList.adapter = this
 
-            viewModel.tags.observe(viewLifecycleOwner) { tags ->
-                adapter.setTagFilterAdapter(
-                    NoFilterAdapter(
-                        requireContext(),
-                        R.layout.tier_list_item,
-                        arrayOf(getString(R.string.all)) + tags.toTypedArray()
+                viewModel.tags.observe(viewLifecycleOwner) { tags ->
+                    this.setTagFilterAdapter(
+                        NoFilterAdapter(
+                            requireContext(),
+                            R.layout.tier_list_item,
+                            arrayOf(getString(R.string.all)) + tags.toTypedArray()
+                        )
                     )
-                )
-                adapter.notifyDataSetChanged()
-            }
+                    this.notifyDataSetChanged()
+                }
 
-            viewModel.rollCards.observe(viewLifecycleOwner, {
-                adapter.addAddCardAndSubmitList(it as List<Card>)
-            })
+                viewModel.rollCards.observe(viewLifecycleOwner, {
+                    this.addAddCardAndSubmitList(it as List<Card>)
+                })
+            }
         }
         return binding.root
     }
 
     private fun showEditDialog() {
-        val navController = Navigation.findNavController(requireActivity(), R.id.myNavHostFragment)
-        val action = MainFragmentDirections.actionMainFragmentToEditorFragment()
-        navController.navigate(action)
+        findNavController().navigate(
+            MainFragmentDirections.actionMainFragmentToEditorFragment()
+        )
     }
 
     override fun onDestroyView() {

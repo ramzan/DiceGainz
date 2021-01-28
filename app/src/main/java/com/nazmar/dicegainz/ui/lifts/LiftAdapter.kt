@@ -20,11 +20,6 @@ class LiftAdapter(private val onClickListener: OnClickListener) :
         holder.bind(item)
     }
 
-    /**
-     * Custom listener that handles clicks on [RecyclerView] items.  Passes the [Lift]
-     * associated with the current item to the [onClick] function.
-     * @param clickListener lambda that will be called with the current [Lift]
-     */
     class OnClickListener(val clickListener: (lift: Lift) -> Unit) {
         fun onClick(lift: Lift) = clickListener(lift)
     }

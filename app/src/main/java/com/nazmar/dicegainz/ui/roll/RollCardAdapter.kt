@@ -130,6 +130,7 @@ class RollCardAdapter(private val onClickListener: OnClickListener, val resource
     }
 }
 
+
 class RollCardDiffCallback : DiffUtil.ItemCallback<Card>() {
     override fun areItemsTheSame(oldItem: Card, newItem: Card): Boolean {
         return oldItem.id == newItem.id
