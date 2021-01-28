@@ -13,6 +13,7 @@
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:menu="@menu/main_menu"
             app:title="@string/app_name" />
 
@@ -35,5 +36,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:contentDescription="@string/fab_description"
+        app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
         app:srcCompat="@drawable/ic_baseline_casino_24" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
