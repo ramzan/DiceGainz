@@ -3,10 +3,7 @@ package com.nazmar.dicegainz
 import androidx.room.Room
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.nazmar.dicegainz.database.Lift
-import com.nazmar.dicegainz.database.LiftDatabase
-import com.nazmar.dicegainz.database.LiftDatabaseDao
-import com.nazmar.dicegainz.database.Tag
+import com.nazmar.dicegainz.database.*
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -25,7 +22,8 @@ import java.io.IOException
 @RunWith(AndroidJUnit4::class)
 class LiftDatabaseTest {
 
-    private lateinit var liftDao: LiftDatabaseDao
+    private lateinit var tagDao: TagDao
+    private lateinit var liftDao: LiftDao
     private lateinit var db: LiftDatabase
 
     @Before
@@ -37,7 +35,8 @@ class LiftDatabaseTest {
             // Allowing main thread queries, just for testing.
             .allowMainThreadQueries()
             .build()
-        liftDao = db.liftDatabaseDao
+        liftDao = db.liftDao
+        tagDao = db.tagDao
     }
 
     @After
@@ -52,7 +51,7 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertLift() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         runBlocking {
             liftDao.insert(lift)
             assertEquals(lift, liftDao.getLift(lift.id))
@@ -62,7 +61,7 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun updateLift() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         runBlocking {
             liftDao.insert(lift)
             lift.name = "Bench Press"
@@ -74,7 +73,7 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun deleteLift() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         runBlocking {
             liftDao.insert(lift)
             liftDao.delete(lift)
@@ -88,9 +87,10 @@ class LiftDatabaseTest {
         val lifts = mutableListOf<Lift>()
         runBlocking {
             for (i in 0..20) {
-                val lift = Lift(i + 1L, i.toString(), i % 2)
-                lifts.add(lift)
-                liftDao.insert(lift)
+                Lift(i.toString(), i % 2, i + 1L).run {
+                    lifts.add(this)
+                    liftDao.insert(this)
+                }
             }
             lifts.sortBy { it.name }
             assertEquals(lifts, liftDao.getAllLiftsTest())
@@ -103,25 +103,27 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun insertTag() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         val tag = Tag("Push", lift.id)
         runBlocking {
             liftDao.insert(lift)
-            liftDao.insert(tag)
-            assertEquals(tag, liftDao.getTag(tag.name, tag.liftId))
+            tagDao.insert(tag)
+            assertEquals(tag, tagDao.getTag(tag.name, tag.liftId))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun deleteTag() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         val tag = Tag("Push", lift.id)
         runBlocking {
             liftDao.insert(lift)
-            liftDao.insert(tag)
-            liftDao.delete(tag)
-            assertEquals(null, liftDao.getTag(tag.name, tag.liftId))
+            tagDao.run {
+                insert(tag)
+                delete(tag)
+            }
+            assertEquals(null, tagDao.getTag(tag.name, tag.liftId))
         }
     }
 
@@ -132,12 +134,11 @@ class LiftDatabaseTest {
         runBlocking {
             for (name in 'z' downTo 'a') {
                 val id = liftDao.insert(Lift(name.toString(), 1))
-                val tag = Tag(name.toString(), id)
-                tags.add(tag)
+                tags.add(Tag(name.toString(), id))
             }
-            liftDao.insertTags(tags)
-            liftDao.deleteAll(tags)
-            assertEquals(emptyList<String>(), liftDao.getAllTagNamesTest())
+            tagDao.insertAll(tags)
+            tagDao.deleteAll(tags)
+            assertEquals(emptyList<String>(), tagDao.getAllTagNamesTest())
         }
     }
 
@@ -148,11 +149,10 @@ class LiftDatabaseTest {
         runBlocking {
             for (name in 'z' downTo 'a') {
                 val id = liftDao.insert(Lift(name.toString(), 1))
-                val tag = Tag(name.toString(), id)
-                tags.add(tag)
+                tags.add(Tag(name.toString(), id))
             }
-            liftDao.insertTags(tags)
-            assertEquals(tags.map { it.name }.asReversed(), liftDao.getAllTagNamesTest())
+            tagDao.insertAll(tags)
+            assertEquals(tags.map { it.name }.asReversed(), tagDao.getAllTagNamesTest())
         }
     }
 
@@ -163,14 +163,12 @@ class LiftDatabaseTest {
         runBlocking {
             for (name in 'z' downTo 'a') {
                 var id = liftDao.insert(Lift(name.toString(), 1))
-                var tag = Tag(name.toString(), id)
                 tags.add(name.toString())
-                liftDao.insert((tag))
+                tagDao.insert(Tag(name.toString(), id))
                 id = liftDao.insert(Lift(name.toString(), 2))
-                tag = Tag(name.toString(), id)
-                liftDao.insert((tag))
+                tagDao.insert(Tag(name.toString(), id))
             }
-            assertEquals(tags.asReversed(), liftDao.getAllTagNamesTest())
+            assertEquals(tags.asReversed(), tagDao.getAllTagNamesTest())
         }
     }
 
@@ -180,29 +178,31 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun cascadeDelete() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         val tag = Tag("Push", lift.id)
         runBlocking {
             liftDao.insert(lift)
-            liftDao.insert(tag)
+            tagDao.insert(tag)
             liftDao.delete(lift)
-            assertEquals(null, liftDao.getTag(tag.name, tag.liftId))
+            assertEquals(null, tagDao.getTag(tag.name, tag.liftId))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun cascadeDeleteMultipleTags() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         val tag1 = Tag("Push", lift.id)
         val tag2 = Tag("Pull", lift.id)
         runBlocking {
             liftDao.insert(lift)
-            liftDao.insert(tag1)
-            liftDao.insert(tag2)
-            liftDao.delete(tag1)
-            assertEquals(null, liftDao.getTag(tag1.name, tag1.liftId))
-            assertEquals(tag2, liftDao.getTag(tag2.name, tag2.liftId))
+            tagDao.run {
+                insert(tag1)
+                insert(tag2)
+                delete(tag1)
+            }
+            assertEquals(null, tagDao.getTag(tag1.name, tag1.liftId))
+            assertEquals(tag2, tagDao.getTag(tag2.name, tag2.liftId))
         }
     }
 
@@ -212,40 +212,39 @@ class LiftDatabaseTest {
     @Test
     @Throws(Exception::class)
     fun getTagNamesForLift() {
-        val lift = Lift(1L, "Front Squat", 1)
+        val lift = Lift("Front Squat", 1, 1L)
         val names = mutableListOf<String>()
         val tags = mutableListOf<Tag>()
         runBlocking {
             liftDao.insert(lift)
             for (name in 'z' downTo 'a') {
-                val tag = Tag(name.toString(), lift.id)
-                tags.add(tag)
                 names.add(name.toString())
-                liftDao.insert((tag))
+                Tag(name.toString(), lift.id).run {
+                    tags.add(this)
+                    tagDao.insert(this)
+                }
             }
-            assertEquals(names.sorted(), liftDao.getTagNamesForLiftTest(lift.id))
+            assertEquals(names.sorted(), tagDao.getTagNamesForLiftTest(lift.id))
         }
     }
 
     @Test
     @Throws(Exception::class)
     fun getLiftsForTag() {
-        val lift1 = Lift(1, "Lift 1", 0)
-        val lift2 = Lift(2, "Lift 2", 1)
-        val lift3 = Lift(3, "Lift 3", 2)
+        val lift1 = Lift("Lift 1", 0, 1)
+        val lift2 = Lift("Lift 2", 1, 2)
+        val lift3 = Lift("Lift 3", 2, 3)
         val lifts = listOf(lift1, lift2)
         val names = listOf("Push", "Pull", "Legs")
         val tags = mutableListOf<Tag>()
         runBlocking {
-            liftDao.insert(lift1)
-            liftDao.insert(lift2)
-            liftDao.insert(lift3)
-            for (name in names) {
-                val tag = Tag(name, lift1.id)
-                tags.add(tag)
-                liftDao.insert((tag))
-            }
-            liftDao.insert(Tag("Push", 2))
+            liftDao.insertAll(listOf(lift1, lift2, lift3))
+            tagDao.insertAll(
+                names.map { name ->
+                    Tag(name, lift1.id).also { tags.add(it) }
+                }
+            )
+            tagDao.insert(Tag("Push", 2))
             assertEquals(lifts, liftDao.getLiftsForTagTest("Push"))
         }
     }
