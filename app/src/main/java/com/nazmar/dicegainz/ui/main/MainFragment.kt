@@ -67,7 +67,7 @@ class MainFragment : Fragment() {
                             setImageDrawable(
                                 getDrawable(
                                     requireContext(),
-                                    R.drawable.ic_baseline_add_24
+                                    R.drawable.ic_round_add_24
                                 )
                             )
                             setOnClickListener {

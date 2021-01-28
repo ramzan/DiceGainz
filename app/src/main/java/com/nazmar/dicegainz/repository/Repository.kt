@@ -1,6 +1,10 @@
 package com.nazmar.dicegainz.repository
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.nazmar.dicegainz.PREF_KEY_NUM_ROLL_CARDS
 import com.nazmar.dicegainz.database.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,6 +15,8 @@ object Repository {
     private lateinit var db: LiftDatabase
     private lateinit var liftDao: LiftDao
     private lateinit var tagDao: TagDao
+    private lateinit var prefs: SharedPreferences
+
     lateinit var allTagsList: LiveData<List<String>>
 
     fun setDataSource(dataBase: LiftDatabase) {
@@ -18,6 +24,30 @@ object Repository {
         liftDao = db.liftDao
         tagDao = db.tagDao
         allTagsList = getAllTags()
+    }
+
+    private var _numCards = MutableLiveData(3)
+
+    val numCards: LiveData<Int>
+        get() = _numCards
+
+    fun setPreferences(preferences: SharedPreferences) {
+        prefs = preferences
+        _numCards.value = prefs.getInt(PREF_KEY_NUM_ROLL_CARDS, 3)
+    }
+
+    fun addCard() {
+        _numCards.value = _numCards.value!! + 1
+        prefs.edit {
+            putInt(PREF_KEY_NUM_ROLL_CARDS, numCards.value!!)
+        }
+    }
+
+    fun removeCard() {
+        _numCards.value = _numCards.value!! - 1
+        prefs.edit {
+            putInt(PREF_KEY_NUM_ROLL_CARDS, numCards.value!!)
+        }
     }
 
     suspend fun getLift(liftId: Long): Lift? = liftDao.getLift(liftId)

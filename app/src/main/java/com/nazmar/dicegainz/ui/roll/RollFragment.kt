@@ -22,6 +22,8 @@ class RollFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by activityViewModels()
 
+    private lateinit var adapter: RollCardAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,14 +48,16 @@ class RollFragment : Fragment() {
                 }
             }
 
-            val adapter = RollCardAdapter(object : RollCardAdapter.OnClickListener {
-                override fun onRollClick(position: Int) {
-                    viewModel.roll(position)
+            adapter = RollCardAdapter(object : RollCardAdapter.OnClickListener {
+                override fun onRoll(id: Int) = viewModel.roll(id)
+
+                override fun onFilterChange(id: Int, text: String) {
+                    viewModel.updateFilterText(id, text)
                 }
 
-                override fun onFilterClick(position: Int, text: String) {
-                    viewModel.updateFilterText(position, text)
-                }
+                override fun onAddCard() = viewModel.addCard()
+
+                override fun onDeleteCard(id: Int) = viewModel.deleteCard(id)
             }, resources)
 
             rollCardList.adapter = adapter
@@ -70,7 +74,7 @@ class RollFragment : Fragment() {
             }
 
             viewModel.rollCards.observe(viewLifecycleOwner, {
-                adapter.submitList(it)
+                adapter.addAddCardAndSubmitList(it as List<Card>)
             })
         }
         return binding.root

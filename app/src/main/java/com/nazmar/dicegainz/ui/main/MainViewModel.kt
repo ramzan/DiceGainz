@@ -8,48 +8,75 @@ import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.database.T1
 import com.nazmar.dicegainz.database.T2
 import com.nazmar.dicegainz.repository.Repository
-import com.nazmar.dicegainz.ui.roll.RollCard
+import com.nazmar.dicegainz.ui.roll.Card
 import com.nazmar.dicegainz.updateFilterText
 import com.nazmar.dicegainz.updateRollResult
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
 
-    private var _rollCards = MutableLiveData(
-        mutableListOf<RollCard>().apply {
-            for (i in 0..3) {
-                this.add(RollCard(i))
-            }
-        }
-    )
-
-    val rollCards: LiveData<MutableList<RollCard>>
-        get() = _rollCards
-
     val lifts = Repository.getAllLifts()
 
     val tags = Repository.allTagsList
 
-    fun roll(index: Int) {
-        viewModelScope.launch {
-            rollCards.value?.get(index)?.let { card ->
-                val lift = (tags.value?.let {
-                    if (it.contains(card.filterText)) {
-                        Repository.getLiftsForTagOneShot(card.filterText)
-                    } else {
-                        Repository.getAllLiftsOneShot()
-                    }
-                } ?: Repository.getAllLiftsOneShot()).random()
-                _rollCards.updateRollResult(index, "${lift.name} ${getRM(lift.tier)}RM")
+    private var idIndexMap = HashMap<Int, Int>()
+
+    private var _rollCards = MutableLiveData(mutableListOf<Card.RollCard>().apply {
+        for (i in 0 until Repository.numCards.value!!) {
+            this.add(Card.RollCard(i))
+            idIndexMap[i] = i
+        }
+    })
+
+    val rollCards: LiveData<MutableList<Card.RollCard>>
+        get() = _rollCards
+
+    fun addCard() {
+        _rollCards.value?.let {
+            val id = if (it.isEmpty()) 0 else it.last().id + 1
+            it.add(Card.RollCard(id))
+            idIndexMap[id] = it.size - 1
+            _rollCards.value = it
+            Repository.addCard()
+        }
+    }
+
+    fun deleteCard(id: Int) {
+        _rollCards.value?.let {
+            idIndexMap[id]?.let { index ->
+                it.removeAt(index)
+                idIndexMap.remove(id)
+                for (i in index until it.size) idIndexMap[it[i].id] = i
+                _rollCards.value = it
+                Repository.removeCard()
             }
         }
     }
 
-    fun updateFilterText(position: Int, text: String) = _rollCards.updateFilterText(position, text)
+    fun roll(id: Int) {
+        rollCards.value?.let { list ->
+            idIndexMap[id]?.let { index ->
+                viewModelScope.launch {
+                    val lift = (tags.value?.let {
+                        if (it.contains(list[index].filterText)) {
+                            Repository.getLiftsForTagOneShot(list[index].filterText)
+                        } else {
+                            Repository.getAllLiftsOneShot()
+                        }
+                    } ?: Repository.getAllLiftsOneShot()).random()
+                    _rollCards.updateRollResult(index, "${lift.name} ${getRM(lift.tier)}RM")
+                }
+            }
+        }
+    }
+
+    fun updateFilterText(id: Int, text: String) = idIndexMap[id]?.let {
+        _rollCards.updateFilterText(it, text)
+    }
 
     fun rollAll() {
         rollCards.value?.let { list ->
-            if (!lifts.value.isNullOrEmpty()) list.indices.forEach { roll(it) }
+            if (!lifts.value.isNullOrEmpty()) list.forEach { roll(it.id) }
         }
     }
 
