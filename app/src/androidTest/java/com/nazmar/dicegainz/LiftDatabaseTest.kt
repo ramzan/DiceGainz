@@ -12,13 +12,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
-
-/**
- * This is not meant to be a full set of tests. For simplicity, most of your samples do not
- * include tests. However, when building the Room, it is helpful to make sure it works before
- * adding the UI.
- */
-
 @RunWith(AndroidJUnit4::class)
 class LiftDatabaseTest {
 
@@ -29,11 +22,8 @@ class LiftDatabaseTest {
     @Before
     fun createDb() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
-        // Using an in-memory database because the information stored here disappears when the
-        // process is killed.
         db = Room.inMemoryDatabaseBuilder(context, LiftDatabase::class.java)
-            // Allowing main thread queries, just for testing.
-            .allowMainThreadQueries()
+                .allowMainThreadQueries()
             .build()
         liftDao = db.liftDao
         tagDao = db.tagDao
