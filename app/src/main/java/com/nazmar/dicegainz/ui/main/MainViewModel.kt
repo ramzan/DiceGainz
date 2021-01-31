@@ -1,9 +1,6 @@
 package com.nazmar.dicegainz.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.database.T1
 import com.nazmar.dicegainz.database.T2
@@ -13,7 +10,10 @@ import com.nazmar.dicegainz.updateFilterText
 import com.nazmar.dicegainz.updateRollResult
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
+private const val STATE_FILTER_TEXTS = "filterTexts"
+private const val STATE_ROLL_RESULTS = "rollResults"
+
+class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     val lifts = Repository.getAllLifts()
 
@@ -22,8 +22,13 @@ class MainViewModel : ViewModel() {
     private var idIndexMap = HashMap<Int, Int>()
 
     private var _rollCards = MutableLiveData(mutableListOf<Card.RollCard>().apply {
+        val filterTexts: List<String>? = state.get(STATE_FILTER_TEXTS)
+        val rollResults: List<String>? = state.get(STATE_ROLL_RESULTS)
         for (i in 0 until Repository.numCards.value!!) {
-            this.add(Card.RollCard(i))
+            this.add(Card.RollCard(i,
+                filterTexts?.get(i) ?: "",
+                rollResults?.get(i) ?: ""
+            ))
             idIndexMap[i] = i
         }
     })
@@ -38,6 +43,8 @@ class MainViewModel : ViewModel() {
             idIndexMap[id] = it.size - 1
             _rollCards.value = it
             Repository.addCard()
+            saveRollResultsToBundle()
+            saveFilterTextsToBundle()
         }
     }
 
@@ -49,6 +56,8 @@ class MainViewModel : ViewModel() {
                 for (i in index until it.size) idIndexMap[it[i].id] = i
                 _rollCards.value = it
                 Repository.removeCard()
+                saveRollResultsToBundle()
+                saveFilterTextsToBundle()
             }
         }
     }
@@ -57,27 +66,23 @@ class MainViewModel : ViewModel() {
         rollCards.value?.let { list ->
             idIndexMap[id]?.let { index ->
                 viewModelScope.launch {
-                    val lift = (tags.value?.let {
-                        if (it.contains(list[index].filterText)) {
-                            Repository.getLiftsForTagOneShot(list[index].filterText)
-                        } else {
-                            Repository.getAllLiftsOneShot()
-                        }
-                    } ?: Repository.getAllLiftsOneShot()).random()
+                    val lift = Repository.getRandomLiftForTag(list[index].filterText)
                     _rollCards.updateRollResult(index, "${lift.name} ${getRM(lift.tier)}RM")
+                    saveRollResultsToBundle()
                 }
             }
         }
-    }
-
-    fun updateFilterText(id: Int, text: String) = idIndexMap[id]?.let {
-        _rollCards.updateFilterText(it, text)
     }
 
     fun rollAll() {
         rollCards.value?.let { list ->
             if (!lifts.value.isNullOrEmpty()) list.forEach { roll(it.id) }
         }
+    }
+
+    fun updateFilterText(id: Int, text: String) = idIndexMap[id]?.let { index ->
+        _rollCards.updateFilterText(index, text)
+        saveFilterTextsToBundle()
     }
 
     private fun getRM(tier: Int): Int {
@@ -87,6 +92,13 @@ class MainViewModel : ViewModel() {
             else -> (3..10).random()
         }
     }
+
+    private fun saveRollResultsToBundle() =
+        state.set(STATE_ROLL_RESULTS, rollCards.value!!.map { it.rollResult })
+
+    private fun saveFilterTextsToBundle() =
+        state.set(STATE_FILTER_TEXTS, rollCards.value!!.map { it.filterText })
+
 
     // -----------------------Deleted lift methods and data-------------------
 

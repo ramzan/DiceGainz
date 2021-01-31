@@ -147,8 +147,8 @@ sealed class Card {
 
     data class RollCard(
         override val id: Int,
-        var filterText: String = "",
-        var rollResult: String = ""
+        val filterText: String = "",
+        val rollResult: String = ""
     ) : Card()
 
     object AddCard : Card() {

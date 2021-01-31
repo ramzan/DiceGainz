@@ -98,4 +98,14 @@ object Repository {
             liftDao.delete(lift)
         }
     }
+
+    suspend fun getRandomLiftForTag(filterText: String): Lift {
+        return (allTagsList.value?.let {
+            if (it.contains(filterText)) {
+                getLiftsForTagOneShot(filterText)
+            } else {
+                getAllLiftsOneShot()
+            }
+        } ?: getAllLiftsOneShot()).random()
+    }
 }
