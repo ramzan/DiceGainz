@@ -6,8 +6,6 @@ import com.nazmar.dicegainz.database.T1
 import com.nazmar.dicegainz.database.T2
 import com.nazmar.dicegainz.repository.Repository
 import com.nazmar.dicegainz.ui.roll.Card
-import com.nazmar.dicegainz.updateFilterText
-import com.nazmar.dicegainz.updateRollResult
 import kotlinx.coroutines.launch
 
 private const val STATE_FILTER_TEXTS = "filterTexts"
@@ -25,10 +23,13 @@ class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
         val filterTexts: List<String>? = state.get(STATE_FILTER_TEXTS)
         val rollResults: List<String>? = state.get(STATE_ROLL_RESULTS)
         for (i in 0 until Repository.numCards.value!!) {
-            this.add(Card.RollCard(i,
-                filterTexts?.get(i) ?: "",
-                rollResults?.get(i) ?: ""
-            ))
+            this.add(
+                Card.RollCard(
+                    i,
+                    filterTexts?.get(i) ?: "",
+                    rollResults?.get(i) ?: ""
+                )
+            )
             idIndexMap[i] = i
         }
     })
@@ -91,6 +92,26 @@ class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
             T2 -> (6..10).random()
             else -> (3..10).random()
         }
+    }
+
+    private fun MutableLiveData<MutableList<Card.RollCard>>.updateRollResult(
+        index: Int,
+        updatedResult: String
+    ) {
+        val value = this.value?.toMutableList() ?: mutableListOf()
+        value[index] = value[index].copy(rollResult = updatedResult)
+        this.value = value
+
+    }
+
+    private fun MutableLiveData<MutableList<Card.RollCard>>.updateFilterText(
+        index: Int,
+        updatedText: String
+    ) {
+        val value = this.value?.toMutableList() ?: mutableListOf()
+        value[index] = value[index].copy(filterText = updatedText)
+        this.value = value
+
     }
 
     private fun saveRollResultsToBundle() =

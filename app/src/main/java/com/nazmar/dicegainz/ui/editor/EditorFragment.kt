@@ -5,20 +5,25 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipDrawable
-import com.nazmar.dicegainz.*
+import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.BOTH
 import com.nazmar.dicegainz.database.T1
 import com.nazmar.dicegainz.database.T2
 import com.nazmar.dicegainz.databinding.EditorFragmentBinding
+import com.nazmar.dicegainz.getInputMethodManager
+import com.nazmar.dicegainz.hideKeyboard
+import com.nazmar.dicegainz.showKeyboard
 import com.nazmar.dicegainz.ui.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainViewModel
 
@@ -190,5 +195,15 @@ class EditorFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    // For submitting tags when autocomplete item clicked
+    private fun AutoCompleteTextView.onSubmit(func: () -> Unit) {
+        setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                func()
+            }
+            true
+        }
     }
 }

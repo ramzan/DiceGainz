@@ -12,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.databinding.LiftsFragmentBinding
+import com.nazmar.dicegainz.safeNavigate
 import com.nazmar.dicegainz.ui.main.MainFragmentDirections
 
 class LiftsFragment : Fragment() {
@@ -58,7 +59,7 @@ class LiftsFragment : Fragment() {
     }
 
     private fun showEditDialog(lift: Lift) {
-        findNavController().navigate(
+        findNavController().safeNavigate(
             MainFragmentDirections.actionMainFragmentToEditorFragment().apply {
                 liftId = lift.id
             }

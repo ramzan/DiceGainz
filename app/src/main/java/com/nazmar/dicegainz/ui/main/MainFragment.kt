@@ -54,10 +54,7 @@ class MainFragment : Fragment() {
                     when (position) {
                         0 -> binding.fab.apply {
                             setImageDrawable(
-                                getDrawable(
-                                    requireContext(),
-                                    R.drawable.ic_baseline_casino_24
-                                )
+                                getDrawable(requireContext(), R.drawable.ic_baseline_casino_24)
                             )
                             setOnClickListener {
                                 viewModel.rollAll()
@@ -65,16 +62,9 @@ class MainFragment : Fragment() {
                         }
                         1 -> binding.fab.apply {
                             setImageDrawable(
-                                getDrawable(
-                                    requireContext(),
-                                    R.drawable.ic_round_add_24
-                                )
+                                getDrawable(requireContext(), R.drawable.ic_round_add_24)
                             )
                             setOnClickListener {
-                                it?.apply {
-                                    isEnabled = false
-                                    postDelayed({ isEnabled = true }, 400)
-                                } //400 ms
                                 showEditDialog()
                             }
                         }
