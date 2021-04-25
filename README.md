@@ -1,4 +1,4 @@
-<p align="center"><img src="https://github.com/ramzan/dicegainz/raw/master/app/src/main/ic_launcher-playstore.webp" width="150"></p> 
+<p align="center"><img src="https://github.com/ramzan/dicegainz/raw/master/fastlane/metadata/android/en-US/images/icon.png" width="150"></p> 
 <h2 align="center"><b>Dice Gainz</b></h2>
 <h4 align="center">A random workout generator based on the <a href="https://redd.it/aqkdgo/">General Gainz</a> training method by <a href="https://swoleateveryheight.blogspot.com/">Cody Lefever</h4>
 <p align="center">
@@ -17,10 +17,10 @@
 
 ## Screenshots
 <div align="center">
-<img src="assets/ss1.jpg" width=280>
-<img src="assets/ss2.jpg" width=280>
-<img src="assets/ss3.jpg" width=280>
-<img src="assets/ss4.jpg" width=280>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss1.jpg" width=280>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss2.jpg" width=280>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss3.jpg" width=280>
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/ss4.jpg" width=280>
 </div>
 
 ### Features
