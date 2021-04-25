@@ -26,7 +26,7 @@ object Repository {
         allTagsList = getAllTags()
     }
 
-    // ------------------------------Card number preferences----------------------------------
+    // ------------------------------Card preferences----------------------------------
 
     private var _numCards = MutableLiveData(3)
 
@@ -45,12 +45,27 @@ object Repository {
         }
     }
 
-    fun removeCard() {
-        _numCards.value = _numCards.value!! - 1
+    fun removeCard(index: Int) {
+        var i = index
+        val cards = numCards.value!!
         prefs.edit {
-            putInt(PREF_KEY_NUM_ROLL_CARDS, numCards.value!!)
+            putInt(PREF_KEY_NUM_ROLL_CARDS, cards - 1)
+            while (i + 1 < cards) {
+                putString(i.toString(), prefs.getString((++i).toString(), "All"))
+            }
+            remove(i.toString())
+            _numCards.value = i
         }
     }
+
+    // Card filters are saved to shared prefs with index.toString() as key
+    fun setFilter(index: Int, filterText: String) {
+        prefs.edit {
+            putString(index.toString(), filterText)
+        }
+    }
+
+    fun getFilter(index: Int) = prefs.getString(index.toString(), "All").toString()
 
     // ------------------------------Queries----------------------------------
 

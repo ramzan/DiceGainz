@@ -8,7 +8,6 @@ import com.nazmar.dicegainz.repository.Repository
 import com.nazmar.dicegainz.ui.roll.Card
 import kotlinx.coroutines.launch
 
-private const val STATE_FILTER_TEXTS = "filterTexts"
 private const val STATE_ROLL_RESULTS = "rollResults"
 
 class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
@@ -20,13 +19,12 @@ class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
     private var idIndexMap = HashMap<Int, Int>()
 
     private var _rollCards = MutableLiveData(mutableListOf<Card.RollCard>().apply {
-        val filterTexts: List<String>? = state.get(STATE_FILTER_TEXTS)
         val rollResults: List<String>? = state.get(STATE_ROLL_RESULTS)
         for (i in 0 until Repository.numCards.value!!) {
             this.add(
                 Card.RollCard(
                     i,
-                    filterTexts?.get(i) ?: "",
+                    Repository.getFilter(i),
                     rollResults?.get(i) ?: ""
                 )
             )
@@ -45,7 +43,6 @@ class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
             _rollCards.value = it
             Repository.addCard()
             saveRollResultsToBundle()
-            saveFilterTextsToBundle()
         }
     }
 
@@ -56,9 +53,8 @@ class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
                 idIndexMap.remove(id)
                 for (i in index until it.size) idIndexMap[it[i].id] = i
                 _rollCards.value = it
-                Repository.removeCard()
+                Repository.removeCard(index)
                 saveRollResultsToBundle()
-                saveFilterTextsToBundle()
             }
         }
     }
@@ -83,7 +79,6 @@ class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
 
     fun updateFilterText(id: Int, text: String) = idIndexMap[id]?.let { index ->
         _rollCards.updateFilterText(index, text)
-        saveFilterTextsToBundle()
     }
 
     private fun getRM(tier: Int): Int {
@@ -111,15 +106,11 @@ class MainViewModel(private val state: SavedStateHandle) : ViewModel() {
         val value = this.value?.toMutableList() ?: mutableListOf()
         value[index] = value[index].copy(filterText = updatedText)
         this.value = value
-
+        Repository.setFilter(index, updatedText)
     }
 
     private fun saveRollResultsToBundle() =
         state.set(STATE_ROLL_RESULTS, rollCards.value!!.map { it.rollResult })
-
-    private fun saveFilterTextsToBundle() =
-        state.set(STATE_FILTER_TEXTS, rollCards.value!!.map { it.filterText })
-
 
     // -----------------------Deleted lift methods and data-------------------
 
