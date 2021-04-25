@@ -1,0 +1,3 @@
+<li>New: roll filters are now saved when you close the app</li>
+<li>Fixed: unrealistic die in the app icon</li>
+<li>Fixed: crash when tapping two items in the lifts list at the same time</li>
