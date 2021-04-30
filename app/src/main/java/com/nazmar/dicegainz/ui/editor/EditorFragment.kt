@@ -83,6 +83,10 @@ class EditorFragment : Fragment() {
                     setAdapter(ArrayAdapter(requireContext(), R.layout.tier_list_item, it))
                 }
             }
+
+            chipCreatorContainer.setEndIconOnClickListener {
+                addNewTag()
+            }
         }
 
         editorViewModel.state.observe(viewLifecycleOwner) { state ->

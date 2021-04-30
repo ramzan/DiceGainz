@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +7,6 @@
     android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,8 +14,7 @@
             android:id="@+id/editorToolbar"
             style="@style/Widget.MaterialComponents.Toolbar.Primary"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="0dp"
+            android:layout_height="?attr/actionBarSize"
             app:menu="@menu/editor_menu"
             app:navigationIcon="@drawable/ic_baseline_close_24"
             tools:title="@string/editorTitleEdit">
@@ -27,7 +25,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="?attr/actionBarSize">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,16 +34,12 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
-
                 android:id="@+id/name_input_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="4dp"
                 android:hint="@string/nameInputHint"
-                android:paddingHorizontal="@dimen/defaultPadding">
+                android:padding="@dimen/defaultPadding">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/name_input"
@@ -57,12 +52,9 @@
                 android:id="@+id/tierSelectorContainer"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:paddingHorizontal="@dimen/defaultPadding">
+                android:paddingHorizontal="@dimen/defaultPadding"
+                android:paddingBottom="@dimen/defaultPadding">
 
                 <AutoCompleteTextView
                     android:id="@+id/tierSelector"
@@ -76,7 +68,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:paddingHorizontal="@dimen/defaultPadding"
                 android:text="@string/categories"
                 android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
@@ -85,14 +76,11 @@
                 android:id="@+id/chipCreatorContainer"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="match_parent"
-
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginEnd="4dp"
-                android:layout_marginRight="4dp"
-                android:paddingHorizontal="@dimen/defaultPadding">
+                android:paddingHorizontal="@dimen/defaultPadding"
+                android:paddingVertical="8dp"
+                app:endIconDrawable="@drawable/ic_round_add_24"
+                app:endIconMode="dropdown_menu">
 
                 <AutoCompleteTextView
                     android:id="@+id/chip_creator"
@@ -100,7 +88,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:hint="@string/add_category"
-                    android:imeOptions="actionDone"
+                    android:imeOptions="normal"
                     android:inputType="text"
                     android:singleLine="true" />
 
@@ -110,11 +98,10 @@
                 android:id="@+id/chip_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
                 android:paddingHorizontal="@dimen/defaultPadding" />
 
         </LinearLayout>
 
     </ScrollView>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
