@@ -28,18 +28,18 @@ object Repository {
 
     // ------------------------------Card preferences----------------------------------
 
-    private var _numCards = MutableLiveData(3)
+    private var mutableNumCards = MutableLiveData(3)
 
     val numCards: LiveData<Int>
-        get() = _numCards
+        get() = mutableNumCards
 
     fun setPreferences(preferences: SharedPreferences) {
         prefs = preferences
-        _numCards.value = prefs.getInt(PREF_KEY_NUM_ROLL_CARDS, 3)
+        mutableNumCards.value = prefs.getInt(PREF_KEY_NUM_ROLL_CARDS, 3)
     }
 
     fun addCard() {
-        _numCards.value = _numCards.value!! + 1
+        mutableNumCards.value = mutableNumCards.value!! + 1
         prefs.edit {
             putInt(PREF_KEY_NUM_ROLL_CARDS, numCards.value!!)
         }
@@ -54,7 +54,7 @@ object Repository {
                 putString(i.toString(), prefs.getString((++i).toString(), "All"))
             }
             remove(i.toString())
-            _numCards.value = i
+            mutableNumCards.value = i
         }
     }
 
@@ -73,9 +73,7 @@ object Repository {
 
     fun getAllLifts() = liftDao.getAllLifts()
 
-    suspend fun getAllLiftsOneShot() = liftDao.getAllLiftsOneShot()
-
-    suspend fun getLiftsForTagOneShot(tag: String) = liftDao.getLiftsForTagOneShot(tag)
+    private suspend fun getAllLiftsOneShot() = liftDao.getAllLiftsOneShot()
 
     fun getLiftsForTag(tag: String) = liftDao.getLiftsForTag(tag)
 
@@ -117,7 +115,7 @@ object Repository {
     suspend fun getRandomLiftForTag(filterText: String): Lift {
         return (allTagsList.value?.let {
             if (it.contains(filterText)) {
-                getLiftsForTagOneShot(filterText)
+                liftDao.getLiftsForTagOneShot(filterText)
             } else {
                 getAllLiftsOneShot()
             }
