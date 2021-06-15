@@ -11,7 +11,10 @@
         <action
             android:id="@+id/action_mainFragment_to_editorFragment"
             app:destination="@id/editorFragment"
-            app:enterAnim="@android:anim/fade_in"
+            app:enterAnim="@anim/slide_in_bottom"
+            app:exitAnim="@anim/wait_anim"
+            app:popEnterAnim="@anim/wait_anim"
+            app:popExitAnim="@anim/slide_out_bottom"
             app:popUpTo="@id/mainFragment" />
         <action
             android:id="@+id/action_mainFragment_to_themeDialogFragment"
