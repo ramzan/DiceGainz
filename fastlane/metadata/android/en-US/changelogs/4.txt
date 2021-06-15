@@ -2,4 +2,5 @@
 <li>Improved interface</li>
 <li>Made category creation in editor more visible</li>
 <li>Added prominent link to General Gainz instructions</li>
+<li>Auto backup to your Google account is now enabled if you have it enabled in your device settings</li>
 </ul>
