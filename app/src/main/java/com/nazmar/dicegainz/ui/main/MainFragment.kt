@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
-import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -84,9 +83,9 @@ class MainFragment : BaseFragment<MainFragmentBinding>() {
         }.attach()
 
         binding.mainToolbar.setOnMenuItemClickListener {
-            when (it) {
-                binding.mainToolbar.menu[0] -> showThemeDialog()
-                binding.mainToolbar.menu[1] -> showAboutDialog()
+            when (it.itemId) {
+                R.id.theme -> showThemeDialog()
+                R.id.about -> showAboutDialog()
                 else -> false
             }
         }
