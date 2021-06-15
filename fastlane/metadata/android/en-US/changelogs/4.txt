@@ -1,0 +1,5 @@
+<ul>
+<li>Improved interface</li>
+<li>Made category creation in editor more visible</li>
+<li>Added prominent link to General Gainz instructions</li>
+</ul>
