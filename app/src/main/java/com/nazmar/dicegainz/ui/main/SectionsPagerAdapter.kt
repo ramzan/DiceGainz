@@ -1,4 +1,4 @@
-package com.nazmar.dicegainz.ui
+package com.nazmar.dicegainz.ui.main
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter

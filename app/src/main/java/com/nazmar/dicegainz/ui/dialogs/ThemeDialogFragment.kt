@@ -1,4 +1,4 @@
-package com.nazmar.dicegainz.ui.main
+package com.nazmar.dicegainz.ui.dialogs
 
 import android.app.Dialog
 import android.content.Context

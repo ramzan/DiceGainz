@@ -24,7 +24,6 @@ import com.nazmar.dicegainz.getInputMethodManager
 import com.nazmar.dicegainz.hideKeyboard
 import com.nazmar.dicegainz.showKeyboard
 import com.nazmar.dicegainz.ui.BaseFragment
-import com.nazmar.dicegainz.ui.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainViewModel
 
 

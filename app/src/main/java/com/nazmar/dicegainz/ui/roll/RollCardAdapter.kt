@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.databinding.ListItemRollCardBinding
-import com.nazmar.dicegainz.ui.NoFilterAdapter
+import com.nazmar.dicegainz.ui.editor.NoFilterAdapter
 
 private const val ITEM_VIEW_TYPE_ROLL = 0
 private const val ITEM_VIEW_TYPE_ADD = 1

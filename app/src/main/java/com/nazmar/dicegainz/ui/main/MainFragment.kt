@@ -14,7 +14,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.databinding.MainFragmentBinding
 import com.nazmar.dicegainz.ui.BaseFragment
-import com.nazmar.dicegainz.ui.SectionsPagerAdapter
 
 
 class MainFragment : BaseFragment<MainFragmentBinding>() {

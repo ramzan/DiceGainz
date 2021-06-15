@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.databinding.RollFragmentBinding
-import com.nazmar.dicegainz.ui.NoFilterAdapter
+import com.nazmar.dicegainz.ui.editor.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainFragmentDirections
 import com.nazmar.dicegainz.ui.main.MainViewModel
 

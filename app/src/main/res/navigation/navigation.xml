@@ -32,10 +32,10 @@
     </fragment>
     <dialog
         android:id="@+id/themeDialogFragment"
-        android:name="com.nazmar.dicegainz.ui.main.ThemeDialogFragment"
+        android:name="com.nazmar.dicegainz.ui.dialogs.ThemeDialogFragment"
         android:label="ThemeDialogFragment" />
     <dialog
         android:id="@+id/aboutDialog"
-        android:name="com.nazmar.dicegainz.ui.main.AboutDialog"
+        android:name="com.nazmar.dicegainz.ui.dialogs.AboutDialog"
         android:label="AboutDialog" />
 </navigation>
