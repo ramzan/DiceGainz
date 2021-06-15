@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/defaultPadding">
+        android:paddingHorizontal="@dimen/defaultPadding"
+        android:paddingTop="@dimen/defaultPadding">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/filter_container"
@@ -48,7 +49,7 @@
             android:id="@+id/roll_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="@dimen/defaultPadding"
+            android:paddingVertical="18dp"
             android:text="@string/tap_to_roll"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
