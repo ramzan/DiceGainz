@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.core.view.get
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
@@ -14,13 +13,11 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.databinding.MainFragmentBinding
+import com.nazmar.dicegainz.ui.BaseFragment
 import com.nazmar.dicegainz.ui.SectionsPagerAdapter
 
 
-class MainFragment : Fragment() {
-
-    private var _binding: MainFragmentBinding? = null
-    private val binding get() = _binding!!
+class MainFragment : BaseFragment<MainFragmentBinding>() {
 
     private val viewModel: MainViewModel by activityViewModels()
 
@@ -29,7 +26,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = MainFragmentBinding.inflate(inflater)
+        setUpBinding(MainFragmentBinding.inflate(inflater))
 
         // Show undo snackbar for deleted lift
         viewModel.deletedLift.observe(viewLifecycleOwner) { deletedLift ->
@@ -110,10 +107,5 @@ class MainFragment : Fragment() {
     private fun showAboutDialog(): Boolean {
         findNavController().navigate(MainFragmentDirections.actionMainFragmentToAboutDialog())
         return true
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -24,15 +23,14 @@ import com.nazmar.dicegainz.databinding.EditorFragmentBinding
 import com.nazmar.dicegainz.getInputMethodManager
 import com.nazmar.dicegainz.hideKeyboard
 import com.nazmar.dicegainz.showKeyboard
+import com.nazmar.dicegainz.ui.BaseFragment
 import com.nazmar.dicegainz.ui.NoFilterAdapter
 import com.nazmar.dicegainz.ui.main.MainViewModel
 
 
-class EditorFragment : Fragment() {
+class EditorFragment : BaseFragment<EditorFragmentBinding>() {
 
     private lateinit var tierStrings: Array<String>
-    private var _binding: EditorFragmentBinding? = null
-    private val binding get() = _binding!!
 
     private val editorViewModel: EditorViewModel by viewModels {
         EditorViewModelFactory(requireArguments().getLong("liftId"))
@@ -48,7 +46,7 @@ class EditorFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = EditorFragmentBinding.inflate(inflater)
+        setUpBinding(EditorFragmentBinding.inflate(inflater))
 
         imm = requireActivity().getInputMethodManager()
 
@@ -194,11 +192,6 @@ class EditorFragment : Fragment() {
     private fun goBack() {
         imm.hideKeyboard(requireView().windowToken)
         findNavController().popBackStack()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     // For submitting tags when autocomplete item clicked

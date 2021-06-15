@@ -6,19 +6,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.nazmar.dicegainz.R
 import com.nazmar.dicegainz.database.Lift
 import com.nazmar.dicegainz.databinding.LiftsFragmentBinding
 import com.nazmar.dicegainz.safeNavigate
+import com.nazmar.dicegainz.ui.BaseFragment
 import com.nazmar.dicegainz.ui.main.MainFragmentDirections
 
-class LiftsFragment : Fragment() {
+class LiftsFragment : BaseFragment<LiftsFragmentBinding>() {
 
-    private var _binding: LiftsFragmentBinding? = null
-    private val binding get() = _binding!!
     private val viewModel: LiftsViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -26,7 +24,7 @@ class LiftsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = LiftsFragmentBinding.inflate(inflater)
+        setUpBinding(LiftsFragmentBinding.inflate(inflater))
 
         // Set up filter spinner
         viewModel.tagList.observe(viewLifecycleOwner) {
@@ -64,11 +62,6 @@ class LiftsFragment : Fragment() {
                 liftId = lift.id
             }
         )
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     companion object {
