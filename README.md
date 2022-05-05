@@ -2,7 +2,6 @@
 <h2 align="center"><b>Dice Gainz</b></h2>
 <h4 align="center">A random workout generator based on the <a href="https://redd.it/aqkdgo/">General Gainz</a> training method by <a href="https://swoleateveryheight.blogspot.com/">Cody Lefever</h4>
 <p align="center">
-<a href="https://play.google.com/store/apps/details?id=com.nazmar.dicegainz"><img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="100"></a>
 <a href="https://f-droid.org/packages/com.nazmar.dicegainz">
     <img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
     alt="Get it on F-Droid"
